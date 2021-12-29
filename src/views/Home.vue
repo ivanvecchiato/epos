@@ -115,7 +115,8 @@ export default {
     console.log("Home", "setting event listener");
     this.$bus.on('login', e => {
       console.log('eventReceived', e)
-      this.checkAuth();
+      if(!this.loggedIn)
+        this.checkAuth();
     })
   },
 }
