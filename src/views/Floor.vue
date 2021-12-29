@@ -173,24 +173,25 @@ export default {
       }
     },
     getParks: function() {
+      var self = this;
       Firebase.db
         .collection("park")
         .orderBy("id")
         .onSnapshot((snapshotChange) => {
-          this.areas = [];
+          self.areas = [];
           snapshotChange.forEach((doc) => {
             var area = doc.data();
             area.docId = doc.id;
             var places = area.places;
-            for(var n=0; n<places.length; n++) {
+            for(var n in places) {
               var order = new Order;
               order.fillData(places[n].order);
               places[n].order = order;
             }
-            this.areas.push(area);
-            console.log(area.name)
+            self.areas.push(area);
           });
-          this.currentArea = this.areas[0];
+          self.currentArea = self.areas[0];
+          console.log(self.currentArea.places)
         });
     }
   },
