@@ -11,7 +11,8 @@
             {{ key }}
         </button>
         <button class="button" plain @click="clear">&larr;</button>
-        <button class="button" plain @click="enter">Ok</button>
+        <button class="button" plain @click="enter"
+          v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
       </div>
     </div>
   </div>
@@ -31,6 +32,7 @@ export default {
     return {
       pin: '',
       keys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      fullscreenLoading: false
     }
   },
   methods: {
@@ -63,7 +65,8 @@ export default {
         loggedIn: true,
         id: id,
         name: data.name,
-        permissions: data.permissions
+        permissions: data.permissions,
+        admin: data.admin
       });
 
       var event = {
@@ -75,10 +78,13 @@ export default {
       this.setOperator(operator);
     },
     userLogin: function() {
+      this.fullscreenLoading = true;
+
       Firebase.db.collection('operators')
       .where('pin', '==', this.pin)
       .get()
       .then((querySnapshot) => {
+        this.fullscreenLoading = false;
         if(querySnapshot.empty) {
           this.loginFail();
         } else {
@@ -89,6 +95,7 @@ export default {
         }
       })
       .catch((error) => {
+        this.fullscreenLoading = false;
         console.log("Error getting documents: ", error);
         this.loginFail();
       })
