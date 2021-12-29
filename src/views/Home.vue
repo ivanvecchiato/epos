@@ -35,7 +35,7 @@
             <i class="el-icon-box"></i>
             <span>{{ $t("pricelist.products") }}</span>
           </el-menu-item>
-          <el-menu-item index="5" @click="openSettings">
+          <el-menu-item index="5" @click="openSettings" :disabled="!admin()">
             <i class="el-icon-setting"></i>
             <span>{{ $t("config.settings") }}</span>
           </el-menu-item>
@@ -65,6 +65,9 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    admin: function() {
+      return operator.isAdmin();
     },
     logged: function() {
       return operator.isLogged();
@@ -100,7 +103,8 @@ export default {
           loggedIn: true,
           id: op.id,
           name: op.name,
-          permissions: op.permissions
+          permissions: op.permissions,
+          admin: op.admin
         });
         this.loggedIn = true;
         this.$router.push("/frontend");
@@ -116,7 +120,7 @@ export default {
     this.$bus.on('login', e => {
       console.log('eventReceived', e)
       if(!this.loggedIn)
-        this.checkAuth();
+        this.loggedIn = true;
     })
   },
 }
