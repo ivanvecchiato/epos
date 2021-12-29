@@ -1,0 +1,150 @@
+<template>
+  <div id="app">
+    <div class="container">
+      <div class="sidemenu" v-if="loggedIn == true">
+        <div class="user">
+          <el-dropdown trigger="click">
+            <img src="@/assets/icons/avatar.png"/>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item icon="el-icon-avatar">{{userName()}}</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-right" @click="logout">{{$t('login.logout')}}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+
+        <el-menu
+          mode="vertical"
+          @select="handleSelect"
+          :collapse="isCollapse"
+          active-text-color="#ffd04b">
+          <el-menu-item index="1" @click="openFrontend">
+            <i class="el-icon-house"></i>
+            <span>{{ $t("cashier.cashier") }}</span>
+          </el-menu-item>
+          <el-menu-item index="2" @click="openFloor">
+            <i class="el-icon-menu"></i>
+            <span>{{ $t("floor.floor") }}</span>
+          </el-menu-item>
+          <el-menu-item index="3" @click="openBills">
+            <i class="el-icon-document"></i>
+            <span>{{ $t("bill.bills") }}</span>
+          </el-menu-item>
+          <el-menu-item index="4" @click="openProducts">
+            <i class="el-icon-box"></i>
+            <span>{{ $t("pricelist.products") }}</span>
+          </el-menu-item>
+          <el-menu-item index="5" @click="openSettings">
+            <i class="el-icon-setting"></i>
+            <span>{{ $t("config.settings") }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+      <div class="center">
+        <router-view/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import operator from "../store/user.js"
+
+export default {
+  name: 'Home',
+  components: {
+    //Frontend
+  },
+  data() {
+    return {
+      isCollapse: true,
+      loggedIn: false
+    }
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    logged: function() {
+      return operator.isLogged();
+    },
+    logout: function() {
+      this.loggedIn = false;
+      operator.logoutUser();
+      this.$router.push("/login");
+      this.$emit('logout')
+    },
+    userName: function() {
+      return operator.name;
+    },
+    openFloor: function() {
+      this.$router.push("/floor");
+    },
+    openFrontend: function() {
+      this.$router.push("/frontend");
+    },
+    openBills: function() {
+      this.$router.push("/conti");
+    },
+    openProducts: function() {
+      this.$router.push("/inventory");
+    },
+    openSettings: function() {
+      this.$router.push("/settings");
+    },
+    checkAuth: function() {
+      var op = JSON.parse(localStorage.getItem('user'));
+      if(op != null) {
+        operator.setUserLogged({
+          loggedIn: true,
+          id: op.id,
+          name: op.name,
+          permissions: op.permissions
+        });
+        this.loggedIn = true;
+        this.$router.push("/frontend");
+      } else {
+        this.loggedIn = false;
+        this.$router.push("/login");
+      }
+    }
+  },
+  mounted() {
+    this.checkAuth();
+    console.log("Home", "setting event listener");
+    this.$bus.on('login', e => {
+      console.log('eventReceived', e)
+      this.checkAuth();
+    })
+  },
+}
+</script>
+
+<style scoped>
+#app {
+  width: 100%;
+  height: 100vh;
+}
+.container {
+  display: flex;
+}
+
+.sidemenu {
+  flex: 0 0 60px;
+  height: 100vh;
+  margin: 2px;
+  /*border-radius: 12px;*/
+}
+
+.center {
+  flex: 1;
+  margin-left: 2px;
+  height: 100vh;
+  overflow: scroll;
+}
+.user img {
+  width: 45px;
+  margin-top: 25px;
+}
+</style>

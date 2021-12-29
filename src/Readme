@@ -1,0 +1,15 @@
+- le categorie sono solo raggruppamenti. Non sono nemmeno necessari, un prodotto può essere o non essere classificato.
+non hanno corrispondenza con i reparti fiscali. I prodotti hanno un'iva e questo permette di lavorare con i reparti fiscali in statistica (vedi tecno3). Un prodotto può essere associato a più categorie per consentire visualizzazioni variabili.
+
+- la visualizzazione iniziale è costituita dai prodotti preferiti.
+
+- nei conti si mostra solo la data/ora del documento; nei dettagli opzionali si mostra il dettaglio estratto conto.
+
+- piano tavoli/conti: permette di aprire un conto senza prodotti (conto aperto/posto occupato/...)
+
+- visualizzare nella scheda prodotto le caratteristiche (a peso, prezzo zero...)
+
+- nella tabella dei prodotti evidenziare con una classe i prodotti per cui il magazzino è abilitato/disabilitato.
+
+- modifica magazzino: chiedere se è un ordine caricato o una modifica inventariale.
+
