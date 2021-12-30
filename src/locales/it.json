@@ -7,7 +7,10 @@
     "description": "Descrizione",
     "ask_delete": "Cancellare '{description}'?",
     "deletion": "Cancellazione",
-    "delete_ok": "Cancellazione effettuata"
+    "delete_ok": "Cancellazione effettuata",
+    "demo_data": "Demo data",
+    "select-operator": "Selezionare un operatore",
+    "new-operator": "Nuovo operatore"
   },
   "floor": {
     "floor": "Piano tavoli",
@@ -168,5 +171,12 @@
     "import": "Importa",
     "export": "Esporta",
     "ask_delete_product": "Rimuovere il prodotto?"
+  },
+  "permission": {
+    "access-pricelist": "Ha accesso al listino",
+    "access-inventory": "Ha accesso al magazzino",
+    "delete-order": "Può cancellare un ordine",
+    "generic-sale": "Può fare una vendita generica",
+    "change-price": "Può cambiare un prezzo"
   }
 }

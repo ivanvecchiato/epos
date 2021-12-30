@@ -1,16 +1,27 @@
 <template>
   <div>
-    <el-button @click="generate">genera</el-button>
+<el-tabs type="card" @tab-click="handleClick">
+    <el-tab-pane :label="$t('config.operators')">
+      <operators></operators>
+    </el-tab-pane>
+    <el-tab-pane label="Config">Config</el-tab-pane>
+    <el-tab-pane label="Role">Role</el-tab-pane>
+    <el-tab-pane :label="$t('config.demo_data')">
+      <el-button @click="generate">genera</el-button>
+    </el-tab-pane>
+  </el-tabs>
+      
   </div>
 </template>
 
 <script>
 import Order from "../data/Order.js"
 import Firebase from "../firebase.js"
+import Operators from "./Operators/Operators.vue"
 
 export default {
   name: "Settings",
-  components: { },
+  components: { Operators },
   data() {
     return {
     };
