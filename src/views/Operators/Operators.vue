@@ -76,6 +76,7 @@ export default {
             for(var i=0; i<this.operators.length; i++) {
                if(max<this.operators[i].id) max = this.operators[i].id;
             }
+            max++;
             this.currentOperator.save(max)
          } else {
             console.log(this.currentOperator.id);
@@ -96,7 +97,6 @@ export default {
              this.operators = [];
              snapshotChange.forEach((doc) => {
                var record = doc.data();
-               record.id = doc.id;
                this.operators.push(record);
              });
             });
