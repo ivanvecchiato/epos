@@ -10,9 +10,9 @@
         </el-col>
         <el-col :span="6" class="text-align: right">
           <div v-if="place != undefined" class="title-2 info-conto">
-            <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
+            <span>{{currentPlace.area.name}}</span>            
             -
-            <span>{{currentPlace.area}}</span>            
+            <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
           </div>
         </el-col>
         <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4" class="text-align: right">
@@ -190,9 +190,8 @@ export default {
       products: [],
       currentCategory: null,
       order: new Order(),
-      park: new Table,
       currentPlace: {
-        area: '',
+        area: {},
         place: ''
       },
       discountVisible: false,
@@ -378,28 +377,24 @@ export default {
     parcheggiaConto: function() {
       this.order.update();
 
-      if (this.place.length == 0 || this.place == "undefined")
+      if (this.place == undefined || this.place.length == 0)
         this.$router.push("/floor");
       else {
         var t = new Table();
-        t.updateConto(this.place, this.order);
+        t.updateConto(this.currentPlace, this.order);
       }
     },
     loadConto: function() {
       var docRef = Firebase.db
-        .collection("park").doc(this.place);
+        .collection("park").doc(this.currentPlace.area.docId);
       docRef.get().then((doc) => {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
-          this.park.id = doc.id;
-          this.park.name = doc.data().name;
-          this.park.places = doc.data().places;
-          if(doc.data().order.orderList.length > 0) {
-            this.order.fillData(doc.data().order);
+          console.log("loadConto", doc.data().places[this.currentPlace.place].order);
+          if(doc.data().places[this.currentPlace.place].order.orderList.length > 0) {
+            this.order.fillData(doc.data().places[this.currentPlace.place].order);
             this.billLoaded = true;
           }
         } else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
         }
       }).catch((error) => {
@@ -417,7 +412,7 @@ export default {
   mounted() {
     if (this.place != undefined && this.place.length != 0) {
       this.currentPlace = {
-        area: JSON.parse(this.room).name,
+        area: JSON.parse(this.room),
         place: this.place
       }
       console.log("Frontend", this.currentPlace);
@@ -428,7 +423,7 @@ export default {
         var ord = JSON.parse(pendingString);
         this.order.fillData(ord);
       } else {
-        this.order.place = this.place;
+        this.order.place = this.currentPlace;
         this.order.operator = {
           id: operator.id,
           name: operator.name

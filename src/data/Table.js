@@ -13,12 +13,14 @@ export default class Table {
     this.order = new Order;
   }
 
-  updateConto(id, order) {
+  updateConto(place, order) {
+    console.log('updateConto', place)
 
-    Firebase.db.collection('park').doc(id).set({
-        order: Object.assign({}, order)
-      }, { merge: true }
-      )
+    var docRef = Firebase.db.collection('park').doc(place.area.docId);
+    var key = "places." + place.place + ".order";
+    docRef.update({
+        [key]: Object.assign({}, order)
+      })
     .then(() => {
       console.log("Document successfully written!");
       order.clear();

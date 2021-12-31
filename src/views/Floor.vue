@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="grid">
-    <div v-for="t in currentArea.places" :key="t.id" class="table">
+    <div v-for="t in currentArea.places" :key="t.name" class="table">
       <Popper
         offsetSkid="100"
         offsetDistance="-20">
@@ -33,7 +33,7 @@
         <template #content>
           <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
           <el-divider></el-divider>
-          <span class="menu-item" @click="selectTable(t.id)">
+          <span class="menu-item" @click="selectTable(t)">
             <el-icon>
               <shopping-cart />
             </el-icon>
@@ -92,7 +92,7 @@ export default {
           duration: 0
         })
     },
-    selectTable: function(tableId) {
+    selectTable: function(table) {
       this.$router.push({
         name: 'frontend',
         params: {
@@ -100,7 +100,7 @@ export default {
             docId: this.currentArea.docId,
             id: this.currentArea.id,
             name: this.currentArea.name}),
-          place: tableId
+          place: table.name
         }
       })
     },

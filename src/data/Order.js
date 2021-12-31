@@ -149,6 +149,7 @@ export default class Order {
 
   update() {
     this.getTotale();
+    this.saveCache();
   }
 
   writeDoc() {
