@@ -28,6 +28,5 @@ export default class Table {
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
-
   }
 }
