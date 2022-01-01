@@ -3,6 +3,7 @@
     "settings": "Impostazioni",
     "parameters": "Parametri",
     "data": "Dati",
+    "admin": "Amministrazione",
     "operators": "Operatori",
     "description": "Descrizione",
     "ask_delete": "Cancellare '{description}'?",
