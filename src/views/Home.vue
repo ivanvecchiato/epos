@@ -4,7 +4,8 @@
       <div class="sidemenu" v-if="loggedIn == true">
         <div class="user">
           <el-dropdown trigger="click">
-            <img src="@/assets/icons/avatar.png"/>
+            <img src="@/assets/icons/avatar.png" v-if="avatarLength() > 0"/>
+            <span class="avatar" v-else>{{operatorInitial()}}</span>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item icon="el-icon-avatar">{{userName()}}</el-dropdown-item>
@@ -65,6 +66,13 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    operatorInitial: function() {
+      return operator.name.charAt(0);
+    },
+    avatarLength: function() {
+      if(operator.avatar == undefined) return 0
+      else return operator.avatar.length
     },
     admin: function() {
       return operator.isAdmin();
@@ -149,7 +157,16 @@ export default {
   overflow: scroll;
 }
 .user img {
-  width: 45px;
   margin-top: 25px;
+}
+.avatar {
+  vertical-align: middle;
+  min-width: 100px;
+  min-height: 100px;
+  color: #fff;
+  font-size: 2em;
+  background-color: purple;
+  border-radius: 50%;
+  text-transform: capitalize;
 }
 </style>
