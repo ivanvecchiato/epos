@@ -26,9 +26,16 @@
         offsetSkid="100"
         offsetDistance="-20">
         <div class="inner-table">
-          <div :class="getStatusClass(t)">&nbsp;</div>
-          <span class="table-name">{{t.name}}</span>
-          <div class="table-last-modification">{{getLastMod(t)}}</div>
+          <span :class="getStatusClass(t)">{{t.name}}</span>
+          <div v-if="tableBusy(t)">
+            <div class="table-order-quantity">
+              <el-icon style="vertical-align: middle;" color="#29B6F6" size="18"><shopping-cart-full/></el-icon>
+              {{getQuantity(t)}} {{$t('product.products')}}</div>
+            <div class="table-last-modification">
+              <el-icon style="vertical-align: middle;" color="#F9A825" size="18"><clock/></el-icon>
+              {{getLastMod(t)}}
+            </div>
+          </div>
         </div>
         <template #content>
           <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
@@ -68,14 +75,11 @@ import Order from "../data/Order.js";
 import Firebase from "../firebase.js";
 import Popper from "vue3-popper";
 import '../popper-theme.css'
-import { Calendar } from '@element-plus/icons'
-import { Delete } from '@element-plus/icons'
-import { ShoppingCart } from '@element-plus/icons'
-import { Location } from '@element-plus/icons'
+import { Calendar, Delete, ShoppingCartFull, Location, Clock } from '@element-plus/icons'
 
 export default {
   name: "Floor",
-  components: { Popper, Calendar, Delete, ShoppingCart, Location },
+  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock },
   props: ['order'],
   data() {
     return {
@@ -84,6 +88,9 @@ export default {
     };
   },
   methods: {
+    tableBusy: function(t) {
+      return t.order.size()>0;
+    },
     move: function() {
       this.$message({
           message: this.$t('modification.move_explain'),
@@ -106,10 +113,10 @@ export default {
     },
     getStatusClass: function(t) {
       if(t.order.size()>0) {
-        return 'status-busy';
+        return 'table-name-busy';
       }
       else {
-        return 'status-free';
+        return 'table-name-free';
       }
     },
     getLastMod: function(t) {
@@ -130,6 +137,9 @@ export default {
       } else {
         return '';
       }
+    },
+    getQuantity: function(t) {
+      return t.order.getQuantity();
     },
     selectArea: function(c) {
       this.currentArea = c;
@@ -216,19 +226,41 @@ export default {
   position: relative;
   top: 1px;
   left: 1px;
-  border: 1px solid var(--info-color);
+  border: 1px solid rgb(231, 231, 231);
   border-radius: 8px;
   padding: 0px;
 }
 .inner-table {
   min-height: 90px;
 }
-.table-name {
+.table-name-free {
   font-weight: bold;
   font-size: 2.0em;
   position: absolute;
-  top:5px;
-  right: 5px;
+  top:-5px;
+  right: -5px;
+  border-radius: 8px;
+  background: rgb(188, 208, 245);
+  width: 50px;
+  height: 50px;
+  padding: 4px;
+  text-align: center;
+  box-shadow: 4px 4px 4px rgb(151, 114, 114, 0.4)
+}
+.table-name-busy {
+  font-weight: bold;
+  font-size: 2.0em;
+  position: absolute;
+  top:-5px;
+  right: -5px;
+  background: rgb(216, 29, 29);
+  color: white;
+  border-radius: 8px;
+  width: 50px;
+  height: 50px;
+  padding: 4px;
+  text-align: center;
+  box-shadow: 4px 4px 4px rgb(151, 114, 114, 0.4)
 }
 .status-free {
   width: 12px;
@@ -245,6 +277,14 @@ export default {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   height: 100%;
+}
+.table-order-quantity {
+  position: absolute;
+  font-size: 0.9em;
+  bottom: 25px;
+  left: 15px;
+  color: #000;
+  text-transform: lowercase;
 }
 .table-last-modification {
   position: absolute;
