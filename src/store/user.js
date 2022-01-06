@@ -4,6 +4,7 @@ var user = {
     name: '',
     admin: false,
     permissions: {},
+    avatar: '',
 
     setUserLogged (newValue) {
       this.id = newValue.id;

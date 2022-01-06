@@ -8,7 +8,8 @@ export default class Operator {
     this.name = '';
     this.pin = '0000';
     this.admin = false;
-    this.permissions = permissions
+    this.permissions = permissions;
+    this.avatar = ''
   }
 
   save(id) {
