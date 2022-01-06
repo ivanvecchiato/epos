@@ -168,6 +168,7 @@ export default {
 }
 .product-name {
   font-size: 20px;
+  font-weight: 600;
   margin: auto;
   line-height: 90%;
   letter-spacing: -0.05em;
