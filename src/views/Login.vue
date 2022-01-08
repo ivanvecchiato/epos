@@ -4,14 +4,14 @@
       <div class="pin">{{pin}}</div>
       <div class="keypad">
         <button
-        class="button"
+        class="regular-button"
           v-for="key in keys"
           :key="key"
           @click="press(key)">
             {{ key }}
         </button>
-        <button class="button" plain @click="clear">&larr;</button>
-        <button class="button" plain @click="enter"
+        <button class="action-button" plain @click="clear">&larr;</button>
+        <button class="action-button" plain @click="enter"
           v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
       </div>
     </div>
@@ -132,16 +132,39 @@ export default {
   align-items: center;
 }
 .container {
-  background: #ECEFF1;
+  background: #96d2fa;
   border-radius: 20px;
   padding: 10px;
   width: 30%;
   margin: auto;
 }
-.button {
+.regular-button {
   width: 100px;
   height: 40px;
   font-size: 1.5em;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat-Bold", sans-serif;
+  background: #FF8A65;
+  border: 0px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
+.regular-button:focus {
+  background: #ff815b;
+  transform: scale(1.02);
+}
+.action-button {
+  width: 100px;
+  height: 40px;
+  font-size: 1.5em;
+  font-family: "Montserrat-Bold", sans-serif;
+  background: #66A8FF;
+  border: 0px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
+}
+.action-button:focus {
+  background: #579af1;
+  transform: scale(1.02);
+}
+
 </style>
