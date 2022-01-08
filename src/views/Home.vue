@@ -5,7 +5,7 @@
         <div class="user">
           <el-dropdown trigger="click">
             <img src="@/assets/icons/avatar.png" v-if="avatarLength() > 0"/>
-            <span class="avatar" v-else>{{operatorInitial()}}</span>
+            <div class="avatar" v-else>{{operatorInitial()}}</div>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item icon="el-icon-avatar">{{userName()}}</el-dropdown-item>
@@ -160,10 +160,12 @@ export default {
   margin-top: 25px;
 }
 .avatar {
-  vertical-align: middle;
-  min-width: 100px;
-  min-height: 100px;
+  text-align: center;
+  line-height: 40px;
+  width: 40px;
+  height: 40px;
   color: #fff;
+  margin: 2px;
   font-size: 2em;
   background-color: purple;
   border-radius: 50%;
