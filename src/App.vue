@@ -28,6 +28,20 @@ export default {
 </script>
 
 <style>
+
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"),   url(./fonts/Montserrat-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Montserrat-Black";
+  src: local("Montserrat-Black"),   url(./fonts/Montserrat-Black.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: local("Montserrat-Bold"),   url(./fonts/Montserrat-Bold.ttf) format("truetype");
+}
+
 body,
 html {
   margin: 0;
