@@ -220,10 +220,10 @@ export default {
       return require('@/assets/user.png');
     },
     subtotale: function() {
-      return utils.formatCurrency(this.order.getTotale());
+      return utils.formatPrice(this.order.getTotale());
     },
     totale: function() {
-      return utils.formatCurrency(this.order.getTotaleNetto());
+      return utils.formatPrice(this.order.getTotaleNetto());
     },
   },
   methods: {
@@ -262,7 +262,7 @@ export default {
       }
     },
     formatAmount: function(amount) {
-      return utils.formatCurrency(amount);
+      return utils.formatPrice(amount);
     },
     getPzs: function() {
       return this.order.getQuantity();

@@ -99,7 +99,7 @@ export default {
       this.$router.push("/conti");
     },
     openProducts: function() {
-      this.$router.push("/inventory");
+      this.$router.push("/prodconfig");
     },
     openSettings: function() {
       this.$router.push("/settings");

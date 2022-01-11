@@ -169,10 +169,10 @@
 </template>
 
 <script>
-import Firebase from "../firebase";
-import Product from "../data/Product.js";
-import utils from "../utils.js";
-import ColorSelector from './ColorSelector.vue'
+import Firebase from "../../firebase";
+import Product from "../../data/Product.js";
+import utils from "../../utils.js";
+import ColorSelector from '../../components/ColorSelector.vue'
 
 export default {
   name: "ProductForm",

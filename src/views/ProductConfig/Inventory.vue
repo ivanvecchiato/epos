@@ -1,6 +1,6 @@
 <template>
   <div class="inventory">
-    <div class="title">{{$t('pricelist.products')}}</div>
+    <div class="title-2">{{$t('pricelist.products')}}</div>
     <div class="inventory-body">
       <el-row>
         <el-col :span="4">
@@ -106,10 +106,10 @@
 
 <script>
 //import Order from '../data/Order.js';
-import Firebase from "../firebase.js";
+import Firebase from "../../firebase.js";
 //import utils from "../utils.js";
-import ProductForm from "../components/ProductForm.vue";
-import Product from "../data/Product.js";
+import ProductForm from "./ProductForm.vue";
+import Product from "../../data/Product.js";
 //import Category from "../data/Category.js";
 
 export default {

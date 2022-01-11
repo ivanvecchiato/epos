@@ -82,7 +82,7 @@ html {
   text-align: left;
 }
 .title-2 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   margin-left: 10px;
   letter-spacing: -0.05em;
   font-weight: bold;

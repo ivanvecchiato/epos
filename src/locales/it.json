@@ -25,6 +25,8 @@
     "pricelist": "Listino",
     "product":"Prodotto",
     "products":"Prodotti",
+    "variants":"Varianti",
+    "products_variants":"Prodotti e Varianti",
     "surcharges": "Maggiorazioni",
     "discounts": "Sconti",
     "deduction": "Deduzione",
@@ -70,6 +72,18 @@
     "compose": "Composto",
     "variant": "Variante",
     "ingredient": "Ingrediente"
+  },
+  "variant": {
+    "variant":"Variante",
+    "variants":"Varianti",
+    "attributes": "Attributi",
+    "code": "Codice",
+    "price": "Prezzo",
+    "name": "Nome",
+    "new": "Nuova variante",
+    "ask_delete_variant": "Rimuovere la variante?",
+    "view": "Mostra",
+    "values": "Valori"
   },
   "stats": {
     "opened_bills": "Conti aperti",

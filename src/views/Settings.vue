@@ -1,6 +1,6 @@
 <template>
   <div>
-<el-tabs type="card" @tab-click="handleClick">
+  <el-tabs type="card" @tab-click="handleClick">
     <el-tab-pane :label="$t('config.operators')">
       <operators></operators>
     </el-tab-pane>

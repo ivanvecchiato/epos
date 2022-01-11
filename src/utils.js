@@ -1,6 +1,6 @@
 
 export default {
-  formatCurrency (amount) {
+  formatPrice (amount) {
     return Number(amount).toFixed(2)
   },
   uuidv4() {

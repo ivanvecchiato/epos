@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import Frontend from './views/Frontend.vue'
 import Conti from './views/Conti.vue'
-import Inventory from './views/Inventory.vue'
+import ProductConfig from './views/ProductConfig.vue'
 import Settings from './views/Settings.vue'
 import Floor from './views/Floor.vue'
 import Login from './views/Login.vue'
@@ -43,9 +43,9 @@ const routes = [
     component: Settings
   },
   {
-    path: '/inventory',
-    name: 'inventory',
-    component: Inventory
+    path: '/prodconfig',
+    name: 'prodconfig',
+    component: ProductConfig
   }
   ];
 

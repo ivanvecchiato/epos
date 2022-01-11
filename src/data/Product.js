@@ -22,7 +22,6 @@ export default class Product {
       availability: 0,
       alarm: 0
     },
-    this.description = '';
     this.imgUrl = '';
     this.status = 1;  // 1=active, 0=inactive; -1 deleted
     this.color = "#FFFFFF";
