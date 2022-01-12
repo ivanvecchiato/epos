@@ -1,27 +1,32 @@
 <template>
   <div class="frontend">
     <div class="flex-item">
+      <div class="toolbar">
       <el-row align="middle" :gutter="20">
-        <el-col :span="12">
+        <el-col :span="3">
+          <img style="height: 40px;" src="@/assets/logo.png"/>
+        </el-col>
+        <el-col :span="3">
           <div class="search">
             <input class="search-input" :placeholder="$t('generic.search')" v-model="search_pattern"/>
             <i class="el-input__icon el-icon-search" @click="searchItem"></i>
           </div>
         </el-col>
-        <el-col :span="6" class="text-align: right">
+        <el-col :span="9" class="text-align: right">
           <div v-if="place != undefined" class="title-2 info-conto">
             <span>{{currentPlace.area.name}}</span>            
             -
             <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
           </div>
         </el-col>
-        <el-col :xs="6" :sm="6" :md="6" :lg="4" :xl="4" class="text-align: right">
+        <el-col :xs="6" :sm="6" :md="6" :lg="9" :xl="9" class="text-align: right">
           <div class="customer" @click="selectCustomer">
             <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
             <span>{{customerName}}</span>
           </div>
         </el-col>
       </el-row>
+      </div>
 
       <div class="categories">
         <el-button
@@ -454,7 +459,7 @@ export default {
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
-  background: #E7E8F3;
+  background: #f1f2fc;
   /*background: linear-gradient(90deg, rgba(251,219,233,1) 0%, rgba(196,220,249,1) 100%);*/
   /*background: linear-gradient(120deg, var(--light-main-color) 0%, var(--light-secondary-color) 100%);*/
   border-radius: 16px;
@@ -620,5 +625,8 @@ main {
   border: solid 0px var(--primary-color);
   padding-left: 10px;
   padding-right: 10px;
+}
+.toolbar {
+  padding: 10px;
 }
 </style>

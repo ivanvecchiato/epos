@@ -1,7 +1,11 @@
 <template>
   <div id="login">
+    <div class="logo">
+      <img src="@/assets/logo.png"/>
+    </div>
+
     <div class="container">
-      <div class="pin">{{pin}}</div>
+      <div class="pin">{{maskPin()}}</div>
       <div class="keypad">
         <button
         class="regular-button"
@@ -36,6 +40,13 @@ export default {
     }
   },
   methods: {
+    maskPin: function() {
+      var masked = '';
+      for(var i=0; i<this.pin.length; i++) {
+        masked += '\u25CF';
+      }
+      return masked;
+    },
     press: function(key) {
       this.pin += key;
     },
@@ -109,16 +120,22 @@ export default {
 <style scoped>
 #login {
   text-align: center;
-  padding: 40px;
+  padding: 20px;
+}
+.logo {
+  margin: 20px
 }
 .pin {
-  background: #fff;
+  background: #FED59E;
+  color: #815854;
+  font-family: "Montserrat-Bold", sans-serif;
   padding: 5px;
   width: 300px;
   margin: auto;
   min-height: 20px;
   margin-bottom: 10px;
-  border-radius: 12px;
+  border-radius: 10px;
+  text-security: disc;
 }
 .keypad {
   display: grid;
@@ -132,7 +149,8 @@ export default {
   align-items: center;
 }
 .container {
-  background: #96d2fa;
+  background: #fff;
+  border: solid 1px #FED59E;
   border-radius: 20px;
   padding: 10px;
   width: 30%;
@@ -143,27 +161,30 @@ export default {
   height: 40px;
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
-  background: #FF8A65;
-  border: 0px;
+  background: #fff;
+  color: #815854;
+  border: solid 1px #815854;
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
 .regular-button:focus {
-  background: #ff815b;
+  background: #815854;
   transform: scale(1.02);
+  color: #fff;
 }
 .action-button {
   width: 100px;
   height: 40px;
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
-  background: #66A8FF;
+  background: #815854;
   border: 0px;
+  color: #fff;
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
 .action-button:focus {
-  background: #579af1;
+  background: #d1b3b0;
   transform: scale(1.02);
 }
 
