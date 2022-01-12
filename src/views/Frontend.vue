@@ -272,7 +272,7 @@ export default {
       this.products = this.getProducts(c);
     },
     productSelected: function(p) {
-      if (p.open_note) {
+      if (p.add_note) {
         this.openNote(p);
       } else {
         this.addItem(p);

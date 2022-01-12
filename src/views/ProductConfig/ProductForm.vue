@@ -139,8 +139,17 @@
           <el-row>
             <el-col :span="12">
               <el-form-item>
-                <div>{{$t('product.open_note')}}</div>
-                <el-switch v-model="product.open_note"></el-switch>
+                <div>{{$t('product.add_variant')}}</div>
+                <el-switch v-model="product.add_variant"></el-switch>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item>
+                <div>{{$t('product.add_note')}}</div>
+                <el-switch v-model="product.add_note"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>

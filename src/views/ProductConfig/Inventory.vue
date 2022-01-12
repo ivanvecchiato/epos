@@ -34,7 +34,7 @@
           <el-table-column
             prop="name"
             :label="$t('product.name')"
-            width="250">
+            width="280">
           </el-table-column>
           <el-table-column
             prop="price"

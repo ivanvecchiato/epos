@@ -13,7 +13,8 @@ export default class Product {
     this.vat = { vatIndex: 1, vatRate: 10.00 };
     this.measure = 'unit';    // 'unit', 'g', 'm', 'l'
     this.price_to_be_confirmed = false;   // per i prezzi a zero da sistemare all'emissione del conto
-    this.open_note = false;
+    this.add_note = false;
+    this.add_variant = false;
     this.barcodes = [];   // String array
     this.takeaway = false;
     this.remote_order = false;
@@ -32,7 +33,8 @@ export default class Product {
     this.name = faker.commerce.productName();
     this.id = faker.datatype.uuid();
     this.code = faker.datatype.number();
-    this.open_note = (utils.getRandomInt(1, 4) > 1) ? true:false;
+    this.add_note = (utils.getRandomInt(1, 4) > 1) ? true:false;
+    this.add_variant = (utils.getRandomInt(1, 4) > 1) ? true:false;
     this.price = faker.commerce.price();
     this.imgUrl = faker.image.food();
     this.type = utils.getRandomInt(1, 4);
