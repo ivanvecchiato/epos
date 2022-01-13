@@ -133,7 +133,15 @@ export default {
         if(d > 0) {
           h = h % 24;
         }
-        return d + " day - " + h + " h - " + min + " min";
+        var time = '';
+        if(d>0) {
+          time = d + " day - ";
+        }
+        if(h>0) {
+          time += h + " h - ";
+        }
+        time += min + " min";
+        return time;
       } else {
         return '';
       }
