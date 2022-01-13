@@ -6,20 +6,21 @@
         <el-col :span="3">
           <img style="height: 40px;" src="@/assets/logo.png"/>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="6">
           <div class="search">
-            <input class="search-input" :placeholder="$t('generic.search')" v-model="search_pattern"/>
+            <input class="search-input" :placeholder="$t('generic.search')"
+              v-model="search_pattern"/>
             <i class="el-input__icon el-icon-search" @click="searchItem"></i>
           </div>
         </el-col>
-        <el-col :span="9" class="text-align: right">
+        <el-col :span="6" class="text-align: right">
           <div v-if="place != undefined" class="title-2 info-conto">
             <span>{{currentPlace.area.name}}</span>            
             -
             <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
           </div>
         </el-col>
-        <el-col :xs="6" :sm="6" :md="6" :lg="9" :xl="9" class="text-align: right">
+        <el-col :span="6" class="text-align: right">
           <div class="customer" @click="selectCustomer">
             <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
             <span>{{customerName}}</span>
