@@ -8,14 +8,14 @@
       <div class="pin">{{maskPin()}}</div>
       <div class="keypad">
         <button
-        class="regular-button"
+        class="regular-circle-button"
           v-for="key in keys"
           :key="key"
           @click="press(key)">
             {{ key }}
         </button>
-        <button class="action-button" plain @click="clear">&larr;</button>
-        <button class="action-button" plain @click="enter"
+        <button class="action-circle-button" plain @click="clear">&larr;</button>
+        <button class="action-circle-button" plain @click="enter"
           v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
       </div>
     </div>
@@ -126,20 +126,19 @@ export default {
   margin: 20px
 }
 .pin {
-  background: #FED59E;
+  border: solid 1px #FED59E;
   color: #815854;
   font-family: "Montserrat-Bold", sans-serif;
   padding: 5px;
-  width: 300px;
+  width: 200px;
   margin: auto;
   min-height: 20px;
   margin-bottom: 10px;
   border-radius: 10px;
-  text-security: disc;
 }
 .keypad {
   display: grid;
-  grid-template-columns: 100px 100px 100px;
+  grid-template-columns: 20px 20px 20px;
   grid-template-rows: auto;
   grid-gap: 10px;
   padding: 10px;
@@ -150,7 +149,6 @@ export default {
 }
 .container {
   background: #fff;
-  border: solid 1px #FED59E;
   border-radius: 20px;
   padding: 10px;
   width: 30%;
@@ -167,7 +165,22 @@ export default {
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
+.regular-circle-button {
+  width: 70px;
+  height: 70px;
+  font-size: 1.5em;
+  font-family: "Montserrat-Bold", sans-serif;
+  background: #fff;
+  color: #815854;
+  border: solid 1px #815854;
+  border-radius: 50%;
+}
 .regular-button:focus {
+  background: #815854;
+  transform: scale(1.02);
+  color: #fff;
+}
+.regular-circle-button:focus {
   background: #815854;
   transform: scale(1.02);
   color: #fff;
@@ -183,7 +196,21 @@ export default {
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
+.action-circle-button {
+  width: 70px;
+  height: 70px;
+  font-size: 1.5em;
+  font-family: "Montserrat-Bold", sans-serif;
+  background: #815854;
+  border: 0px;
+  color: #fff;
+  border-radius: 50%;
+}
 .action-button:focus {
+  background: #d1b3b0;
+  transform: scale(1.02);
+}
+.action-circle-button:focus {
   background: #d1b3b0;
   transform: scale(1.02);
 }
