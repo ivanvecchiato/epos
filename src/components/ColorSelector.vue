@@ -3,9 +3,10 @@
     <div
       class="color-button"
       :style="getBgc(item)"
-      v-for="item in colors"
+      v-for="item, index in colors"
       :key="item"
-      @click="selectColor(item)"
+      :class="{ active : active_el == index }"
+      @click="selectColor(item, index)"
     />
   </div>
 </template>
@@ -22,7 +23,8 @@ export default {
       colorString: '',
       bgc: {
         backgroundColor: '#fff'
-      }
+      },
+      active_el: 0
     };
   },
   methods: {
@@ -32,12 +34,19 @@ export default {
       }
       return this.bgc;
     },
-    selectColor: function(color) {
+    selectColor: function(color, index) {
       this.colorString = color;
+      this.active_el = Number(index);
       this.$emit('colorPicked', color);
     }
   },
   mounted() {
+    for(var i=0; i<this.colors.length; i++) {
+      if(this.data == this.colors[i]) {
+        this.active_el = i;
+        break;
+      }
+    }
   },
 };
 </script>
@@ -46,7 +55,7 @@ export default {
 .selector {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-row-gap: 4px;
+  grid-row-gap: 8px;
   grid-column-gap: 2px;
   padding: 10px;
 }
@@ -54,5 +63,10 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 4px;
+  outline: solid 2px #fff;
+  outline-offset: 1px;
+}
+.active {
+  outline: solid 2px rgb(109, 109, 109)
 }
 </style>
