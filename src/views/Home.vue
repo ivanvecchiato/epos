@@ -18,8 +18,10 @@
         <el-menu
           mode="vertical"
           @select="handleSelect"
+          :default-active="1"
           :collapse="isCollapse"
-          active-text-color="#ffd04b">
+          style="text-align:left"
+          active-text-color="#E65100">
           <el-menu-item index="1" @click="openFrontend">
             <i class="el-icon-house"></i>
             <span>{{ $t("cashier.cashier") }}</span>
@@ -59,7 +61,7 @@ export default {
   },
   data() {
     return {
-      isCollapse: true,
+      isCollapse: false,
       loggedIn: false
     }
   },
@@ -144,9 +146,10 @@ export default {
 }
 
 .sidemenu {
+  text-align: left;
   flex: 0 0 60px;
   height: 100vh;
-  margin: 2px;
+  margin-left: 2px;
   /*border-radius: 12px;*/
 }
 
@@ -156,8 +159,8 @@ export default {
   height: 100vh;
   overflow: scroll;
 }
-.user img {
-  margin-top: 25px;
+.user {
+  margin-left: 20px;
 }
 .avatar {
   text-align: center;
