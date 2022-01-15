@@ -23,7 +23,7 @@
         <el-col :span="6" class="text-align: right">
           <div class="customer" @click="selectCustomer">
             <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-            <span>{{customerName}}</span>
+            <span class="customer-name">{{customerName}}</span>
           </div>
         </el-col>
       </el-row>
@@ -460,9 +460,7 @@ export default {
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
-  background: #f1f2fc;
-  /*background: linear-gradient(90deg, rgba(251,219,233,1) 0%, rgba(196,220,249,1) 100%);*/
-  /*background: linear-gradient(120deg, var(--light-main-color) 0%, var(--light-secondary-color) 100%);*/
+  background: #81585427;
   border-radius: 16px;
 }
 .side {
@@ -484,7 +482,7 @@ export default {
   padding-right: 10px;
   flex-flow: row nowrap;
   align-items: center;
-  background: #ffffff65;
+  background: transparent;
   border-radius: 12px;
   vertical-align: middle;
 }
@@ -603,8 +601,10 @@ main {
 }
 .customer {
   text-align: right;
-  vertical-align:middle;
-  color: var(--info-color);
+  color: var(--danger-color);
+}
+.customer-name {
+  margin: auto;
 }
 
 .bottom-header {
