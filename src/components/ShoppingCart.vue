@@ -5,13 +5,6 @@
       <span class="item-name">{{item.name}}</span>
       <span class="item-note">{{item.note}}</span>
       <span class="item-price">{{formatPrice(item.price)}}</span>
-      <!--
-      <div class="quantity">
-        <span class="quantity-btn" @click="incrementItem(index)">+</span>
-        <span class="quantity-value">{{item.quantity}}</span>
-        <span class="quantity-btn" @click="decrementItem(item, index)">-</span>
-      </div>
-      -->
     </div>
 
     <el-dialog
