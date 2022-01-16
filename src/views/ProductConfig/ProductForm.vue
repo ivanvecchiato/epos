@@ -57,7 +57,11 @@
               </el-col>
             </el-form-item>
               <el-col :span="6">
-                <color-selector @colorPicked='colorPicked'></color-selector>
+                <color-selector
+                  v-if="mounted"
+                  :data="product.color"
+                  @colorPicked='colorPicked'>
+                </color-selector>
               </el-col>
           </el-row>
 
@@ -192,7 +196,7 @@ export default {
       suckerCanvas: null,
       suckerArea: [],
       isSucking: false,
-      color: "",
+      mounted: false
     };
   },
   components: { ColorSelector},
@@ -269,7 +273,7 @@ export default {
   mounted() {
     console.log("mounted", this.data);
     this.product = this.data;
-    this.color = this.product.color;
+    this.mounted = true;
   },
 };
 </script>
