@@ -21,52 +21,70 @@
         </div>
     </div>
     <div class="grid">
-    <div v-for="t in currentArea.places" :key="t.name" class="table">
-      <Popper
-        offsetSkid="100"
-        offsetDistance="-20">
-        <div class="inner-table">
-          <span :class="getStatusClass(t)">{{t.name}}</span>
-          <div v-if="tableBusy(t)">
-            <div class="table-order-quantity">
-              <el-icon style="vertical-align: middle;" color="#29B6F6" size="18"><shopping-cart-full/></el-icon>
-              {{getQuantity(t)}} {{$t('product.products')}}</div>
-            <div class="table-last-modification">
-              <el-icon style="vertical-align: middle;" color="#F9A825" size="18"><clock/></el-icon>
-              {{getLastMod(t)}}
+      <div v-for="t in currentArea.places" :key="t.name" class="table">
+          <div class="inner-table">
+        <Popper
+          offsetSkid="100"
+          offsetDistance="-20">
+            <span :class="getStatusClass(t)">{{t.name}}</span>
+          <template #content>
+            <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
+            <el-divider></el-divider>
+            <span class="menu-item" @click="selectTable(t)">
+              <el-icon>
+                <shopping-cart />
+              </el-icon>
+              {{$t('bill.order')}}</span>
+            <el-divider></el-divider>
+            <span class="menu-item">
+              <el-icon>
+                <calendar />
+              </el-icon>
+              {{$t('booking.booking')}}</span>
+            <el-divider></el-divider>
+            <span class="menu-item">
+              <el-icon>
+                <delete />
+              </el-icon>
+              {{$t('generic.deletion')}}</span>
+            <el-divider></el-divider>
+            <span class="menu-item" @click="move">
+              <el-icon>
+                <location />
+              </el-icon>
+              {{$t('modification.move')}}</span>
+          </template>
+        </Popper>
+            <div v-if="tableBusy(t)">
+              <div class="table-order-quantity">
+                <el-icon style="vertical-align: middle;" color="#29B6F6" size="18"><shopping-cart-full/></el-icon>
+                {{getQuantity(t)}} {{$t('product.products')}}</div>
+              <div class="table-last-modification">
+                <el-icon style="vertical-align: middle;" color="#F9A825" size="18"><clock/></el-icon>
+                {{getLastMod(t)}}
+              </div>
+              <div class="table-show-details">
+                <i class="el-icon-view" @click="showOrder(t)"></i>
+              </div>
             </div>
           </div>
-        </div>
-        <template #content>
-          <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
-          <el-divider></el-divider>
-          <span class="menu-item" @click="selectTable(t)">
-            <el-icon>
-              <shopping-cart />
-            </el-icon>
-            {{$t('bill.order')}}</span>
-          <el-divider></el-divider>
-          <span class="menu-item">
-            <el-icon>
-              <calendar />
-            </el-icon>
-            {{$t('booking.booking')}}</span>
-          <el-divider></el-divider>
-          <span class="menu-item">
-            <el-icon>
-              <delete />
-            </el-icon>
-            {{$t('generic.deletion')}}</span>
-          <el-divider></el-divider>
-          <span class="menu-item" @click="move">
-            <el-icon>
-              <location />
-            </el-icon>
-            {{$t('modification.move')}}</span>
-        </template>
-      </Popper>
+
+      </div>
     </div>
-    </div>
+
+    <el-dialog
+      :title="currentOrder.place"
+      v-model="showOrderDetail"
+      :center="false"
+      width="40%"
+      destroy-on-close>
+      <order-list
+        :order="currentOrder"
+        @onChange="onChange"
+        @onDelete="onDelete">
+      </order-list>
+      
+    </el-dialog>
   </div>
 </template>
 
@@ -76,18 +94,25 @@ import Firebase from "../firebase.js";
 import Popper from "vue3-popper";
 import '../popper-theme.css'
 import { Calendar, Delete, ShoppingCartFull, Location, Clock } from '@element-plus/icons'
+import OrderList from "../components/OrderList.vue";
 
 export default {
   name: "Floor",
-  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock },
+  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList },
   props: ['order'],
   data() {
     return {
       areas: [],
-      currentArea: {}
+      currentArea: {},
+      showOrderDetail: false,
+      currentOrder: {}
     };
   },
   methods: {
+    showOrder: function(t) {
+      this.showOrderDetail = true;
+      this.currentOrder = t.order;
+    },
     tableBusy: function(t) {
       return t.order.size()>0;
     },
@@ -224,8 +249,8 @@ export default {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-auto-rows: auto;
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
+  grid-row-gap: 15px;
+  grid-column-gap: 15px;
   margin: 10px;
   text-align: left;
 }
@@ -300,6 +325,11 @@ export default {
   bottom: 5px;
   left: 15px;
   color: #000;
+}
+.table-show-details {
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
 }
 .menu-item:hover {
   font-weight: bold;
