@@ -460,7 +460,7 @@ export default {
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
-  background: #81585427;
+  background: #81655427;
   border-radius: 16px;
 }
 .side {
