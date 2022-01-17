@@ -33,7 +33,7 @@ export default class Order {
   getTotale() {
     var amount = 0;
     this.orderList.forEach(item => {
-      amount += item.price * item.quantity;
+      amount += Number(item.price)/* * item.quantity*/;
     });
     
     this.totale = amount;
@@ -62,11 +62,14 @@ export default class Order {
   }
 
   getQuantity() {
+    return this.size();
+    /*
     var q=0;
     for(var i=0; i<this.size(); i++) {
       q+=this.orderList[i].quantity;
     }
     return q;
+    */
   }
 
   addPayment(index, description, amount) {
@@ -116,9 +119,14 @@ export default class Order {
   }
 
   addItem(p) {
+    this.orderList.push(Object.assign({}, p));
+    this.saveCache();
+  }
+
+  groupItem(p, list) {
     var inserted = false;
-    for(var i=0; i<this.size(); i++) {
-      var item = this.orderList[i];
+    for(var i=0; i<list.length; i++) {
+      var item = list[i];
       if(item.id === p.id) {
         item.quantity++;
         inserted = true;
@@ -127,12 +135,36 @@ export default class Order {
     }
     if(!inserted) {
       p.quantity = 1;
-      p.insertTime = new Date().getTime();
-      this.orderList.push(Object.assign({}, p));
+      list.push(Object.assign({}, p));
     }
-    this.saveCache();
+  }
 
-    return this.size();
+  groupByItems() {
+    var list = [];
+    for(var i=0; i<this.size(); i++) {
+      var item = this.orderList[i];
+      this.groupItem(item, list)
+    }
+
+    return list;
+  }
+
+  groupByTimestamp() {
+    var lists = [];
+    var prevTimestamp = 0;
+    for(var i=0; i<this.size(); i++) {
+      var item = this.orderList[i];
+      if(prevTimestamp < item.insertTime) {
+        prevTimestamp = item.insertTime;
+        lists.push({
+          timestamp: prevTimestamp,
+          list: []
+        });
+      }
+      this.groupItem(item, lists[lists.length-1].list)
+    }
+
+    return lists;
   }
 
   saveCache() {
@@ -147,7 +179,17 @@ export default class Order {
     this.writeDoc();
   }
 
+  setTimestamp() {
+    var tempo = new Date().getTime();
+    this.orderList.forEach(item => {
+      if(item.insertTime == undefined) {
+        item.insertTime = tempo;
+      }
+    });
+  }
+
   update() {
+    this.setTimestamp();
     this.getTotale();
     this.saveCache();
   }
