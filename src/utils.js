@@ -12,7 +12,8 @@ export default {
   toDate: function (timestamp) {
     return timestamp.toDate().toLocaleDateString()
   },
-  toLocaleDateTimeString: function (d) {
+  toLocaleDateTimeString: function (t) {
+    var d = new Date(t);
     var hours = d.getHours();
     if(hours<10)
       hours = '0' + hours;
