@@ -103,5 +103,11 @@ html {
   padding: 10px;
   margin: 5px;
 }
+.action-button {
+
+}
+.primary-button {
+  background: var(--primary-color);
+}
 
 </style>

@@ -64,7 +64,7 @@
                 {{getLastMod(t)}}
               </div>
               <div class="table-show-details">
-                <i class="el-icon-view" @click="showOrder(t)"></i>
+                <i class="el-icon-tickets" @click="showOrder(t)"></i>
               </div>
             </div>
           </div>
