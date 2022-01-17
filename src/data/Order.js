@@ -43,7 +43,7 @@ export default class Order {
   getTotaleNetto() {
     var amount = 0;
     this.orderList.forEach(item => {
-      amount += item.price * item.quantity;
+      amount += Number(item.price)/* * item.quantity*/;
     });
     
     this.totale = amount;

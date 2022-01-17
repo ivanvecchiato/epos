@@ -77,7 +77,7 @@
         <main ref='cart'>
             <div>
               <shopping-cart
-                :orderList="order.orderList"
+                :orderList="groupedList"
                 @changeCart="changeCart"
                 @deleteItem="removeItem">
               </shopping-cart>
@@ -196,6 +196,7 @@ export default {
       products: [],
       currentCategory: null,
       order: new Order(),
+      groupedList: [],
       currentPlace: {
         area: {},
         place: ''
@@ -285,8 +286,8 @@ export default {
       }
     },
     addItem: function(p) {
-      var n = this.order.addItem(p);
-      console.log("productSelected", n);
+      this.order.addItem(p);
+      this.groupedList = this.order.groupByItems();
       this.$nextTick(() => {
         var cart = this.$refs.cart;
         cart.scrollTop = cart.scrollHeight;
@@ -428,6 +429,7 @@ export default {
       if(pendingString != null && pendingString.length > 0) {
         var ord = JSON.parse(pendingString);
         this.order.fillData(ord);
+        this.groupedList = this.order.groupByItems();
       } else {
         this.order.place = this.currentPlace;
         this.order.operator = {
