@@ -2,6 +2,7 @@
    <div>
       <el-button @click="generate">genera</el-button>
       <el-button @click="resetOrders" v-loading.fullscreen.lock="fullscreenLoading">reset conti</el-button>
+      <el-button @click="resetStats" v-loading.fullscreen.lock="fullscreenLoading">reset dati</el-button>
    </div>
 </template>
 
@@ -43,6 +44,22 @@ export default {
                      });
                   }
                }
+            });
+            this.fullscreenLoading = false;
+         })
+         .catch((error) => {
+             console.log("Error getting documents: ", error);
+         });
+      },
+      resetStats: function() {
+         this.fullscreenLoading = true;
+
+         Firebase.db.collection("conti")
+         .get()
+         .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+               var docId = doc.id;
+               Firebase.db.collection('conti').doc(docId).delete().then().catch();
             });
             this.fullscreenLoading = false;
          })
