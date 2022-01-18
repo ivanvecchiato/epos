@@ -149,7 +149,9 @@ export default {
   text-align: left;
   flex: 0 0 60px;
   height: 100vh;
-  margin-left: 2px;
+  margin: 8px;
+  background: #fff;
+  border-radius: 10px;
   /*border-radius: 12px;*/
 }
 

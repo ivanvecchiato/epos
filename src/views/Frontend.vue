@@ -462,7 +462,7 @@ export default {
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
-  background: #81655427;
+  /*background: #81655427;*/
   border-radius: 16px;
 }
 .side {
@@ -477,7 +477,7 @@ export default {
   display: flex;
   flex: 1;
   overflow-x: auto;
-  margin: 4px;
+  margin: 0px;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 10px;
