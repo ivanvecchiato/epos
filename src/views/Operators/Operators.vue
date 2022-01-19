@@ -5,7 +5,7 @@
             <el-button type="danger" plain @click="newOperator">{{$t('config.new-operator')}}</el-button>
             <ul>
                <li v-for="op in operators" :key="op.id" @click="selectOperator(op)">
-                  <el-icon :size="size" :color="color" v-if="op.admin">
+                  <el-icon size="18" color="#e83c3c" style="vertical-align: middle;" v-if="op.admin">
                      <star />
                   </el-icon>
                   {{op.name}}
