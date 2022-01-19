@@ -22,37 +22,44 @@
     </div>
     <div class="grid">
       <div v-for="t in currentArea.places" :key="t.name" class="table">
-          <div class="inner-table">
+          <div class="inner-table" @click="selectTable(t)">
         <Popper
           offsetSkid="100"
-          offsetDistance="-20">
-            <span :class="getStatusClass(t)">{{t.name}}</span>
+          offsetDistance="-20"
+          :show="t.showMenu">
+            <span :class="getStatusClass(t)" @click.stop="t.showMenu=true">{{t.name}}</span>
           <template #content>
             <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
             <el-divider></el-divider>
             <span class="menu-item" @click="selectTable(t)">
-              <el-icon>
-                <shopping-cart />
+              <el-icon :size="24" style="vertical-align: middle;">
+                <shopping-cart-full />
               </el-icon>
               {{$t('bill.order')}}</span>
             <el-divider></el-divider>
             <span class="menu-item">
-              <el-icon>
+              <el-icon :size="24" style="vertical-align: middle;">
                 <calendar />
               </el-icon>
               {{$t('booking.booking')}}</span>
             <el-divider></el-divider>
             <span class="menu-item">
-              <el-icon>
+              <el-icon :size="24" style="vertical-align: middle;">
                 <delete />
               </el-icon>
               {{$t('generic.deletion')}}</span>
             <el-divider></el-divider>
-            <span class="menu-item" @click="move">
-              <el-icon>
+            <span class="menu-item" @click.stop="move">
+              <el-icon :size="24" style="vertical-align: middle;">
                 <location />
               </el-icon>
               {{$t('modification.move')}}</span>
+            <el-divider></el-divider>
+            <span class="menu-item" @click.stop="t.showMenu=false">
+              <el-icon :size="24" style="vertical-align: middle;">
+                <circle-close />
+              </el-icon>
+              {{$t('generic.close')}}</span>
           </template>
         </Popper>
             <div v-if="tableBusy(t)">
@@ -64,7 +71,7 @@
                 {{getLastMod(t)}}
               </div>
               <div class="table-show-details">
-                <i class="el-icon-tickets" @click="showOrder(t)"></i>
+                <i class="el-icon-tickets" @click.stop="showOrder(t)"></i>
               </div>
             </div>
           </div>
@@ -93,12 +100,12 @@ import Order from "../data/Order.js";
 import Firebase from "../firebase.js";
 import Popper from "vue3-popper";
 import '../popper-theme.css'
-import { Calendar, Delete, ShoppingCartFull, Location, Clock } from '@element-plus/icons'
+import { Calendar, Delete, ShoppingCartFull, Location, Clock, CircleClose } from '@element-plus/icons'
 import OrderList from "../components/OrderList.vue";
 
 export default {
   name: "Floor",
-  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList },
+  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList, CircleClose },
   props: ['order'],
   data() {
     return {
@@ -230,6 +237,7 @@ export default {
               var order = new Order;
               order.fillData(places[n].order);
               places[n].order = order;
+              places[n].showMenu = false;
             }
             self.areas.push(area);
           });
@@ -259,7 +267,8 @@ export default {
   position: relative;
   top: 1px;
   left: 1px;
-  border: 1px solid rgb(231, 231, 231);
+  /*border: 1px solid rgb(231, 231, 231);*/
+  border: 1px solid var(--primary-color);
   border-radius: 8px;
   padding: 0px;
 }
