@@ -10,7 +10,7 @@
       <div class="color-indicator" :style="getBgc(item)"/>
       <div class="settings">
         <el-dropdown trigger="click">
-          <el-icon :size="18" v-on:click.stop>
+          <el-icon :size="20" v-on:click.stop>
             <setting />
           </el-icon>
           <template #dropdown>
