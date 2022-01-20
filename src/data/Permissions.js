@@ -24,6 +24,11 @@ const permissions = [
       name: 'change-price',
       enabled: false
    },
+   {
+      id: 6,
+      name: 'modify-park',
+      enabled: false
+   },
 ]
 
 export default permissions;
