@@ -27,7 +27,7 @@
             <span>{{ $t("cashier.cashier") }}</span>
           </el-menu-item>
           <el-menu-item index="2" @click="openFloor">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-map-location"></i>
             <span>{{ $t("floor.floor") }}</span>
           </el-menu-item>
           <el-menu-item index="3" @click="openBills">
