@@ -607,7 +607,7 @@ main {
 }
 .customer {
   text-align: right;
-  color: var(--danger-color);
+  color: var(--success-color);
 }
 .customer-name {
   margin: auto;
