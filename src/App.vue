@@ -58,7 +58,7 @@ html {
   height: 100vh;
   overflow: hidden;
   color: #1e1d57;
-  background: #EEF0F5;
+  background: #f6f9ff;
 }
 :root{
     --primary-color: #667BCC!important;
