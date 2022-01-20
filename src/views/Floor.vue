@@ -22,59 +22,70 @@
     </div>
     <div class="grid">
       <div v-for="t in currentArea.places" :key="t.name" class="table">
-          <div class="inner-table" @click="selectTable(t)">
-        <Popper
-          offsetSkid="100"
-          offsetDistance="-20"
-          :show="t.showMenu">
-            <span :class="getStatusClass(t)" @click.stop="t.showMenu=true">{{t.name}}</span>
-          <template #content>
-            <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
-            <el-divider></el-divider>
-            <span class="menu-item" @click="selectTable(t)">
-              <el-icon :size="24" style="vertical-align: middle;">
-                <shopping-cart-full />
+        <div class="inner-table" @click="selectTable(t)">
+          <Popper
+            offsetSkid="100"
+            offsetDistance="-20"
+            :show="t.showMenu">
+              <span :class="getStatusClass(t)" @click.stop="t.showMenu=true">{{t.name}}</span>
+              <template #content>
+                <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
+                <el-divider></el-divider>
+                <span class="menu-item" @click="selectTable(t)">
+                  <el-icon :size="24" style="vertical-align: middle;">
+                    <shopping-cart-full />
+                  </el-icon>
+                  {{$t('bill.order')}}</span>
+                <el-divider></el-divider>
+                <span class="menu-item">
+                  <el-icon :size="24" style="vertical-align: middle;">
+                    <calendar />
+                  </el-icon>
+                  {{$t('booking.booking')}}</span>
+                <el-divider></el-divider>
+                <span class="menu-item">
+                  <el-icon :size="24" style="vertical-align: middle;">
+                    <delete />
+                  </el-icon>
+                  {{$t('generic.deletion')}}</span>
+                <el-divider></el-divider>
+                <span class="menu-item" @click.stop="move">
+                  <el-icon :size="24" style="vertical-align: middle;">
+                    <location />
+                  </el-icon>
+                  {{$t('modification.move')}}</span>
+                <el-divider></el-divider>
+                <span class="menu-item" @click.stop="t.showMenu=false">
+                  <el-icon :size="24" style="vertical-align: middle;">
+                    <circle-close />
+                  </el-icon>
+                  {{$t('generic.close')}}</span>
+              </template>
+          </Popper>
+          <div v-if="tableBusy(t)">
+            <div class="table-last-modification">
+              <el-icon style="vertical-align: middle;" color="#F9A825" :size="18"><clock/></el-icon>
+              {{getLastMod(t)}}
+            </div>
+            <div class="table-order-amount">
+              <el-icon style="vertical-align: middle;" color="#FC6A82" :size="18">
+                <coin/>
               </el-icon>
-              {{$t('bill.order')}}</span>
-            <el-divider></el-divider>
-            <span class="menu-item">
-              <el-icon :size="24" style="vertical-align: middle;">
-                <calendar />
+              {{getAmount(t)}}
+            </div>
+            <div class="table-order-quantity">
+              <el-icon style="vertical-align: middle;" color="#667BCC" :size="18">
+                <shopping-cart-full/>
               </el-icon>
-              {{$t('booking.booking')}}</span>
-            <el-divider></el-divider>
-            <span class="menu-item">
-              <el-icon :size="24" style="vertical-align: middle;">
-                <delete />
+              {{getQuantity(t)}} {{$t('product.products')}}
+            </div>
+            <div class="table-show-details">
+              <el-icon @click.stop="showOrder(t)" color="#667BCC" :size="24">
+                <tickets/>
               </el-icon>
-              {{$t('generic.deletion')}}</span>
-            <el-divider></el-divider>
-            <span class="menu-item" @click.stop="move">
-              <el-icon :size="24" style="vertical-align: middle;">
-                <location />
-              </el-icon>
-              {{$t('modification.move')}}</span>
-            <el-divider></el-divider>
-            <span class="menu-item" @click.stop="t.showMenu=false">
-              <el-icon :size="24" style="vertical-align: middle;">
-                <circle-close />
-              </el-icon>
-              {{$t('generic.close')}}</span>
-          </template>
-        </Popper>
-            <div v-if="tableBusy(t)">
-              <div class="table-order-quantity">
-                <el-icon style="vertical-align: middle;" color="#29B6F6" size="18"><shopping-cart-full/></el-icon>
-                {{getQuantity(t)}} {{$t('product.products')}}</div>
-              <div class="table-last-modification">
-                <el-icon style="vertical-align: middle;" color="#F9A825" size="18"><clock/></el-icon>
-                {{getLastMod(t)}}
-              </div>
-              <div class="table-show-details">
-                <i class="el-icon-tickets" @click.stop="showOrder(t)"></i>
-              </div>
             </div>
           </div>
+        </div>
 
       </div>
     </div>
@@ -100,12 +111,13 @@ import Order from "../data/Order.js";
 import Firebase from "../firebase.js";
 import Popper from "vue3-popper";
 import '../popper-theme.css'
-import { Calendar, Delete, ShoppingCartFull, Location, Clock, CircleClose } from '@element-plus/icons'
+import { Calendar, Delete, ShoppingCartFull, Location, Clock, CircleClose, Coin, Tickets } from '@element-plus/icons'
 import OrderList from "../components/OrderList.vue";
+import utils from "../utils.js";
 
 export default {
   name: "Floor",
-  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList, CircleClose },
+  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList, CircleClose, Coin, Tickets },
   props: ['order'],
   data() {
     return {
@@ -180,6 +192,9 @@ export default {
     },
     getQuantity: function(t) {
       return t.order.getQuantity();
+    },
+    getAmount: function(t) {
+      return utils.formatPriceWithCurrency(t.order.getTotaleNetto());
     },
     selectArea: function(c) {
       this.currentArea = c;
@@ -263,7 +278,7 @@ export default {
   text-align: left;
 }
 .table {
-  min-height: 90px;
+  min-height: 110px;
   position: relative;
   top: 1px;
   left: 1px;
@@ -323,20 +338,42 @@ export default {
 .table-order-quantity {
   position: absolute;
   font-size: 0.9em;
-  bottom: 25px;
-  left: 15px;
-  color: #000;
+  bottom: 5px;
+  left: 10px;
+  min-width: 90px;
+  color: var(--primary-color);
   text-transform: lowercase;
+  border: solid 1px var(--primary-color);
+  border-radius: 4px;
+  background: #667acc20;
+  padding: 1px 4px;
+  font-weight: bold;
+}
+.table-order-amount {
+  position: absolute;
+  font-size: 0.9em;
+  bottom: 30px;
+  left: 10px;
+  min-width: 90px;
+  color: var(--success-color);
+  text-transform: lowercase;
+  border: solid 1px var(--success-color);
+  border-radius: 4px;
+  background: #fc6a8220;
+  padding: 1px 4px;
+  font-weight: bold;
 }
 .table-last-modification {
   position: absolute;
   font-size: 0.9em;
-  bottom: 5px;
-  left: 15px;
+  top: 5px;
+  left: 10px;
   color: #000;
+  font-weight: bold;
 }
 .table-show-details {
   position: absolute;
+  display: block;
   bottom: 5px;
   right: 15px;
 }

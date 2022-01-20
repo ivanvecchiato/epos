@@ -67,7 +67,7 @@ html {
     --light-secondary-color: #FFE8E6!important;
     --light-main-color: #DFE9FE!important;
     --lightest-main-color: #e2e8ff!important;
-    --success-color: #FC6A82!important;
+    --success-color: #FB8C00!important;
     --warning-color: #FFC108!important;
     --error-color: #ef4d4d!important;
     --danger-color: #ff6b6b!important;
