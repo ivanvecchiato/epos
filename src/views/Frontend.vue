@@ -196,7 +196,7 @@ export default {
       products: [],
       currentCategory: null,
       order: new Order(),
-      groupedList: [],
+      //groupedList: [],
       currentPlace: {
         area: {},
         place: ''
@@ -207,6 +207,9 @@ export default {
     };
   },
   computed: {
+    groupedList: function () {
+      return this.order.groupByItems();
+    },
     customerName: function() {
       if(this.order.customer != null) {
         return this.order.customer.name;
@@ -287,7 +290,7 @@ export default {
     },
     addItem: function(p) {
       this.order.addItem(p);
-      this.groupedList = this.order.groupByItems();
+      //this.groupedList = this.order.groupByItems();
       this.$nextTick(() => {
         var cart = this.$refs.cart;
         cart.scrollTop = cart.scrollHeight;
@@ -399,6 +402,7 @@ export default {
           console.log("loadConto", doc.data().places[this.currentPlace.place].order);
           if(doc.data().places[this.currentPlace.place].order.orderList.length > 0) {
             this.order.fillData(doc.data().places[this.currentPlace.place].order);
+            //this.groupedList = this.order.groupByItems();
             this.billLoaded = true;
           }
         } else {
@@ -429,7 +433,7 @@ export default {
       if(pendingString != null && pendingString.length > 0) {
         var ord = JSON.parse(pendingString);
         this.order.fillData(ord);
-        this.groupedList = this.order.groupByItems();
+        //this.groupedList = this.order.groupByItems();
       } else {
         this.order.place = this.currentPlace;
         this.order.operator = {
