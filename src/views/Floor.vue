@@ -68,7 +68,7 @@
               {{getLastMod(t)}}
             </div>
             <div class="table-order-amount">
-              <el-icon style="vertical-align: middle;" color="#FC6A82" :size="18">
+              <el-icon style="vertical-align: middle;" color="#FB8C00" :size="18">
                 <coin/>
               </el-icon>
               {{getAmount(t)}}
@@ -94,6 +94,7 @@
       :title="currentOrder.place"
       v-model="showOrderDetail"
       :center="false"
+      custom-class="dialog"
       width="40%"
       destroy-on-close>
       <order-list
@@ -299,10 +300,10 @@ export default {
   border-radius: 8px;
   background: rgb(188, 208, 245);
   width: 50px;
-  height: 50px;
+  height: 40px;
   padding: 4px;
   text-align: center;
-  box-shadow: 4px 4px 4px rgb(151, 114, 114, 0.4)
+  box-shadow: 3px 3px 3px rgb(151, 114, 114, 0.4);
 }
 .table-name-busy {
   font-weight: bold;
@@ -310,30 +311,14 @@ export default {
   position: absolute;
   top:-5px;
   right: -5px;
-  background: rgb(216, 29, 29);
+  background: var(--secondary-color);
   color: white;
   border-radius: 8px;
   width: 50px;
-  height: 50px;
+  height: 40px;
   padding: 4px;
   text-align: center;
-  box-shadow: 4px 4px 4px rgb(151, 114, 114, 0.4)
-}
-.status-free {
-  width: 12px;
-  min-height: 90px;
-  background: rgb(164, 189, 235);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  height: 100%;
-}
-.status-busy {
-  min-height: 90px;
-  width: 12px;
-  background: rgb(216, 29, 29);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  height: 100%;
+  box-shadow: 3px 3px 3px rgb(151, 114, 114, 0.4);
 }
 .table-order-quantity {
   position: absolute;
@@ -418,5 +403,8 @@ export default {
   font-size: 1.2em;
   border: 1px solid var(--secondary-color);
   color: var(--secondary-color);
+}
+.dialog {
+  background: red;
 }
 </style>
