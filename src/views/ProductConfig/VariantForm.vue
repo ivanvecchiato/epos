@@ -21,7 +21,9 @@
         </el-col>
         <el-col :span="2">&nbsp;</el-col>
           <el-col :span="6">
-            <color-selector @colorPicked='colorPicked'></color-selector>
+            <color-selector
+              :initialColor="color"
+              @colorPicked='colorPicked' v-if="isMounted"></color-selector>
           </el-col>
       </el-row>
 
@@ -34,7 +36,7 @@
           <el-input v-model="item.price" placeholder=""></el-input>
         </el-col>
         <el-col :span="2">
-          <el-icon color="#F44336" size="24" @click="deleteVariant(index)"><CircleClose/></el-icon>
+          <el-icon color="#F44336" :size="24" @click="deleteVariant(index)"><CircleClose/></el-icon>
         </el-col>
       </el-row>
 
@@ -68,6 +70,7 @@ export default {
   props: ["data", "documentId"],
   data() {
     return {
+      isMounted: false,
       variant: new Product(),
       color: "",
       inputVisible: false,
@@ -125,6 +128,7 @@ export default {
     console.log("mounted", this.data);
     this.variant = this.data;
     this.color = this.variant.color;
+    this.isMounted = true;
   },
 };
 </script>

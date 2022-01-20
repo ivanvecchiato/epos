@@ -84,7 +84,9 @@
     "new": "Nuova variante",
     "ask_delete_variant": "Rimuovere la variante?",
     "view": "Mostra",
-    "values": "Valori"
+    "values": "Valori",
+    "import": "Importa",
+    "export": "Esporta"
   },
   "stats": {
     "opened_bills": "Conti aperti",
@@ -198,6 +200,7 @@
     "access-inventory": "Ha accesso al magazzino",
     "delete-order": "Può cancellare un ordine",
     "generic-sale": "Può fare una vendita generica",
-    "change-price": "Può cambiare un prezzo"
+    "change-price": "Può cambiare un prezzo",
+    "modify-park": "Può modificare il parcheggio conti"
   }
 }

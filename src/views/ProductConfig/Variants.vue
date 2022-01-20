@@ -13,10 +13,10 @@
             type="success"
             size="small"
             plain
-            @click="exportJson">{{ $t("variants.export") }}</el-button>
+            @click="exportJson">{{ $t("variant.export") }}</el-button>
         </el-col>
         <el-col :span="6">
-          <input :label="$t('variants.import')" type="file" @change="loadTextFromFile"/>
+          <input :label="$t('variant.import')" type="file" @change="loadTextFromFile"/>
         </el-col>
       </el-row>
 
@@ -106,6 +106,8 @@ export default {
     };
   },
   methods: {
+    rowClick: function() {
+    },
     mockVariants: function() {
       var variant = new Variant;
       variant.mockdata();
@@ -232,7 +234,7 @@ export default {
       if(this.currentVariant.name.length > 0)
         return this.currentVariant.name;
       else
-        return this.$t('product.variant');
+        return this.$t('variant.variant');
     }
   },
   mounted() {

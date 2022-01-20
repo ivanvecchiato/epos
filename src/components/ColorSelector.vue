@@ -4,7 +4,7 @@
       class="color-button"
       :style="getBgc(item)"
       v-for="item, index in colors"
-      :key="item"
+      :key="index"
       :class="{ active : active_el == index }"
       @click="selectColor(item, index)"
     />
@@ -15,7 +15,7 @@
 
 export default {
   name: "ColorSelector",
-  props: ["data"],
+  props: ["initialColor"],
   data() {
     return {
       colors: ['#00AAE6','#2B73FD','#6F4EFF','#9F41F1','#9E2FBD','#DC5CDC','#EA489C','#FF83A8',
@@ -24,7 +24,7 @@ export default {
       bgc: {
         backgroundColor: '#fff'
       },
-      active_el: 0
+      active_el: -1
     };
   },
   methods: {
@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     for(var i=0; i<this.colors.length; i++) {
-      if(this.data == this.colors[i]) {
+      if(this.initialColor == this.colors[i]) {
         this.active_el = i;
         break;
       }

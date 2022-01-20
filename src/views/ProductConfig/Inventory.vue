@@ -126,6 +126,9 @@ export default {
     };
   },
   methods: {
+    rowClick: function() {
+
+    },
     productCreated: function (event) {
       console.log("productCreated", event);
       this.resetDialog();
