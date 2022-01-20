@@ -71,9 +71,9 @@ export default {
   },
   mounted() {
     console.log('OrderList', this.order);
-    this.detailedList = this.order.groupByTimestamp();
+    this.detailedList = this.order.groupByTimestamp({groupNote: false});
     console.log('OrderList', this.detailedList);
-    this.groupedList = this.order.groupByItems();
+    this.groupedList = this.order.groupByItems({groupNote: false});
   },
 }
 </script>

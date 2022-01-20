@@ -1,5 +1,6 @@
 import Firebase from "../firebase.js";
 import Payment from "./Payment";
+import utils from "../utils.js";
 
 export default class Order {
   constructor() {
@@ -123,11 +124,26 @@ export default class Order {
     this.saveCache();
   }
 
-  groupItem(p, list) {
+  groupItem(p, list, params) {
     var inserted = false;
     for(var i=0; i<list.length; i++) {
       var item = list[i];
-      if(item.id === p.id) {
+
+      var noteCriteria = true;
+      var variantCriteria = true;
+      if(params == undefined) {
+        noteCriteria = (item.note != undefined && p.note != undefined && item.note == p.note);
+        variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
+      } else {
+        if(params.groupNote != undefined && params.groupNote == true) {
+          noteCriteria = (item.note != undefined && p.note != undefined && item.note == p.note);
+        }
+        if(params.groupVariant != undefined && params.groupVariant == true) {
+          variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
+        }
+      }
+      
+      if(item.id === p.id && noteCriteria && variantCriteria) {
         item.quantity++;
         inserted = true;
         break;
@@ -139,17 +155,18 @@ export default class Order {
     }
   }
 
-  groupByItems() {
+  groupByItems(params) {
+    console.log('groupByItems', params);
     var list = [];
     for(var i=0; i<this.size(); i++) {
       var item = this.orderList[i];
-      this.groupItem(item, list)
+      this.groupItem(item, list, params)
     }
 
     return list;
   }
 
-  groupByTimestamp() {
+  groupByTimestamp(params) {
     var lists = [];
     var prevTimestamp = 0;
     for(var i=0; i<this.size(); i++) {
@@ -161,7 +178,7 @@ export default class Order {
           list: []
         });
       }
-      this.groupItem(item, lists[lists.length-1].list)
+      this.groupItem(item, lists[lists.length-1].list, params)
     }
 
     return lists;
