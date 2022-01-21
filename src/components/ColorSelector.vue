@@ -3,8 +3,7 @@
     <div
       class="color-button"
       :style="getBgc(item)"
-      v-for="item, index in colors"
-      :key="index"
+      v-for="item, index in colors" :key="item"
       :class="{ active : active_el == index }"
       @click="selectColor(item, index)"
     />
@@ -20,7 +19,6 @@ export default {
     return {
       colors: ['#00AAE6','#2B73FD','#6F4EFF','#9F41F1','#9E2FBD','#DC5CDC','#EA489C','#FF83A8',
       '#D70050','#EB3D34','#F98E2D','#F6CD2D','#93CB00','#61D16F','#39C5AB','#87989F'],
-      colorString: '',
       bgc: {
         backgroundColor: '#fff'
       },
@@ -35,7 +33,6 @@ export default {
       return this.bgc;
     },
     selectColor: function(color, index) {
-      this.colorString = color;
       this.active_el = Number(index);
       this.$emit('colorPicked', color);
     }
