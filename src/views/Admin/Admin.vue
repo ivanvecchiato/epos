@@ -44,6 +44,27 @@ export default {
                      });
                   }
                }
+               this.resetPendingOrders();
+            });
+            this.fullscreenLoading = false;
+         })
+         .catch((error) => {
+             console.log("Error getting documents: ", error);
+         });
+      },
+      resetPendingOrders: function() {
+         this.fullscreenLoading = true;
+
+         Firebase.db.collection("ordini")
+         .get()
+         .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+               var docId = doc.id;
+               Firebase.db.collection('ordini')
+                  .doc(docId)
+                  .delete()
+                  .then()
+                  .catch();
             });
             this.fullscreenLoading = false;
          })
