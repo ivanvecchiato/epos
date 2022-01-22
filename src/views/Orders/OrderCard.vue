@@ -8,6 +8,8 @@
       </template>
 
       <div class="order-list">
+         <span class="order-operator">{{data.operator.name}}</span>
+         <span class="order-quantity">{{quantity}}&nbsp;{{$t('product.products')}}</span>
          <ul>
             <li class="item" v-for="item in data.comanda" :key="item.id">
                <div class="item-name">{{item.name}}</div>
@@ -47,6 +49,9 @@ export default {
       },
       time: function() {
          return utils.toLocaleDateTimeString(this.data.timestamp);
+      },
+      quantity: function() {
+         return this.data.comanda.length;
       }
    },
    methods: {
@@ -86,6 +91,7 @@ export default {
 }
 .order-list {
    padding: 10px;
+   text-align: left;
 }
 .order-footer {
     margin-top: 10px;
@@ -108,5 +114,23 @@ ul li {
 ul li:last-child {
 	border-bottom: 0;
 }
-
+.order-operator {
+  font-size: 0.8em;
+  min-width: 90px;
+  color: var(--primary-color);
+  border: solid 1px var(--primary-color);
+  border-radius: 4px;
+  background: #667acc20;
+  padding: 1px 4px;
+}
+.order-quantity {
+  font-size: 0.8em;
+  min-width: 90px;
+  color: var(--danger-color);
+  border: solid 1px var(--danger-color);
+  border-radius: 4px;
+  background: #fc6a8220;
+  padding: 1px 4px;
+  margin-left: 10px;
+}
 </style>
