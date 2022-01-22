@@ -1,6 +1,7 @@
 import Firebase from "../firebase.js";
 import Payment from "./Payment";
 import utils from "../utils.js";
+import operator from "../store/user.js";
 
 export default class Order {
   constructor() {
@@ -195,12 +196,16 @@ export default class Order {
     this.writeDoc();
   }
 
-  setTimestamp() {
+  setOperatorAndTimestamp() {
     var partial = [];
     var tempo = new Date().getTime();
     this.orderList.forEach(item => {
       if(item.insertTime == undefined) {
         item.insertTime = tempo;
+        item.operator = {
+          id: operator.id,
+          name: operator.name
+        }
         partial.push(item);
       }
     });
@@ -208,14 +213,18 @@ export default class Order {
   }
 
   update(place) {
-    var partial = this.setTimestamp();
+    var partial = this.setOperatorAndTimestamp();
     var now = new Date();
 
     var partialObj = {
       'timestamp': now.getTime(),
       'comanda': partial,
       'done': false,
-      'place': place
+      'place': place,
+      'operator': {
+        id: operator.id,
+        name: operator.name
+      }
     };
     this.lastModified = now;
     this.getTotale();
