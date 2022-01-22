@@ -23,7 +23,7 @@
         <el-col :span="6" class="text-align: right">
           <div class="customer" @click="selectCustomer">
             <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-            <span class="customer-name">{{customerName}}</span>
+            <span class="customer-name" @click="addCustomer">{{customerName}}</span>
           </div>
         </el-col>
       </el-row>
@@ -174,7 +174,7 @@ import ShoppingCart from "../components/ShoppingCart.vue";
 import DiscountWidget from "../components/DiscountWidget.vue";
 import Table from "../data/Table.js";
 import Customer from "../data/Customer.js";
-import Product from "../data/Product.js";
+//import Product from "../data/Product.js";
 import Order from "../data/Order.js";
 import Firebase from "../firebase.js";
 import operator from "../store/user.js";
@@ -212,7 +212,7 @@ export default {
     },
     customerName: function() {
       if(this.order.customer != null) {
-        return this.order.customer.name;
+        return this.order.customer.firstName + " " + this.order.customer.lastName;
       } else {
         return this.$t('customer.add_new');
       }
@@ -335,6 +335,7 @@ export default {
           });
         });
     },
+    /*
     getFakeProducts: function() {
       var n = 20;
       var list = [];
@@ -346,14 +347,18 @@ export default {
       }
       return list;
     },
+    */
     annullaConto: function() {
       this.order.clear();
     },
+    addCustomer() {
+        var c = new Customer();
+        c.randomize();
+        this.order.addCustomer(c);
+        console.log('addCustomer', c);
+    },
     pagaConto: function() {
       this.order.addPayment(0, "contanti", this.order.getTotale());
-      var c = new Customer();
-      c.randomize();
-      this.order.addCustomer(c);
       console.log(this.order);
       this.order.setClosed(1);
     },
@@ -385,7 +390,7 @@ export default {
         });
     },
     parcheggiaConto: function() {
-      this.order.update();
+      this.order.update(this.currentPlace);
 
       if (this.place == undefined || this.place.length == 0)
         this.$router.push("/floor");
@@ -396,7 +401,8 @@ export default {
     },
     loadConto: function() {
       var docRef = Firebase.db
-        .collection("park").doc(this.currentPlace.area.docId);
+        .collection("park")
+        .doc(this.currentPlace.area.docId);
       docRef.get().then((doc) => {
         if (doc.exists) {
           console.log("loadConto", doc.data().places[this.currentPlace.place].order);

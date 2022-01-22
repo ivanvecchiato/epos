@@ -35,7 +35,7 @@
                   <el-icon :size="24" style="vertical-align: middle;">
                     <shopping-cart-full />
                   </el-icon>
-                  {{$t('bill.order')}}</span>
+                  {{$t('orders.order')}}</span>
                 <el-divider></el-divider>
                 <span class="menu-item">
                   <el-icon :size="24" style="vertical-align: middle;">
@@ -180,10 +180,10 @@ export default {
         }
         var time = '';
         if(d>0) {
-          time = d + " day - ";
+          time = d + " day\u2022";
         }
         if(h>0) {
-          time += h + " h - ";
+          time += h + " h\u2022";
         }
         time += min + " min";
         return time;

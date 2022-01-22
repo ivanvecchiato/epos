@@ -115,6 +115,7 @@
     "view": "Mostra",
     "search": "Cerca",
     "print": "Stampa",
+    "action": "Esegui",
     "close": "Chiudi",
     "cash-out": "Incassa",
     "send-to-cloud": "Invia a gestionale"
@@ -141,9 +142,13 @@
     "cash": "Incassa",
     "docs_bills": "Documenti/Conti",
     "conto_park": "Conto {place}",
-    "order": "Ordine",
     "place": "Posto {description}",
     "area": "Area {description}"
+  },
+  "orders": {
+    "order": "Ordine",
+    "orders": "Ordini",
+    "pending-orders": "{quantity} ordini sospesi"
   },
   "booking": {
     "booking": "Prenotazione"
