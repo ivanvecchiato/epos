@@ -15,3 +15,4 @@ non hanno corrispondenza con i reparti fiscali. I prodotti hanno un'iva e questo
 
 - valutare se "place" nella struttura di "order" va tolto oppure serve
 
+- il campo operatore (chi ha iniziato il conto) viene valorizzato solo al ricaricamento da json; inserire opportunamente
