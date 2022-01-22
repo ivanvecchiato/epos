@@ -11,13 +11,12 @@ export default class Order {
       name: ''
     };
     this.orderList = [];
-    this.place = '';
+    //this.place = '';
     this.note = '';
     this.createdAt = new Date();
     this.lastModified = new Date();
     this.done = false;
     this.id_order = Date.now();
-    this.modifiers = [];
     this.payments = [];   // Payment obj
     this.totale = 0;
     this.discount = {
@@ -27,7 +26,7 @@ export default class Order {
     };
     this.status = 0;    // 0=open, 1=closed, -100=deleted, 100=prebill
     this.chiusura = 0;
-    this.source = 0;    //0=frontend, 1000 = takeaway, 2000 = ecommerce, n=tavolo
+    this.source = 0;    //0=frontend, 1000 = takeaway, 2000 = ecommerce, {obj}=tavolo
     this.customer = null;   // class Customer TBD
   }
 
@@ -197,18 +196,39 @@ export default class Order {
   }
 
   setTimestamp() {
+    var partial = [];
     var tempo = new Date().getTime();
     this.orderList.forEach(item => {
       if(item.insertTime == undefined) {
         item.insertTime = tempo;
+        partial.push(item);
       }
     });
+    return partial;
   }
 
-  update() {
-    this.setTimestamp();
+  update(place) {
+    var partial = this.setTimestamp();
+    var now = new Date();
+
+    var partialObj = {
+      'timestamp': now.getTime(),
+      'comanda': partial,
+      'done': false,
+      'place': place
+    };
+    this.lastModified = now;
     this.getTotale();
     this.saveCache();
+
+    Firebase.db.collection('ordini').add(Object.assign({}, partialObj))
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id)
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error)
+    })
+
   }
 
   writeDoc() {

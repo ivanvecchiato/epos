@@ -79,7 +79,7 @@ html {
   margin-left: 20px;
   letter-spacing: -0.05em;
   font-weight: bold;
-  color: var(--light-main-color);
+  color: var(--primary-color);
   text-align: left;
 }
 .title-2 {

@@ -7,6 +7,7 @@ import Settings from './views/Settings.vue'
 import Floor from './views/Floor.vue'
 import Login from './views/Login.vue'
 import Home from './views/Home.vue'
+import Ordini from './views/Ordini.vue'
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/conti',
     name: 'conti',
     component: Conti
+  },
+  {
+    path: '/ordini',
+    name: 'ordini',
+    component: Ordini
   },
   {
     path: '/floor',

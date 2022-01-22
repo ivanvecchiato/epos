@@ -30,15 +30,19 @@
             <i class="el-icon-map-location"></i>
             <span>{{ $t("floor.floor") }}</span>
           </el-menu-item>
-          <el-menu-item index="3" @click="openBills">
+          <el-menu-item index="3" @click="openOrders">
             <i class="el-icon-document"></i>
+            <span>{{ $t("orders.orders") }}</span>
+          </el-menu-item>
+          <el-menu-item index="4" @click="openBills">
+            <i class="el-icon-data-line"></i>
             <span>{{ $t("bill.bills") }}</span>
           </el-menu-item>
-          <el-menu-item index="4" @click="openProducts">
+          <el-menu-item index="5" @click="openProducts">
             <i class="el-icon-box"></i>
             <span>{{ $t("pricelist.products") }}</span>
           </el-menu-item>
-          <el-menu-item index="5" @click="openSettings" :disabled="!admin()">
+          <el-menu-item index="6" @click="openSettings" :disabled="!admin()">
             <i class="el-icon-setting"></i>
             <span>{{ $t("config.settings") }}</span>
           </el-menu-item>
@@ -96,6 +100,9 @@ export default {
     },
     openFrontend: function() {
       this.$router.push("/frontend");
+    },
+    openOrders: function() {
+      this.$router.push("/ordini");
     },
     openBills: function() {
       this.$router.push("/conti");
