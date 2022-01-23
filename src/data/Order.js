@@ -132,8 +132,12 @@ export default class Order {
       var noteCriteria = true;
       var variantCriteria = true;
       if(params == undefined) {
-        noteCriteria = (item.note != undefined && p.note != undefined && item.note == p.note);
-        variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
+        if(item.note == undefined && p.note == undefined) {
+          noteCriteria = true;
+        } else {
+          noteCriteria = (item.note == p.note);
+          variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);  
+        }
       } else {
         if(params.groupNote != undefined && params.groupNote == true) {
           noteCriteria = (item.note != undefined && p.note != undefined && item.note == p.note);
@@ -210,6 +214,15 @@ export default class Order {
       }
     });
     return partial;
+  }
+
+  hasUnsavedChanges() {
+    this.orderList.forEach(item => {
+      if(item.insertTime == undefined) {
+        return true;
+      }
+    })
+    return false;
   }
 
   update(place) {
