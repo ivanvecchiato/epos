@@ -1,5 +1,5 @@
-var order = {
-    order: {},
+var persistent_order = {
+  persistent_order: {},
 
     isPending() {
       return false;
@@ -9,4 +9,4 @@ var order = {
     }
   }
 
-  export default order;
+  export default persistent_order;
