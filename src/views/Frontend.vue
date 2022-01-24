@@ -13,11 +13,16 @@
             <i class="el-input__icon el-icon-search" @click="searchItem"></i>
           </div>
         </el-col>
-        <el-col :span="6" class="text-align: right">
-          <div v-if="place != undefined" class="title-2 info-conto">
+        <el-col :span="8" class="text-align: right">
+          <div v-if="currentPlace.place != ''" class="title-2 info-conto">
             <span>{{currentPlace.area.name}}</span>            
             -
             <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
+            &nbsp;
+            <el-icon size="24" color="#000" @click="reassignPark">
+              <circle-close />
+            </el-icon>
+      
           </div>
         </el-col>
         <el-col :span="6" class="text-align: right">
@@ -179,7 +184,7 @@ import Order from "../data/Order.js";
 import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import utils from "../utils.js";
-import { Edit } from '@element-plus/icons'
+import { Edit, CircleClose } from '@element-plus/icons'
 
 export default {
   name: "Frontend",
@@ -187,7 +192,8 @@ export default {
     ProductGrid,
     ShoppingCart,
     DiscountWidget,
-    Edit
+    Edit,
+    CircleClose
   },
   props: ["place", "room"],
   data() {
@@ -237,6 +243,43 @@ export default {
     },
   },
   methods: {
+    reassignPark: function() {
+      if(this.order.hasUnsavedChanges()) {
+        this.$confirm(
+          this.$t('bill.ignore-changes'),
+          this.$t('bill.reassign'),
+          {
+            confirmButtonText: this.$t("generic.ok"),
+            cancelButtonText: this.$t("generic.cancel"),
+            type: 'warning',
+          }
+        )
+        .then(() => {
+          this.currentPlace = {
+            area: {},
+            place: ''
+          }
+          this.order.clear();
+          this.$message({
+            type: 'success',
+            message: this.$t('bill.reassigned'),
+          })
+        })
+        .catch(() => {
+        })
+      } else {
+          this.currentPlace = {
+            area: {},
+            place: ''
+          }
+          this.order.clear();
+          this.$message({
+            type: 'success',
+            message: this.$t('bill.reassigned'),
+          })
+      }
+
+    },
     searchItem: function() {
 
     },

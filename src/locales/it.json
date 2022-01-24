@@ -143,7 +143,10 @@
     "docs_bills": "Documenti/Conti",
     "conto_park": "Conto {place}",
     "place": "Posto {description}",
-    "area": "Area {description}"
+    "area": "Area {description}",
+    "ignore-changes": "Il conto è stato modificato. Annullare?",
+    "reassign": "Riassegna conto",
+    "reassigned": "Conto riassegnato"
   },
   "orders": {
     "order": "Ordine",
