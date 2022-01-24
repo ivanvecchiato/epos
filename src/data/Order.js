@@ -131,6 +131,7 @@ export default class Order {
 
       var noteCriteria = true;
       var variantCriteria = true;
+      var timingCriteria = true; // per controllare se un item è appena inserito
       if(params == undefined) {
         if(item.note == undefined && p.note == undefined) {
           noteCriteria = true;
@@ -147,7 +148,13 @@ export default class Order {
         }
       }
       
-      if(item.id === p.id && noteCriteria && variantCriteria) {
+      if(p.insertTime == undefined) {
+        if(item.insertTime == undefined)
+          timingCriteria = true;
+        else
+          timingCriteria = false;
+      }
+      if(item.id === p.id && noteCriteria && variantCriteria && timingCriteria) {
         item.quantity++;
         inserted = true;
         break;
@@ -217,11 +224,11 @@ export default class Order {
   }
 
   hasUnsavedChanges() {
-    this.orderList.forEach(item => {
-      if(item.insertTime == undefined) {
+    for(var i=0; i<this.orderList.length; i++) {
+      if(this.orderList[i].insertTime == undefined) {
         return true;
       }
-    })
+    }
     return false;
   }
 
