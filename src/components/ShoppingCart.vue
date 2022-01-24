@@ -1,10 +1,15 @@
 <template>
   <div class="cart">
-    <div v-for="item, index in orderList" :key="item.id" class="cart-item" @click="showItemDetails(index, item)">
+    <div v-for="item, index in orderList" :key="item.id" :class="getItemClass(item)" @click="showItemDetails(index, item)">
       <span class="item-quantity">{{item.quantity}}</span>
       <span class="item-name">{{item.name}}</span>
-      <span class="item-note">{{item.note}}</span>
-      <span class="item-price">{{formatPrice(item.price)}}</span>
+      <div class="item-details">
+        <span class="item-unitary-price" v-if="item.quantity>1">
+          {{item.quantity}} x {{formatPrice(item.price)}}
+        </span>
+        <span class="item-note">{{item.note}}</span>
+      </div>
+      <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
     </div>
 
     <el-dialog
@@ -40,6 +45,17 @@ export default {
     }
   },
   methods: {
+    getItemClass: function(item) {
+      if(item.status == -1) {
+        return 'cart-item';
+      } else {
+        if(item.insertTime == undefined) {
+          return 'cart-item-new';
+        } else {
+          return 'cart-item';
+        }
+      }
+    },
     onDelete: function() {
       this.$emit('deleteItem', this.currentIndex);
       this.showModifications = false;
@@ -77,10 +93,20 @@ export default {
 .cart-item {
   display: flex;
   width: 100%;
-  padding: 5px;
+  padding: 4px;
   max-height: 60px;
   min-height: 60px;
   position: relative;
+  vertical-align: middle;
+}
+.cart-item-new {
+  display: flex;
+  width: 100%;
+  padding: 4px;
+  max-height: 60px;
+  min-height: 60px;
+  position: relative;
+  background: rgba(155, 201, 155, 0.3);
   vertical-align: middle;
 }
 .quantity {
@@ -122,12 +148,21 @@ export default {
   left: 40px;
   font-weight: bold;
 }
-.item-note {
-  display: inline-block;
+.item-details {
+  display: flex;
   position: absolute;
   left: 40px;
   top: 25px;
+  flex-direction: column;
+}
+.item-note {
+  color: var(--info-color);
   font-size: 0.9em;
+}
+.item-unitary-price {
+  color: var(--info-color);
+  font-size: 0.9em;
+  font-weight: bold;
 }
 .item-price {
   display: inline-block;
