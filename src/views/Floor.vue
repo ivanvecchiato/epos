@@ -284,7 +284,7 @@ export default {
   top: 1px;
   left: 1px;
   /*border: 1px solid rgb(231, 231, 231);*/
-  border: 1px solid var(--primary-color);
+  border: 1px solid rgb(150, 162, 151);
   border-radius: 8px;
   padding: 0px;
 }
