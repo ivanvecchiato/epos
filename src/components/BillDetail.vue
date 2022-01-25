@@ -58,12 +58,14 @@ export default {
       this.tableData = [];
       var items = this.data.data.orderList;
       for (var i = 0; i < items.length; i++) {
-        this.tableData.push({
-          quantity: items[i].quantity,
-          product: items[i].name,
-          note: items[i].note,
-          amount: (items[i].quantity * items[i].price).toFixed(2),
-        });
+        if(items[i].status != -100) {
+          this.tableData.push({
+            quantity: items[i].quantity,
+            product: items[i].name,
+            note: items[i].note,
+            amount: (items[i].quantity * items[i].price).toFixed(2),
+          });
+        }
       }
     },
   },
@@ -89,6 +91,11 @@ export default {
 }
 .product {
   color: var(--primary-color);
+  font-weight: bold;
+}
+.product-null {
+  color: var(--info-color);
+  text-decoration: line-through;
   font-weight: bold;
 }
 .note {

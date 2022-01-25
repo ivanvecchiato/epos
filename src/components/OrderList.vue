@@ -17,7 +17,7 @@
             <ul>
               <li v-for="item in group.list" :key="item.id">
                 <span class="item-quantity">{{item.quantity}}</span>
-                <span class="item-name">{{item.name}}</span>
+                <span :class="getItemNameClass(item.status)">{{item.name}}</span>
                 <span class="item-price">{{formatPrice(item)}}</span>
               </li>
             </ul>
@@ -29,7 +29,7 @@
         <ul class="list">
           <li v-for="item in groupedList" :key="item.id" class="list-item">
             <span class="item-quantity">{{item.quantity}}</span>
-            <span class="item-name">{{item.name}}</span>
+            <span :class="getItemNameClass(item.status)">{{item.name}}</span>
             <span class="item-price">{{formatPrice(item)}}</span>
           </li>
         </ul>
@@ -56,6 +56,11 @@ export default {
     }
   },
   methods: {
+    getItemNameClass: function(item_status) {
+      if(item_status == -100) {
+        return "item-name-crossed";
+      } else return "item-name";
+    },
     getTotale: function() {
       return utils.formatPrice(this.order.getTotale());
     },
@@ -87,6 +92,16 @@ ul {
 	list-style: none;
 	padding: 0;
 	width: 100%;
+}
+.item-name-crossed {
+  text-align: left;
+  display: inline-block;
+  position: absolute;
+  max-width: 300px;
+  left: 40px;
+  color: lightcoral;
+  font-weight: normal;
+  text-decoration: line-through;
 }
 .list-item {
   margin: 15px;

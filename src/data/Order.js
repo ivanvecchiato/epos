@@ -34,7 +34,8 @@ export default class Order {
   getTotale() {
     var amount = 0;
     this.orderList.forEach(item => {
-      amount += Number(item.price)/* * item.quantity*/;
+      if(item.status != -100)
+        amount += Number(item.price)/* * item.quantity*/;
     });
     
     this.totale = amount;
@@ -44,7 +45,8 @@ export default class Order {
   getTotaleNetto() {
     var amount = 0;
     this.orderList.forEach(item => {
-      amount += Number(item.price)/* * item.quantity*/;
+      if(item.status != -100)
+        amount += Number(item.price)/* * item.quantity*/;
     });
     
     this.totale = amount;
@@ -63,14 +65,19 @@ export default class Order {
   }
 
   getQuantity() {
-    return this.size();
-    /*
     var q=0;
     for(var i=0; i<this.size(); i++) {
-      q+=this.orderList[i].quantity;
+      if(this.orderList[i].status != -100) q++;
     }
     return q;
-    */
+  }
+
+  getDeletedQuantity() {
+    var q=0;
+    for(var i=0; i<this.size(); i++) {
+      if(this.orderList[i].status == -100) q++;
+    }
+    return q;
   }
 
   addPayment(index, description, amount) {
@@ -101,7 +108,8 @@ export default class Order {
   }
 
   removeItem(index) {
-    this.orderList.splice(index, 1);
+    //this.orderList.splice(index, 1);
+    this.orderList[index].status = -100;
     this.saveCache();
   }
 
@@ -128,6 +136,10 @@ export default class Order {
     var inserted = false;
     for(var i=0; i<list.length; i++) {
       var item = list[i];
+
+      if(item.status == -100) {
+        break;
+      }
 
       var noteCriteria = true;
       var variantCriteria = true;
@@ -167,7 +179,7 @@ export default class Order {
   }
 
   groupByItems(params) {
-    console.log('groupByItems', params);
+    //console.log('groupByItems', params);
     var list = [];
     for(var i=0; i<this.size(); i++) {
       var item = this.orderList[i];
@@ -213,6 +225,8 @@ export default class Order {
     this.orderList.forEach(item => {
       if(item.insertTime == undefined) {
         item.insertTime = tempo;
+        if(item.status != -100)
+          item.status = 0;
         item.operator = {
           id: operator.id,
           name: operator.name

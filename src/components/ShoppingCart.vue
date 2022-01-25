@@ -2,7 +2,7 @@
   <div class="cart">
     <div v-for="item, index in orderList" :key="item.id" :class="getItemClass(item)" @click="showItemDetails(index, item)">
       <span class="item-quantity">{{item.quantity}}</span>
-      <span class="item-name">{{item.name}}</span>
+      <span :class="getItemNameClass(item.status)">{{item.name}}</span>
       <div class="item-details">
         <span class="item-unitary-price" v-if="item.quantity>1">
           {{item.quantity}} x {{formatPrice(item.price)}}
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getItemClass: function(item) {
-      if(item.status == -1) {
+      if(item.status == -100) {
         return 'cart-item';
       } else {
         if(item.insertTime == undefined) {
@@ -55,6 +55,11 @@ export default {
           return 'cart-item';
         }
       }
+    },
+    getItemNameClass: function(item_status) {
+      if(item_status == -100) {
+        return "item-name-crossed";
+      } else return "item-name";
     },
     onDelete: function() {
       this.$emit('deleteItem', this.currentIndex);
@@ -90,6 +95,9 @@ export default {
 </script>
 
 <style scoped>
+.cart {
+  margin-right: 15px;
+}
 .cart-item {
   display: flex;
   width: 100%;
@@ -106,7 +114,7 @@ export default {
   max-height: 60px;
   min-height: 60px;
   position: relative;
-  background: rgba(155, 201, 155, 0.3);
+  border-right: solid 5px rgba(155, 201, 155);
   vertical-align: middle;
 }
 .quantity {
@@ -148,6 +156,16 @@ export default {
   left: 40px;
   font-weight: bold;
 }
+.item-name-crossed {
+  text-align: left;
+  display: inline-block;
+  position: absolute;
+  max-width: 300px;
+  left: 40px;
+  color: lightcoral;
+  font-weight: normal;
+  text-decoration: line-through;
+}
 .item-details {
   display: flex;
   position: absolute;
@@ -167,7 +185,7 @@ export default {
 .item-price {
   display: inline-block;
   position: absolute;
-  right: 15px;
+  right: 5px;
   font-size: 1.0em;
   color: var(--info2-color);
   font-weight: bold;
