@@ -4,6 +4,7 @@ import App from './App.vue'
 import installElementPlus from './plugins/element'
 import router from './router'
 import $bus from './event.js';
+import VueQRCodeComponent from 'vue-qrcode-component'
 
 function loadLocaleMessages () {
   const locales = require.context('./locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
@@ -28,6 +29,7 @@ const app = createApp(App)
 installElementPlus(app)
 app.use(router);
 app.use(i18n);
+app.component('qr-code', VueQRCodeComponent);
 app.config.globalProperties.$bus = $bus;
 
 app.mount('#app')
