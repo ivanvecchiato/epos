@@ -231,7 +231,8 @@ export default class Order {
           id: operator.id,
           name: operator.name
         }
-        partial.push(item);
+        if(item.status != -100)
+          partial.push(item);
       }
     });
     return partial;
@@ -271,7 +272,6 @@ export default class Order {
     .catch((error) => {
       console.error("Error adding document: ", error)
     })
-
   }
 
   writeDoc() {
