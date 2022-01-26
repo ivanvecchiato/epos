@@ -4,6 +4,7 @@
     "parameters": "Parametri",
     "data": "Dati",
     "admin": "Amministrazione",
+    "production": "Aree di produzione",
     "operators": "Operatori",
     "description": "Descrizione",
     "ask_delete": "Cancellare '{description}'?",
@@ -64,7 +65,8 @@
     "options": "Opzioni",
     "vat": "Iva",
     "favorite": "Preferito",
-    "unfavorite": "Rimuovi da preferiti"
+    "unfavorite": "Rimuovi da preferiti",
+    "production": "Reparti di produzione"
   },
   "product_type": {
     "normal": "Normale",

@@ -1,5 +1,8 @@
 <template>
    <div>
+      <qr-code
+      text="https://goo.gl/9eIWP9"
+      size="160"></qr-code>
       <el-button @click="generate">genera</el-button>
       <el-button @click="resetOrders" v-loading.fullscreen.lock="fullscreenLoading">reset conti</el-button>
       <el-button @click="resetStats" v-loading.fullscreen.lock="fullscreenLoading">reset dati</el-button>

@@ -5,7 +5,9 @@
       <operators></operators>
     </el-tab-pane>
     <el-tab-pane label="Config">Config</el-tab-pane>
-    <el-tab-pane label="Role">Role</el-tab-pane>
+    <el-tab-pane :label="$t('config.production')">
+      <aree-produzione></aree-produzione>
+    </el-tab-pane>
     <el-tab-pane :label="$t('config.admin')">
       <admin></admin>
     </el-tab-pane>
@@ -17,10 +19,11 @@
 <script>
 import Operators from "./Operators/Operators.vue"
 import Admin from "./Admin/Admin.vue"
+import AreeProduzione from "./Aree/AreeProduzione.vue"
 
 export default {
   name: "Settings",
-  components: { Operators, Admin },
+  components: { Operators, Admin, AreeProduzione },
   data() {
     return {
     };
