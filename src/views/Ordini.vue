@@ -32,7 +32,8 @@ export default {
           snapshotChange.forEach((doc) => {
             var record = doc.data();
             record.id = doc.id;
-            this.orders.push(record);
+            if(record.status != -100)
+              this.orders.push(record);
           });
           console.log('loadOrders', this.orders);
         });
