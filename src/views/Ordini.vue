@@ -3,7 +3,10 @@
   <div class="title">{{$t('orders.orders')}}</div>
   <div class="title-2">{{$t('orders.pending-orders', {quantity: orders.length})}}</div>
   <div class="order-grid">
-    <order-card v-for="order in orders" :key="order.id" :data="order"
+    <order-card v-for="order in orders"
+      :key="order.id"
+      :data="order"
+      :printable="productionArea"
       @checkOrder="checkOrder"/>
   </div>
 </div>
@@ -18,7 +21,8 @@ export default {
   components: {OrderCard},
   data() {
     return {
-      orders: []
+      orders: [],
+      productionArea: ''
     };
   },
   methods: {
@@ -32,11 +36,25 @@ export default {
           snapshotChange.forEach((doc) => {
             var record = doc.data();
             record.id = doc.id;
-            if(record.status != -100)
+            if(this.somethingToBePrinted(record.comanda)) {
               this.orders.push(record);
+            }
           });
           console.log('loadOrders', this.orders);
         });
+    },
+    somethingToBePrinted(comanda) {
+      var ret = false;
+      for(var i=0; i<comanda.length; i++) {
+        var areas = comanda[i].productionAreas;
+        if(areas == undefined) continue;
+        for(var j=0; j<comanda[i].productionAreas.length; j++) {
+          if(comanda[i].productionAreas[j].id == this.productionArea) {
+            return true;
+          }
+        }
+      }
+      return ret;
     },
     checkOrder: function(id) {
        var ref = Firebase.db.collection('ordini').doc(id);
@@ -46,6 +64,10 @@ export default {
     },
   },
   mounted() {
+    var param = JSON.parse(localStorage.getItem('local_area'));
+    if(param != null) {
+      this.productionArea = param.id;
+    }
     this.loadOrders();
   },
 };

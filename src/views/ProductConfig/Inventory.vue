@@ -4,9 +4,9 @@
     <div class="inventory-body">
       <el-row>
         <el-col :span="4">
-          <el-button type="primary" @click="dialogVisible = true">{{
-            $t("product.new")
-          }}</el-button>
+          <el-button size="small" plain type="primary" @click="dialogVisible = true">
+            {{$t("product.new")}}
+          </el-button>
         </el-col>
         <el-col :span="4">
           <el-button
@@ -24,7 +24,7 @@
         <el-table
           :data="tableData"
           height="800"
-          style="width: 80%"
+          style="width: 90%"
           @row-click="rowClick">
           <el-table-column
             prop="code"

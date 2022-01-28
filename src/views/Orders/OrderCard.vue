@@ -11,7 +11,7 @@
          <span class="order-operator">{{data.operator.name}}</span>
          <span class="order-quantity">{{quantity}}&nbsp;{{$t('product.products')}}</span>
          <ul>
-            <li class="item" v-for="item in data.comanda" :key="item.id">
+            <li class="item" v-for="item in comandaToBePrinted" :key="item.id">
                <div class="item-name">{{item.name}}</div>
                <div class="item-note">{{item.note}}</div>
             </li>
@@ -37,10 +37,10 @@
 import utils from "../../utils.js";
 
 export default {
-   props: ['data'],
+   props: ['data', 'printable'],
    data() {
       return {
-         
+         comandaToBePrinted: []
       }
    },
    computed: {
@@ -57,6 +57,15 @@ export default {
    methods: {
       loadOrder: function() {
          console.log(this.data);
+         for(var i=0; i<this.data.comanda.length; i++) {
+           var areas = this.data.comanda[i].productionAreas;
+           if(areas == undefined) continue;
+           for(var j=0; j<this.data.comanda[i].productionAreas.length; j++) {
+             if(this.data.comanda[i].productionAreas[j].id == this.printable) {
+               this.comandaToBePrinted.push(this.data.comanda[i]);
+             }
+           }
+         }
       },
       checkOrder: function() {
          this.$emit("checkOrder", this.data.id)

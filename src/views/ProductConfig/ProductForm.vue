@@ -168,6 +168,22 @@
             </el-col>
           </el-row>
         </el-tab-pane>
+
+        <el-tab-pane :label="$t('product.production')">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item>
+                <el-checkbox-group v-model="checkedProductions">
+                  <el-checkbox v-for="dest in productions" :label="dest.id"
+                    :key="dest.id"
+                    @change="setDestinations">
+                    {{dest.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
       </el-tabs>
 
       <el-form-item>
@@ -197,11 +213,21 @@ export default {
       suckerCanvas: null,
       suckerArea: [],
       isSucking: false,
-      isMounted: false
+      isMounted: false,
+      productions: [],
+      checkedProductions: []
     };
   },
   components: { ColorSelector},
   methods: {
+    setDestinations() {
+      this.product.productionAreas = [];
+      for(var i=0; i<this.productions.length; i++) {
+        if(this.checkedProductions.indexOf(this.productions[i].id) != -1) {
+          this.product.productionAreas.push(this.productions[i]);
+        }
+      }
+    },
     onSubmit: function() {
       console.log("onSubmit", this.product);
       console.log("onSubmit", this.documentId);
@@ -245,12 +271,6 @@ export default {
           self.insertNewCategory(value);
         })
         .catch(() => {
-          /*
-        this.$message({
-          type: "info",
-          message: "Input canceled",
-        });
-        */
         });
     },
     colorPicked: function(color) {
@@ -270,11 +290,29 @@ export default {
           console.error("Error adding document: ", error);
         });
     },
+    loadProductionAreas() {
+      Firebase.db
+        .collection("aree")
+        .orderBy("id")
+        .onSnapshot((snapshotChange) => {
+          this.productions = [];
+          snapshotChange.forEach((doc) => {
+            var record = doc.data();
+            record.id = doc.id;
+            this.productions.push(record);
+          });
+
+          for(var i=0; i<this.product.productionAreas.length; i++) {
+            this.checkedProductions.push(this.product.productionAreas[i].id);
+          }
+        });
+    },
   },
   mounted() {
     console.log("mounted", this.data);
     this.product = this.data;
     this.isMounted = true;
+    this.loadProductionAreas();
   },
 };
 </script>
