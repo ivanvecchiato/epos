@@ -2,23 +2,23 @@
   <div class="floor">
     <div class="areas-toolbar">
       <div class="area-buttons">
-          <el-button
-            type="info"
-            round
-            v-for="area in areas"
-            :key="area.id"
-            :class="getButtonClass(area.id)"
-            @click="selectArea(area)">
-            {{ area.name }}
-          </el-button>
+        <el-button
+          type="info"
+          round
+          v-for="area in areas"
+          :key="area.id"
+          :class="getButtonClass(area.id)"
+          @click="selectArea(area)">
+          {{ area.name }}
+        </el-button>
 
-          <el-button
-            round
-            class="button-new"
-            @click="addArea">
-            {{$t('floor.new_area')}}
-          </el-button>
-        </div>
+        <el-button
+          round
+          class="button-new"
+          @click="addArea">
+          {{$t('floor.new_area')}}
+        </el-button>
+      </div>
     </div>
     <div class="grid">
       <div v-for="t in currentArea.places" :key="t.name" class="table">
@@ -283,8 +283,8 @@ export default {
   position: relative;
   top: 1px;
   left: 1px;
-  /*border: 1px solid rgb(231, 231, 231);*/
-  border: 1px solid rgb(150, 162, 151);
+  background: #fff;
+  border: 1px solid rgb(150, 155, 162);
   border-radius: 8px;
   padding: 0px;
 }
