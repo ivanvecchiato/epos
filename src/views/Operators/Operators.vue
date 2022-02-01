@@ -4,7 +4,7 @@
          <el-aside width="200px">
             <el-button type="danger" plain @click="newOperator">{{$t('config.new-operator')}}</el-button>
             <ul>
-               <li v-for="op in operators" :key="op.id" @click="selectOperator(op)">
+               <li v-for="op, index in operators" :key="op.id" @click="selectOperator(op, index)">
                   <el-icon :size="18" color="#e83c3c" style="vertical-align: middle;" v-if="op.admin">
                      <star />
                   </el-icon>
@@ -50,13 +50,14 @@
 import Firebase from "../../firebase.js";
 import { Star } from '@element-plus/icons'
 import Operator from "../../data/Operator.js"
-import permissions from "../../data/Permissions.js"
 
 export default {
    data() {
       return {
          operators: [],
-         currentOperator: null
+         docIds: [],
+         currentOperator: null,
+         currentIndex: -1
       }
    },
    components: {Star},
@@ -69,7 +70,20 @@ export default {
             }
          }
       },
+      confirmMsg(msg) {
+         this.$message({
+            message: msg,
+            type: 'success',
+         })
+      },
+      errorMsg(msg) {
+         this.$message({
+            message: msg,
+            type: 'error',
+         })
+      },
       saveOperator: function() {
+         var self = this;
          if(this.currentOperator.id == 0) {
             // get max id
             var max = 1;
@@ -79,37 +93,35 @@ export default {
             max++;
             this.currentOperator.save(max)
          } else {
-            console.log(this.currentOperator.id);
+            this.currentOperator.update(
+               this.docIds[this.currentIndex],
+               function() {
+                  self.$message({
+                     message: self.confirmMsg(self.$t('config.changes-saved')),
+                     type: 'success',
+                  })
+               },
+               function() {
+                  self.$message({
+                     message: self.errorMsg(self.$t('config.changes-fail')),
+                     type: 'error',
+                  })
+               }
+            );
          }
       },
       newOperator: function() {
          this.currentOperator = new Operator;
          console.log('newOperator', this.currentOperator)
       },
-      selectOperator: function(op) {
+      selectOperator: function(op, index) {
          this.currentOperator = op;
-      },
-      checkPermission (op, permission) {
-         var found = false;
-         for(var m=0; m<op.permissions.length; m++) {
-            if(op.permissions[m].id == permission.id) {
-               found = true;
-               break;
-            }
-         }
-         if(!found) {
-            if(op.admin) {
-               permission.enabled = true;
-            }
-            op.permissions.push(permission);
-         }
+         this.currentIndex = index;
       },
       fillPermissions () {
          for(var i=0; i<this.operators.length; i++) {
             var op = this.operators[i];
-            for(var j=0; j<permissions.length; j++) {
-               this.checkPermission(op, permissions[j])
-            }
+            op.checkPermissions();
          }
       },
       loadOperators () {
@@ -118,9 +130,12 @@ export default {
            .orderBy("id")
            .onSnapshot((snapshotChange) => {
              this.operators = [];
+             this.docIds = [];
              snapshotChange.forEach((doc) => {
-               var record = doc.data();
+               var record = new Operator;
+               record.fillData(doc.data());
                this.operators.push(record);
+               this.docIds.push(doc.id);
              });
              this.fillPermissions();
             });

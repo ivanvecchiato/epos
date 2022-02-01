@@ -12,7 +12,9 @@
     "delete_ok": "Cancellazione effettuata",
     "demo_data": "Demo data",
     "select-operator": "Selezionare un operatore",
-    "new-operator": "Nuovo operatore"
+    "new-operator": "Nuovo operatore",
+    "changes-saved": "Modifiche salvate",
+    "changes-fail": "Errore nel salvataggio"
   },
   "floor": {
     "floor": "Piano tavoli",

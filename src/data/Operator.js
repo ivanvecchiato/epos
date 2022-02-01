@@ -25,4 +25,51 @@ export default class Operator {
         console.error("Error adding document: ", error);
       });
   }
+
+  call(f) {
+    f();
+  }
+
+  update(docId, successCbk, errorCbk) {
+    var ref = Firebase.db.collection("operators").doc(docId);
+    ref.update(Object.assign({}, this))
+      .then(() => {
+        this.call(successCbk);
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+        this.call(errorCbk)
+      });
+  }
+
+  checkPermission (permission) {
+    var found = false;
+    for(var m=0; m<this.permissions.length; m++) {
+       if(this.permissions[m].id == permission.id) {
+          found = true;
+          break;
+       }
+    }
+    if(!found) {
+      var newPermission = JSON.parse(JSON.stringify(permission))
+      if(this.admin) {
+        newPermission.enabled = true;
+      }
+      this.permissions.push(newPermission);
+    }
+  }
+
+  checkPermissions() {
+    for(var j=0; j<permissions.length; j++) {
+      this.checkPermission(permissions[j])
+    }
+  }
+
+  fillData(data) {
+    var keys = Object.keys(this);
+    keys.forEach(element => {
+      if(data[element] == undefined) data[element] = '';
+      this[element] = data[element];
+    });
+  }
 }
