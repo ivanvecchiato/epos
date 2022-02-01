@@ -22,9 +22,11 @@
       <div class="list">
 
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" :label="$t('generic.date')" width="180">
+          <el-table-column prop="date" :label="$t('generic.date')" width="150">
           </el-table-column>
-          <el-table-column prop="amount" :label="$t('bill.amount')" width="180">
+          <el-table-column prop="place" :label="$t('bill.place')" width="150">
+          </el-table-column>
+          <el-table-column prop="amount" :label="$t('bill.amount')" width="185">
           </el-table-column>
           <el-table-column label="" width="100">
             <template #default="scope">
@@ -222,13 +224,25 @@ export default {
       } else {
         Firebase.db
           .collection("park")
-          .orderBy("order.lastModified", "desc")
-          .onSnapshot((snapshotChange) => {
+          .orderBy("id")
+          .onSnapshot((snapshotChange) => {            
             this.docs = [];
             snapshotChange.forEach((doc) => {
-              var record = doc.data().order;
-              if(record.orderList.length > 0)
-                this.docs.push({ id: doc.id, data: record });
+              var area = doc.data();
+              var places = area.places;
+              for(var n in places) {
+                var record = places[n].order;
+                if(record.orderList.length > 0) {
+                  record.place = {
+                    area: {
+                      id: area.id,
+                      name: area.name
+                    },
+                    place: places[n].name
+                  }
+                  this.docs.push({ id: doc.id, data: record });
+                }
+              }
             });
             this.handleDocs();
           });
@@ -253,6 +267,7 @@ export default {
         this.stats.sospeso += this.docs[i].data.totale;
         this.tableData.push({
           date: utils.toDateTime(this.docs[i].data.lastModified),
+          place: this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.place,
           amount: this.docs[i].data.totale.toFixed(2),
         });
         this.collectData(this.docs[i].data.orderList);

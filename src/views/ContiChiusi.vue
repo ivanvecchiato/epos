@@ -5,17 +5,19 @@
 
         <div class="list">
           <el-table :data="tableData" height="400" style="width: 100%">
-            <el-table-column prop="date" :label="$t('generic.date')" width="180">
+            <el-table-column prop="date" :label="$t('generic.date')" width="150">
             </el-table-column>
-            <el-table-column prop="amount" :label="$t('bill.amount')" width="180">
+            <el-table-column prop="place" :label="$t('bill.source')" width="150">
+            </el-table-column>
+            <el-table-column prop="amount" :label="$t('bill.amount')" width="150">
             </el-table-column>
             <el-table-column label="" width="100">
               <template #default="scope">
                 <el-button
                   icon="el-icon-view"
                   size="mini"
-                  @click="handleDetail(scope.$index, scope.row)"
-                ></el-button>
+                  @click="handleDetail(scope.$index, scope.row)">
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -99,7 +101,7 @@
 </template>
 
 <script>
-//import Order from '../data/Order.js';
+import Order from '../data/Order.js';
 import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
@@ -113,6 +115,8 @@ export default {
     return {
       detailVisible: false,
       tableData: [],
+      currentBill: null,
+      docs: [],
       docsChartOptions: {
         chart: {
           id: "venduto",
@@ -199,8 +203,13 @@ export default {
       }
 
       for (var i = 0; i < this.docs.length; i++) {
+        var source = "cassa";
+        if(this.docs[i].data.place != undefined) {
+          source = this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.place;
+        }
         this.tableData.push({
           date: utils.toDateTime(this.docs[i].data.lastModified),
+          place: source,
           amount: this.docs[i].data.totale.toFixed(2),
         });
         this.collectData(this.docs[i].data.orderList);
@@ -233,7 +242,9 @@ export default {
       return Math.random();
     },
     handleDetail: function(index) {
-      this.currentBill = this.docs[index];
+      this.currentBill = new Order;
+      this.currentBill.fillData(this.docs[index]);
+      this.currentBill.groupByItems();
       this.detailVisible = true;
     },
     initGraphOptions: function() {
