@@ -1,4 +1,4 @@
-import Order from "./Order.js";
+import Order from "./Conto.js";
 import Firebase from "../firebase.js";
 
 export default class Table {

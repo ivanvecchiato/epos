@@ -180,7 +180,7 @@ import DiscountWidget from "../components/DiscountWidget.vue";
 import Table from "../data/Table.js";
 import Customer from "../data/Customer.js";
 //import Product from "../data/Product.js";
-import Order from "../data/Order.js";
+import Order from "../data/Conto.js";
 import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import utils from "../utils.js";

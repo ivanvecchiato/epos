@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import Order from '../data/Order.js';
+import Order from '../data/Conto.js';
 import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";

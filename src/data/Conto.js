@@ -1,5 +1,6 @@
 import Firebase from "../firebase.js";
 import Payment from "./Payment";
+import Table from "./Table";
 import utils from "../utils.js";
 import operator from "../store/user.js";
 
@@ -211,12 +212,12 @@ export default class Order {
     localStorage.setItem('cart', JSON.stringify(this));
   }
 
-  setClosed(status) {
+  setClosed(status, place) {
     this.lastModified = new Date();
     this.status = status;
     this.totale = this.getTotale();
 
-    this.writeDoc();
+    this.writeDoc(place);
   }
 
   setOperatorAndTimestamp() {
@@ -274,25 +275,23 @@ export default class Order {
     })
   }
 
-  writeDoc() {
-    if(this.id == '') {
-      console.log('writeDoc', Object.assign({}, this));
-      Firebase.db.collection('conti').add(Object.assign({}, this))
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id)
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error)
-      })
-    } else {
-      Firebase.db.collection('conti').doc(this.id).set(Object.assign({}, this), { merge: true })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch((error) => {
-        console.error("Error writing document: ", error);
-      });
+  writeDoc(place) {
+    if(place != null) {
+      this.place = place;
     }
+    console.log('writeDoc', Object.assign({}, this));
+    Firebase.db.collection('conti').add(Object.assign({}, this))
+    .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id)
+      if(place != null) {
+        var t = new Table;
+        t.updateConto(place, this.order);
+      }
+      this.clear();
+    })
+    .catch((error) => {
+      console.error("Error adding document: ", error)
+    })
   }
 
   fillData(data) {
