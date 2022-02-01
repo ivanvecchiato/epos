@@ -14,7 +14,7 @@
           </div>
         </el-col>
         <el-col :span="8" class="text-align: right">
-          <div v-if="currentPlace.place != ''" class="title-2 info-conto">
+          <div v-if="currentPlace != null" class="title-2 info-conto">
             <span>{{currentPlace.area.name}}</span>            
             -
             <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
@@ -203,10 +203,7 @@ export default {
       currentCategory: null,
       order: new Order(),
       //groupedList: [],
-      currentPlace: {
-        area: {},
-        place: ''
-      },
+      currentPlace: null,
       discountVisible: false,
       billLoaded: false,
       search_pattern: ''
@@ -255,10 +252,7 @@ export default {
           }
         )
         .then(() => {
-          this.currentPlace = {
-            area: {},
-            place: ''
-          }
+          this.currentPlace = null;
           this.order.clear();
           this.$message({
             type: 'success',
@@ -268,10 +262,7 @@ export default {
         .catch(() => {
         })
       } else {
-          this.currentPlace = {
-            area: {},
-            place: ''
-          }
+          this.currentPlace = null;
           this.order.clear();
           this.$message({
             type: 'success',
@@ -403,7 +394,7 @@ export default {
     pagaConto: function() {
       this.order.addPayment(0, "contanti", this.order.getTotale());
       console.log(this.order);
-      this.order.setClosed(1);
+      this.order.setClosed(1, this.currentPlace);
     },
     loadCategories: function() {
       Firebase.db
