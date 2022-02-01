@@ -50,13 +50,13 @@
 import Firebase from "../../firebase.js";
 import { Star } from '@element-plus/icons'
 import Operator from "../../data/Operator.js"
+import permissions from "../../data/Permissions.js"
 
 export default {
    data() {
       return {
          operators: [],
-         currentOperator: null,
-         permissions: []
+         currentOperator: null
       }
    },
    components: {Star},
@@ -89,6 +89,29 @@ export default {
       selectOperator: function(op) {
          this.currentOperator = op;
       },
+      checkPermission (op, permission) {
+         var found = false;
+         for(var m=0; m<op.permissions.length; m++) {
+            if(op.permissions[m].id == permission.id) {
+               found = true;
+               break;
+            }
+         }
+         if(!found) {
+            if(op.admin) {
+               permission.enabled = true;
+            }
+            op.permissions.push(permission);
+         }
+      },
+      fillPermissions () {
+         for(var i=0; i<this.operators.length; i++) {
+            var op = this.operators[i];
+            for(var j=0; j<permissions.length; j++) {
+               this.checkPermission(op, permissions[j])
+            }
+         }
+      },
       loadOperators () {
          Firebase.db
            .collection("operators")
@@ -99,6 +122,7 @@ export default {
                var record = doc.data();
                this.operators.push(record);
              });
+             this.fillPermissions();
             });
          },
    },

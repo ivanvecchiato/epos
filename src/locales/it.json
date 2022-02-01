@@ -213,6 +213,8 @@
     "delete-order": "Può cancellare un ordine",
     "generic-sale": "Può fare una vendita generica",
     "change-price": "Può cambiare un prezzo",
-    "modify-park": "Può modificare il parcheggio conti"
+    "modify-park": "Può modificare il parcheggio conti",
+    "apply-discount": "Può applicare uno sconto",
+    "access-stats": "Ha accesso alle statistiche"
   }
 }
