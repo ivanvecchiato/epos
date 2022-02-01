@@ -97,7 +97,7 @@ export default {
           var roomObj = {
             id: Number(j+1),
             name: "Area " + (j+1),
-            places: []
+            places: {}
           };
           for(var i=0; i<tablesNum[j]; i++) {
             var obj = {
@@ -106,8 +106,8 @@ export default {
               places: 2,
               order: Object.assign({},new Order)
             };
-
-            roomObj.places.push(obj);
+            var key = Number(i+1);
+            roomObj.places[key] = (obj);
           }
           Firebase.db.collection('park').add(roomObj)
           .then((docRef) => {
