@@ -29,6 +29,16 @@ const permissions = [
       name: 'modify-park',
       enabled: false
    },
+   {
+      id: 7,
+      name: 'apply-discount',
+      enabled: false
+   },
+   {
+      id: 8,
+      name: 'access-stats',
+      enabled: false
+   },
 ]
 
 export default permissions;
