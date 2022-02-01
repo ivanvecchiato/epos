@@ -125,6 +125,7 @@
   "bill": {
     "amount": "Somma",
     "bills": "Conti",
+    "bill": "Conto",
     "product": "Prodotto",
     "quantity": "Quantità",
     "total": "Totale",
@@ -145,6 +146,7 @@
     "docs_bills": "Documenti/Conti",
     "conto_park": "Conto {place}",
     "place": "Posto {description}",
+    "source": "Origine",
     "area": "Area {description}",
     "ignore-changes": "Il conto è stato modificato. Annullare?",
     "reassign": "Riassegna conto",
