@@ -13,6 +13,22 @@ export default class Table {
     this.order = new Order;
   }
 
+  clearConto(place) {
+    console.log('updateConto', place)
+
+    var docRef = Firebase.db.collection('park').doc(place.area.docId);
+    var key = "places." + place.place + ".order";
+    docRef.update({
+        [key]: Object.assign({}, new Order)
+      })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      console.error("Error writing document: ", error);
+    });
+  }
+
   updateConto(place, order) {
     console.log('updateConto', place)
 
