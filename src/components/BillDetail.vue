@@ -3,6 +3,9 @@
     <el-row :gutter="20">
       <el-col :span="16">
         <div class="bill-details">
+          <h2 class="intestazione">
+            {{getIntestazioneConto()}}
+          </h2>
           <el-table :data="tableData" style="width: 100%">
             <el-table-column
               prop="quantity"
@@ -54,6 +57,16 @@ export default {
     },
   },
   methods: {
+    getIntestazioneConto() {
+      var intest = this.$t('bill.bill') + " ";
+      console.log('getIntestazioneConto', this.data.data);
+      if(this.data.data.place == undefined) {
+        intest += "Cassa";
+      } else {
+        intest += this.data.data.place.area.name + " / " + this.data.data.place.place
+      }
+      return intest;
+    },
     handleDetails: function() {
       this.tableData = [];
       var items = this.data.data.orderList;
@@ -104,5 +117,8 @@ export default {
 .amount {
   color: var(--secondary-color);
   font-weight: bold;
+}
+.intestazione {
+  color: var(--primary-color);
 }
 </style>
