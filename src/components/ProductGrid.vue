@@ -175,13 +175,14 @@ export default {
 }
 .product-price {
   font-size: 14px;
+  font-weight: bold;
   display: inline-block;
   position: absolute;
   bottom: -8px;
   right: 8px;
-  color: #fff;
+  color: var(--primary-color);
   border: 0px solid var(--primary-color);
-  background: var(--primary-color);
+  background: var(--light-secondary-color);
   border-radius: 30px;
   padding-left: 5px;
   padding-right: 5px;

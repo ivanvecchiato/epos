@@ -26,6 +26,7 @@
 import operator from "../store/user.js"
 import Firebase from "../firebase.js"
 import Log from "../data/Log.js"
+import Operator from '../data/Operator.js'
 
 export default {
   name: 'Login',
@@ -66,18 +67,15 @@ export default {
     setOperator: function(user) {
       console.log("setOperator", user);
       this.$message({
-        message: 'Welcome ' + user.name,
+        message: 'Welcome ' + user.getName(),
         type: 'success'
       });
       this.$router.push("/frontend");
     },
-    loginSuccess: function (id, data) {
+    loginSuccess: function (op) {
       operator.setUserLogged({
         loggedIn: true,
-        id: id,
-        name: data.name,
-        permissions: data.permissions,
-        admin: data.admin
+        operator: op
       });
 
       var event = {
@@ -101,7 +99,9 @@ export default {
         } else {
           querySnapshot.forEach((doc) => {
               console.log(doc.id, " => ", doc.data());
-              this.loginSuccess(doc.id, doc.data());
+              var op = new Operator;
+              op.fillData(doc.data());
+              this.loginSuccess(op);
           });
         }
       })
@@ -127,7 +127,7 @@ export default {
 }
 .pin {
   border: solid 1px #FED59E;
-  color: #815854;
+  color: #8158548e;
   font-family: "Montserrat-Bold", sans-serif;
   padding: 5px;
   width: 200px;
@@ -160,8 +160,8 @@ export default {
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
   background: #fff;
-  color: #815854;
-  border: solid 1px #815854;
+  color: #8158548e;
+  border: solid 1px #8158548e;
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
@@ -171,17 +171,17 @@ export default {
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
   background: #fff;
-  color: #815854;
-  border: solid 1px #815854;
+  color: #8158548e;
+  border: solid 1px #8158548e;
   border-radius: 50%;
 }
 .regular-button:focus {
-  background: #815854;
+  background: #8158548e;
   transform: scale(1.02);
   color: #fff;
 }
 .regular-circle-button:focus {
-  background: #815854;
+  background: #8158548e;
   transform: scale(1.02);
   color: #fff;
 }
@@ -190,7 +190,7 @@ export default {
   height: 40px;
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
-  background: #815854;
+  background: #8158548e;
   border: 0px;
   color: #fff;
   border-radius: 8px;
@@ -201,7 +201,7 @@ export default {
   height: 70px;
   font-size: 1.5em;
   font-family: "Montserrat-Bold", sans-serif;
-  background: #815854;
+  background: #8158548e;
   border: 0px;
   color: #fff;
   border-radius: 50%;

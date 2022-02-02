@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import Operator from '../data/Operator.js';
 import operator from "../store/user.js"
 
 export default {
@@ -74,11 +75,11 @@ export default {
       console.log(key, keyPath);
     },
     operatorInitial: function() {
-      return operator.name.charAt(0);
+      return operator.getName().charAt(0);
     },
     avatarLength: function() {
-      if(operator.avatar == undefined) return 0
-      else return operator.avatar.length
+      if(operator.getAvatar() == undefined) return 0
+      else return operator.getAvatar().length
     },
     admin: function() {
       return operator.isAdmin();
@@ -93,7 +94,7 @@ export default {
       this.$emit('logout')
     },
     userName: function() {
-      return operator.name;
+      return operator.getName();
     },
     openFloor: function() {
       this.$router.push("/floor");
@@ -114,14 +115,13 @@ export default {
       this.$router.push("/settings");
     },
     checkAuth: function() {
-      var op = JSON.parse(localStorage.getItem('user'));
+      var data = JSON.parse(localStorage.getItem('user'));
+      var op = new Operator;
+      op.fillData(data);
       if(op != null) {
         operator.setUserLogged({
           loggedIn: true,
-          id: op.id,
-          name: op.name,
-          permissions: op.permissions,
-          admin: op.admin
+          operator: op
         });
         this.loggedIn = true;
         this.$router.push("/frontend");
