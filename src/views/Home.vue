@@ -116,18 +116,18 @@ export default {
     },
     checkAuth: function() {
       var data = JSON.parse(localStorage.getItem('user'));
-      var op = new Operator;
-      op.fillData(data);
-      if(op != null) {
+      if(data == null) {
+        this.loggedIn = false;
+        this.$router.push("/login");
+      } else {
+        var op = new Operator;
+        op.fillData(data);
         operator.setUserLogged({
           loggedIn: true,
           operator: op
         });
         this.loggedIn = true;
         this.$router.push("/frontend");
-      } else {
-        this.loggedIn = false;
-        this.$router.push("/login");
       }
     }
   },
