@@ -1,41 +1,33 @@
+import Operator from "../data/Operator"
+
 var user = {
     id: 0,
-    loggedIn: false,
-    name: '',
-    admin: false,
-    permissions: {},
-    avatar: '',
+    operator: new Operator,
 
     setUserLogged (newValue) {
-      this.id = newValue.id;
       this.loggedIn = newValue.loggedIn;
-      this.name = newValue.name;
-      this.permissions = newValue.permissions;
-      this.admin = newValue.admin;
+      this.operator = newValue.operator;
       localStorage.setItem('user', JSON.stringify(this));
     },
     logoutUser () {
-      this.id = -1;
       this.loggedIn = false;
-      this.admin = false;
-      this.username = '';
-      this.password = '';
+      this.operator = null;
       localStorage.removeItem('user');
     },
     isAdmin() {
-      return this.admin;
+      return this.operator.admin;
     },
     isLogged() {
       return this.loggedIn;
     },
-    getUsername() {
-      return this.username;
-    },
     getName() {
-      return this.name;
+      return this.operator.name;
     },
     getId() {
-      return this.id;
+      return this.operator.id;
+    },
+    getAvatar() {
+      return this.operator.avatar;
     }
   }
 
