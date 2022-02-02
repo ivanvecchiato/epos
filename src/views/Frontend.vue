@@ -109,12 +109,12 @@
               </el-icon>
               {{$t('bill.discount')}}
             </span>
-            <span v-if="order.discount.value>0" style="margin-left: 10px">
-              {{order.discount.rate}}%
+            <span v-if="conto.discount.value>0" style="margin-left: 10px">
+              {{conto.discount.rate}}%
             </span>
             </div>
             <span class="sconto-amount">
-              {{formatAmount(order.discount.value)}}
+              {{formatAmount(conto.discount.value)}}
             </span>
           </div>
 
@@ -165,7 +165,7 @@
       width="40%"
       destroy-on-close>
       <discount-widget
-        :amount="order.totale"
+        :amount="conto.totale"
         @applyDiscount="applyDiscount">
       </discount-widget>
     </el-dialog>
@@ -201,7 +201,7 @@ export default {
       categories: [],
       products: [],
       currentCategory: null,
-      conto: new Conto(),
+      conto: new Conto,
       //groupedList: [],
       currentPlace: null,
       discountVisible: false,
@@ -393,7 +393,7 @@ export default {
     },
     pagaConto: function() {
       this.conto.addPayment(0, "contanti", this.conto.getTotale());
-      console.log(this.order);
+      console.log(this.conto);
       this.conto.setClosed(1, this.currentPlace);
     },
     loadCategories: function() {
@@ -430,7 +430,7 @@ export default {
         this.$router.push("/floor");
       else {
         var t = new Table();
-        t.updateConto(this.currentPlace, this.order);
+        t.updateConto(this.currentPlace, this.conto);
       }
     },
     loadConto: function() {
@@ -439,9 +439,9 @@ export default {
         .doc(this.currentPlace.area.docId);
       docRef.get().then((doc) => {
         if (doc.exists) {
-          console.log("loadConto", doc.data().places[this.currentPlace.place].order);
+          console.log("loadConto", doc.data().places[this.currentPlace.place].conto);
           if(doc.data().places[this.currentPlace.place].conto.orderList.length > 0) {
-            this.conto.fillData(doc.data().places[this.currentPlace.place].order);
+            this.conto.fillData(doc.data().places[this.currentPlace.place].conto);
             //this.groupedList = this.conto.groupByItems();
             this.billLoaded = true;
           }

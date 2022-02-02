@@ -134,7 +134,8 @@ export default {
       this.currentConto = t.conto;
     },
     tableBusy: function(t) {
-      return t.conto.size()>0;
+      if(t.conto == null) return false;
+      else return t.conto.size()>0;
     },
     move: function() {
       this.$message({
@@ -157,11 +158,15 @@ export default {
       })
     },
     getStatusClass: function(t) {
-      if(t.conto.size()>0) {
-        return 'table-name-busy';
-      }
-      else {
+      if(t.conto == null) {
         return 'table-name-free';
+      } else {
+        if(t.conto.size()>0) {
+          return 'table-name-busy';
+        }
+        else {
+          return 'table-name-free';
+        }
       }
     },
     getLastMod: function(t) {
@@ -250,10 +255,12 @@ export default {
             area.docId = doc.id;
             var places = area.places;
             for(var n in places) {
-              var conto = new Conto;
-              conto.fillData(places[n].conto);
-              places[n].conto = conto;
-              places[n].showMenu = false;
+              if(places[n].conto != null) {
+                var conto = new Conto;
+                conto.fillData(places[n].conto);
+                places[n].conto = conto;
+                places[n].showMenu = false;
+              }
             }
             self.areas.push(area);
           });

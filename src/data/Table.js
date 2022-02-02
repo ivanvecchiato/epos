@@ -17,7 +17,7 @@ export default class Table {
     console.log('updateConto', place)
 
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
-    var key = "places." + place.place + ".order";
+    var key = "places." + place.place + ".conto";
     docRef.update({
         [key]: Object.assign({}, new Conto)
       })
@@ -29,17 +29,18 @@ export default class Table {
     });
   }
 
-  updateConto(place, order) {
+  updateConto(place, conto) {
     console.log('updateConto', place)
 
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
-    var key = "places." + place.place + ".order";
+    var key = "places." + place.place + ".conto";
     docRef.update({
-        [key]: Object.assign({}, order)
+        [key]: Object.assign({}, conto)
       })
     .then(() => {
       console.log("Document successfully written!");
-      order.clear();
+      if(conto != null)
+        conto.clear();
     })
     .catch((error) => {
       console.error("Error writing document: ", error);

@@ -216,7 +216,7 @@ export default {
           .onSnapshot((snapshotChange) => {
             this.docs = [];
             snapshotChange.forEach((doc) => {
-              var record = doc.data().order;
+              var record = doc.data().conto;
               this.docs.push({ id: doc.id, data: record });
             });
             this.handleDocs();
@@ -232,9 +232,9 @@ export default {
               var places = area.places;
               for(var n in places) {
                 var conto = new Conto;
-                conto.fillData(places[n].order);
-                places[n].order = conto;
-                var record = places[n].order;
+                conto.fillData(places[n].conto);
+                places[n].conto = conto;
+                var record = places[n].conto;
                 if(record.orderList.length > 0) {
                   record.place = {
                     area: {

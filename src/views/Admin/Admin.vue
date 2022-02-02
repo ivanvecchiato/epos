@@ -35,7 +35,7 @@ export default {
                   //console.log('resetOrders', utils.toDate(floor[key].conto.createdAt));
                   if(floor[key].conto.orderList.length > 0) {
                      var docRef = Firebase.db.collection('park').doc(docId);
-                     var place = "places." + key + ".order";
+                     var place = "places." + key + ".conto";
                      docRef.update({
                         [place]: Object.assign({}, new Conto)
                      })
@@ -104,7 +104,8 @@ export default {
               id: Number(i+1),
               name: (i+1),
               places: 2,
-              conto: Object.assign({},new Conto)
+//              conto: Object.assign({},new Conto)
+              conto: null
             };
             var key = Number(i+1);
             roomObj.places[key] = (obj);
