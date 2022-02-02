@@ -1,4 +1,4 @@
-import Order from "./Conto.js";
+import Conto from "./Conto.js";
 import Firebase from "../firebase.js";
 
 export default class Table {
@@ -10,7 +10,7 @@ export default class Table {
     };
     this.name = '';
     this.places = 2;
-    this.order = new Order;
+    this.conto = new Conto;
   }
 
   clearConto(place) {
@@ -19,7 +19,7 @@ export default class Table {
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
     var key = "places." + place.place + ".order";
     docRef.update({
-        [key]: Object.assign({}, new Order)
+        [key]: Object.assign({}, new Conto)
       })
     .then(() => {
       console.log("Document successfully written!");

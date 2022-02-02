@@ -180,7 +180,7 @@ import DiscountWidget from "../components/DiscountWidget.vue";
 import Table from "../data/Table.js";
 import Customer from "../data/Customer.js";
 //import Product from "../data/Product.js";
-import Order from "../data/Conto.js";
+import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import utils from "../utils.js";
@@ -201,7 +201,7 @@ export default {
       categories: [],
       products: [],
       currentCategory: null,
-      order: new Order(),
+      conto: new Conto(),
       //groupedList: [],
       currentPlace: null,
       discountVisible: false,
@@ -211,17 +211,17 @@ export default {
   },
   computed: {
     groupedList: function () {
-      return this.order.groupByItems();
+      return this.conto.groupByItems();
     },
     customerName: function() {
-      if(this.order.customer != null) {
-        return this.order.customer.firstName + " " + this.order.customer.lastName;
+      if(this.conto.customer != null) {
+        return this.conto.customer.firstName + " " + this.conto.customer.lastName;
       } else {
         return this.$t('customer.add_new');
       }
     },
     getNoteColor: function() {
-      if(this.order.note == '')
+      if(this.conto.note == '')
         return "#cccaaa"
       else
         return "#ff6b6b"
@@ -233,15 +233,15 @@ export default {
       return require('@/assets/user.png');
     },
     subtotale: function() {
-      return utils.formatPrice(this.order.getTotale());
+      return utils.formatPrice(this.conto.getTotale());
     },
     totale: function() {
-      return utils.formatPrice(this.order.getTotaleNetto());
+      return utils.formatPrice(this.conto.getTotaleNetto());
     },
   },
   methods: {
     reassignPark: function() {
-      if(this.order.hasUnsavedChanges()) {
+      if(this.conto.hasUnsavedChanges()) {
         this.$confirm(
           this.$t('bill.ignore-changes'),
           this.$t('bill.reassign'),
@@ -253,7 +253,7 @@ export default {
         )
         .then(() => {
           this.currentPlace = null;
-          this.order.clear();
+          this.conto.clear();
           this.$message({
             type: 'success',
             message: this.$t('bill.reassigned'),
@@ -263,7 +263,7 @@ export default {
         })
       } else {
           this.currentPlace = null;
-          this.order.clear();
+          this.conto.clear();
           this.$message({
             type: 'success',
             message: this.$t('bill.reassigned'),
@@ -279,7 +279,7 @@ export default {
     },
     billStart: function() {
       if(this.billLoaded)
-        return utils.toDateTime(this.order.createdAt);
+        return utils.toDateTime(this.conto.createdAt);
     },
     setNote: function() {
       this.$prompt('', this.$t('bill.note'), {
@@ -287,14 +287,14 @@ export default {
           cancelButtonText: this.$t('generic.cancel')
         })
           .then(({ value }) => {
-            this.order.note = value;
-            this.order.saveCache();
+            this.conto.note = value;
+            this.conto.saveCache();
           })
           .catch(() => {
           })
     },
     openDiscount: function() {
-      if(this.order.size() == 0)
+      if(this.conto.size() == 0)
         return;
       this.discountVisible = true;
     },
@@ -309,7 +309,7 @@ export default {
       return utils.formatPrice(amount);
     },
     getPzs: function() {
-      return this.order.getQuantity();
+      return this.conto.getQuantity();
     },
     selectCategory: function(c) {
       this.currentCategory = c;
@@ -323,8 +323,8 @@ export default {
       }
     },
     addItem: function(p) {
-      this.order.addItem(p);
-      //this.groupedList = this.order.groupByItems();
+      this.conto.addItem(p);
+      //this.groupedList = this.conto.groupByItems();
       this.$nextTick(() => {
         var cart = this.$refs.cart;
         cart.scrollTop = cart.scrollHeight;
@@ -344,16 +344,16 @@ export default {
         });
     },
     removeItem: function(index) {
-      this.order.removeItem(index);
+      this.conto.removeItem(index);
     },
     incrementItem: function(index) {
-      this.order.incrementItem(index);
+      this.conto.incrementItem(index);
     },
     decrementItem: function(index) {
-      this.order.decrementItem(index);
+      this.conto.decrementItem(index);
     },
     changeCart: function() {
-      this.order.saveCache();
+      this.conto.saveCache();
     },
     getProducts: function(cat) {
       Firebase.db
@@ -383,18 +383,18 @@ export default {
     },
     */
     annullaConto: function() {
-      this.order.clear();
+      this.conto.clear();
     },
     addCustomer() {
         var c = new Customer();
         c.randomize();
-        this.order.addCustomer(c);
+        this.conto.addCustomer(c);
         console.log('addCustomer', c);
     },
     pagaConto: function() {
-      this.order.addPayment(0, "contanti", this.order.getTotale());
+      this.conto.addPayment(0, "contanti", this.conto.getTotale());
       console.log(this.order);
-      this.order.setClosed(1, this.currentPlace);
+      this.conto.setClosed(1, this.currentPlace);
     },
     loadCategories: function() {
       Firebase.db
@@ -424,7 +424,7 @@ export default {
         });
     },
     parcheggiaConto: function() {
-      this.order.update(this.currentPlace);
+      this.conto.update(this.currentPlace);
 
       if (this.place == undefined || this.place.length == 0)
         this.$router.push("/floor");
@@ -440,9 +440,9 @@ export default {
       docRef.get().then((doc) => {
         if (doc.exists) {
           console.log("loadConto", doc.data().places[this.currentPlace.place].order);
-          if(doc.data().places[this.currentPlace.place].order.orderList.length > 0) {
-            this.order.fillData(doc.data().places[this.currentPlace.place].order);
-            //this.groupedList = this.order.groupByItems();
+          if(doc.data().places[this.currentPlace.place].conto.orderList.length > 0) {
+            this.conto.fillData(doc.data().places[this.currentPlace.place].order);
+            //this.groupedList = this.conto.groupByItems();
             this.billLoaded = true;
           }
         } else {
@@ -453,11 +453,11 @@ export default {
       });
     },
     applyDiscount: function(discount) {
-      this.order.setDiscount(discount);
+      this.conto.setDiscount(discount);
       this.discountVisible = false;
     },
     isPercentDiscount: function() {
-      return (this.order.discount.type == this.$t('generic.percent'));
+      return (this.conto.discount.type == this.$t('generic.percent'));
     }
   },
   mounted() {
@@ -472,11 +472,11 @@ export default {
       var pendingString = localStorage.getItem('cart');
       if(pendingString != null && pendingString.length > 0) {
         var ord = JSON.parse(pendingString);
-        this.order.fillData(ord);
-        //this.groupedList = this.order.groupByItems();
+        this.conto.fillData(ord);
+        //this.groupedList = this.conto.groupByItems();
       } else {
-        this.order.place = this.currentPlace;
-        this.order.operator = {
+        this.conto.place = this.currentPlace;
+        this.conto.operator = {
           id: operator.id,
           name: operator.name
         }

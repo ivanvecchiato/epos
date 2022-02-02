@@ -105,7 +105,6 @@
 </template>
 
 <script>
-//import Order from '../data/Order.js';
 import Firebase from "../../firebase.js";
 //import utils from "../utils.js";
 import ProductForm from "./ProductForm.vue";

@@ -7,7 +7,7 @@ var user = {
     setUserLogged (newValue) {
       this.loggedIn = newValue.loggedIn;
       this.operator = newValue.operator;
-      localStorage.setItem('user', JSON.stringify(this));
+      localStorage.setItem('user', JSON.stringify(this.operator));
     },
     logoutUser () {
       this.loggedIn = false;

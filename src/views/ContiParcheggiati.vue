@@ -119,10 +119,10 @@
 </template>
 
 <script>
-//import Order from '../data/Order.js';
 import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
+import Conto from "../data/Conto"
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
@@ -231,6 +231,9 @@ export default {
               var area = doc.data();
               var places = area.places;
               for(var n in places) {
+                var conto = new Conto;
+                conto.fillData(places[n].order);
+                places[n].order = conto;
                 var record = places[n].order;
                 if(record.orderList.length > 0) {
                   record.place = {

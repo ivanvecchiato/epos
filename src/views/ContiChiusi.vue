@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import Order from '../data/Conto.js';
+import Conto from '../data/Conto.js';
 import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
@@ -242,7 +242,7 @@ export default {
       return Math.random();
     },
     handleDetail: function(index) {
-      this.currentBill = new Order;
+      this.currentBill = new Conto;
       this.currentBill.fillData(this.docs[index]);
       this.currentBill.groupByItems();
       this.detailVisible = true;

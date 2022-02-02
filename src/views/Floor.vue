@@ -91,14 +91,14 @@
     </div>
 
     <el-dialog
-      :title="currentOrder.place"
-      v-model="showOrderDetail"
+      :title="currentConto.place"
+      v-model="showContoDetail"
       :center="false"
       custom-class="dialog"
       width="40%"
       destroy-on-close>
       <order-list
-        :order="currentOrder"
+        :order="currentConto"
         @onChange="onChange"
         @onDelete="onDelete">
       </order-list>
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import Order from "../data/Conto.js";
+import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
 import Popper from "vue3-popper";
 import '../popper-theme.css'
@@ -124,17 +124,17 @@ export default {
     return {
       areas: [],
       currentArea: {},
-      showOrderDetail: false,
-      currentOrder: {}
+      showContoDetail: false,
+      currentConto: {}
     };
   },
   methods: {
     showOrder: function(t) {
-      this.showOrderDetail = true;
-      this.currentOrder = t.order;
+      this.showContoDetail = true;
+      this.currentConto = t.conto;
     },
     tableBusy: function(t) {
-      return t.order.size()>0;
+      return t.conto.size()>0;
     },
     move: function() {
       this.$message({
@@ -157,7 +157,7 @@ export default {
       })
     },
     getStatusClass: function(t) {
-      if(t.order.size()>0) {
+      if(t.conto.size()>0) {
         return 'table-name-busy';
       }
       else {
@@ -165,11 +165,11 @@ export default {
       }
     },
     getLastMod: function(t) {
-      if(t.order.size() > 0) {
+      if(t.conto.size() > 0) {
         var now = new Date();
         var h = 0;
         var d = 0;
-        var min = Math.floor((now.getTime()/1000 - t.order.lastModified.toDate().getTime()/1000)/60);
+        var min = Math.floor((now.getTime()/1000 - t.conto.lastModified.toDate().getTime()/1000)/60);
         h = Math.floor(min/60);
         if(h > 0) {
           min = min % 60;
@@ -192,10 +192,10 @@ export default {
       }
     },
     getQuantity: function(t) {
-      return t.order.getQuantity();
+      return t.conto.getQuantity();
     },
     getAmount: function(t) {
-      return utils.formatPriceWithCurrency(t.order.getTotaleNetto());
+      return utils.formatPriceWithCurrency(t.conto.getTotaleNetto());
     },
     selectArea: function(c) {
       this.currentArea = c;
@@ -250,9 +250,9 @@ export default {
             area.docId = doc.id;
             var places = area.places;
             for(var n in places) {
-              var order = new Order;
-              order.fillData(places[n].order);
-              places[n].order = order;
+              var conto = new Conto;
+              conto.fillData(places[n].conto);
+              places[n].conto = conto;
               places[n].showMenu = false;
             }
             self.areas.push(area);

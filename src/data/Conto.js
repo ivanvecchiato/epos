@@ -4,7 +4,7 @@ import Table from "./Table";
 import utils from "../utils.js";
 import operator from "../store/user.js";
 
-export default class Order {
+export default class Conto {
   constructor() {
     this.id = '';
     this.docId = 0;

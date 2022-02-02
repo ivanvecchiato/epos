@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Order from "../../data/Conto.js"
+import Conto from "../../data/Conto.js"
 import Firebase from "../../firebase.js"
 //import utils from "../../utils.js"
 
@@ -32,12 +32,12 @@ export default {
                var docId = doc.id;
                var floor = doc.data().places;
                for(var key in floor) {
-                  //console.log('resetOrders', utils.toDate(floor[key].order.createdAt));
-                  if(floor[key].order.orderList.length > 0) {
+                  //console.log('resetOrders', utils.toDate(floor[key].conto.createdAt));
+                  if(floor[key].conto.orderList.length > 0) {
                      var docRef = Firebase.db.collection('park').doc(docId);
                      var place = "places." + key + ".order";
                      docRef.update({
-                        [place]: Object.assign({}, new Order)
+                        [place]: Object.assign({}, new Conto)
                      })
                      .then(() => {
                        console.log("Document successfully written!");
@@ -104,7 +104,7 @@ export default {
               id: Number(i+1),
               name: (i+1),
               places: 2,
-              order: Object.assign({},new Order)
+              conto: Object.assign({},new Conto)
             };
             var key = Number(i+1);
             roomObj.places[key] = (obj);
