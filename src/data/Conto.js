@@ -2,7 +2,7 @@ import Firebase from "../firebase.js";
 import Payment from "./Payment";
 import Table from "./Table";
 import utils from "../utils.js";
-import operator from "../store/user.js";
+import user from "../store/user.js";
 
 export default class Conto {
   constructor() {
@@ -229,8 +229,8 @@ export default class Conto {
         if(item.status != -100)
           item.status = 0;
         item.operator = {
-          id: operator.id,
-          name: operator.name
+          id: user.getId(),
+          name: user.getName()
         }
         if(item.status != -100)
           partial.push(item);
@@ -258,8 +258,8 @@ export default class Conto {
       'done': false,
       'place': place,
       'operator': {
-        id: operator.id,
-        name: operator.name
+        id: user.getId(),
+        name: user.getName()
       }
     };
     this.lastModified = now;
@@ -285,7 +285,7 @@ export default class Conto {
       console.log("Document written with ID: ", docRef.id)
       if(place != null) {
         var t = new Table;
-        t.updateConto(place, this.order);
+        t.updateConto(place, null);
       }
       this.clear();
     })

@@ -1,7 +1,7 @@
 import Operator from "../data/Operator"
 
 var user = {
-    id: 0,
+    loggedIn: false,
     operator: new Operator,
 
     setUserLogged (newValue) {
