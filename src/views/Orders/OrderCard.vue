@@ -12,7 +12,7 @@
          <span class="order-quantity">{{quantity}}&nbsp;{{$t('product.products')}}</span>
          <ul>
             <li class="item" v-for="item in comandaToBePrinted" :key="item.id">
-               <div class="item-name">{{item.name}}</div>
+               <div class="item-name">{{item.quantity}} {{item.name}}</div>
                <div class="item-note">{{item.note}}</div>
             </li>
          </ul>
@@ -55,17 +55,45 @@ export default {
       }
    },
    methods: {
-      loadOrder: function() {
-         console.log(this.data);
-         for(var i=0; i<this.data.comanda.length; i++) {
-           var areas = this.data.comanda[i].productionAreas;
-           if(areas == undefined) continue;
-           for(var j=0; j<this.data.comanda[i].productionAreas.length; j++) {
-             if(this.data.comanda[i].productionAreas[j].id == this.printable) {
-               this.comandaToBePrinted.push(this.data.comanda[i]);
-             }
-           }
+      addToComanda (item) {
+         var inserted = false;
+         for(var i=0; i<this.comandaToBePrinted.length; i++) {
+            var c = this.comandaToBePrinted[i];
+
+            var noteCriteria = true;
+            var variantCriteria = true;
+            if(item.note == undefined && c.note == undefined) {
+              noteCriteria = true;
+            } else {
+              noteCriteria = (item.note == c.note);
+              variantCriteria = utils.arrayCompare(item.modifiers, c.modifiers);  
+            }
+
+            if(item.id === c.id && noteCriteria && variantCriteria) {
+              c.quantity++;
+              inserted = true;
+              break;
+            }
          }
+            
+         if(!inserted) {
+            item.quantity = 1;
+            this.comandaToBePrinted.push(Object.assign({}, item));
+         }
+      },
+      loadOrder: function() {
+         console.log('loadOrder', this.data);
+         for(var i=0; i<this.data.comanda.length; i++) {
+            var areas = this.data.comanda[i].productionAreas;
+            if(areas == undefined) continue;
+            for(var j=0; j<this.data.comanda[i].productionAreas.length; j++) {
+               if(this.data.comanda[i].productionAreas[j].id == this.printable) {
+                  this.addToComanda(this.data.comanda[i]);
+//                  this.comandaToBePrinted.push(this.data.comanda[i]);
+               }
+            }
+         }
+         console.log('loadOrder', this.comandaToBePrinted);
       },
       checkOrder: function() {
          this.$emit("checkOrder", this.data.id)
