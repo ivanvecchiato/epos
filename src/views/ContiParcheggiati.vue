@@ -231,19 +231,21 @@ export default {
               var area = doc.data();
               var places = area.places;
               for(var n in places) {
-                var conto = new Conto;
-                conto.fillData(places[n].conto);
-                places[n].conto = conto;
-                var record = places[n].conto;
-                if(record.orderList.length > 0) {
-                  record.place = {
-                    area: {
-                      id: area.id,
-                      name: area.name
-                    },
-                    place: places[n].name
+                if(places[n].conto != null) {
+                  var conto = new Conto;
+                  conto.fillData(places[n].conto);
+                  places[n].conto = conto;
+                  var record = places[n].conto;
+                  if(record.orderList.length > 0) {
+                    record.place = {
+                      area: {
+                        id: area.id,
+                        name: area.name
+                      },
+                      place: places[n].name
+                    }
+                    this.docs.push({ id: doc.id, data: record });
                   }
-                  this.docs.push({ id: doc.id, data: record });
                 }
               }
             });
