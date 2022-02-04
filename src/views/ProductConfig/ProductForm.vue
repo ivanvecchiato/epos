@@ -184,6 +184,23 @@
             </el-col>
           </el-row>
         </el-tab-pane>
+
+        <el-tab-pane :label="$t('product.images')">
+          <el-row>
+            <el-col :span="6">
+              <el-form-item>
+                <div v-if="imgUrl.length == 0">
+                  <p>{{$t('generic.select_image')}}</p>
+                  <input type="file" @change="onFileChange">
+                </div>
+                <div v-else>
+                  <el-image :src="imgUrl" class="thumbnail"/>
+                  <el-button @click="removeImage">{{$t('generic.delete_image')}}</el-button>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
       </el-tabs>
 
       <el-form-item>
@@ -215,11 +232,40 @@ export default {
       isSucking: false,
       isMounted: false,
       productions: [],
-      checkedProductions: []
+      checkedProductions: [],
+      imgUrl: ''
     };
   },
   components: { ColorSelector},
   methods: {
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+
+      const storage = Firebase.storage.ref();
+      var storageRef = storage.child('images/' + files[0].name);
+
+      storageRef.put(files[0]).then((snapshot) => {
+        console.log('Uploaded a blob or file!', snapshot);
+        this.product.imgUrl = 'images/' + files[0].name;
+      });
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      //var image = new Image();
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.imgUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      console.log(e);
+      this.imgUrl = '';
+      this.product.imgUrl = ''
+    },
     setDestinations() {
       this.product.productionAreas = [];
       for(var i=0; i<this.productions.length; i++) {
@@ -307,12 +353,29 @@ export default {
           }
         });
     },
+    loadImage: function() {
+      if(this.product.imgUrl.length == 0) return;
+
+      const storage = Firebase.storage.ref();
+      var storageRef = storage.child(this.product.imgUrl);
+//      var pathReference = storage.ref(this.product.imgUrl);
+
+      storageRef.getDownloadURL()
+        .then((url) => {
+              console.log("URL", url)
+              this.imgUrl = url;
+        })
+        .catch((error) => {
+              console.log(error)
+        });
+    }
   },
   mounted() {
     console.log("mounted", this.data);
     this.product = this.data;
     this.isMounted = true;
     this.loadProductionAreas();
+    this.loadImage();
   },
 };
 </script>
@@ -321,5 +384,8 @@ export default {
 <style scoped>
 .product-form {
   text-align: left;
+}
+.thumbnail {
+  width: 60px;
 }
 </style>

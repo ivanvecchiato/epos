@@ -366,22 +366,26 @@ export default {
             var record = doc.data();
             record.id = doc.id;
             this.products.push(record);
+            this.loadImage(this.products[this.products.length-1]);
           });
         });
     },
-    /*
-    getFakeProducts: function() {
-      var n = 20;
-      var list = [];
-      for (var i = 0; i < n; i++) {
-        var p = new Product();
-        p.randomize();
-        //console.log(p);
-        list.push(p);
-      }
-      return list;
+    loadImage: function(item) {
+      if(item.imgUrl.length == 0) return;
+
+      const storage = Firebase.storage.ref();
+      var storageRef = storage.child(item.imgUrl);
+//      var pathReference = storage.ref(this.product.imgUrl);
+
+      storageRef.getDownloadURL()
+        .then((url) => {
+              console.log("URL", url)
+              item.imgUrl = url;
+        })
+        .catch((error) => {
+              console.log(error)
+        });
     },
-    */
     annullaConto: function() {
       this.conto.clear();
     },
@@ -420,6 +424,7 @@ export default {
             var record = doc.data();
             record.id = doc.id;
             this.products.push(record);
+            this.loadImage(this.products[this.products.length-1]);
           });
         });
     },
@@ -638,12 +643,15 @@ main {
 }
 .button-active {
   background-color: var(--secondary-color);
+  font-weight: bold;
   border: 0px;
 }
 .button-idle {
-  background-color: var(--lightest-main-color);
+  /*background-color: var(--lightest-main-color);*/
+  background-color: #ffffff;
   color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  font-weight: bold;
+  border: 0px solid var(--primary-color);
 }
 .customer {
   text-align: right;
