@@ -68,7 +68,8 @@
     "vat": "Iva",
     "favorite": "Preferito",
     "unfavorite": "Rimuovi da preferiti",
-    "production": "Reparti di produzione"
+    "production": "Reparti di produzione",
+    "images": "Immagini"
   },
   "product_type": {
     "normal": "Normale",
@@ -122,7 +123,9 @@
     "action": "Esegui",
     "close": "Chiudi",
     "cash-out": "Incassa",
-    "send-to-cloud": "Invia a gestionale"
+    "send-to-cloud": "Invia a gestionale",
+    "select_image": "Seleziona un immagine",
+    "delete_image": "Rimuovi immagine"
   },
   "bill": {
     "amount": "Somma",
