@@ -22,7 +22,11 @@
           </template>
         </el-dropdown>
       </div>
-      <div class="product-name">{{ item.name }}</div>
+      <div class="card-body">
+        <el-image v-if="item.imgUrl.length>0" :src="item.imgUrl" class="thumbnail"/>
+        <p v-if="item.imgUrl.length>0" class="product-img-name">{{ item.name }}</p>
+        <p v-else class="product-name">{{ item.name }}</p>
+      </div>
     </div>
 
     <div class="card-bottom">
@@ -114,7 +118,7 @@ export default {
     },
     editProduct: function(item) {
       console.log('editProduct', item.name);
-    }
+    },
   },
   mounted() {
     //this.products = this.data;
@@ -144,17 +148,24 @@ export default {
   min-height: 50px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  padding: 5px;
+  padding: 0px;
+}
+.card-body {
+  text-align: center;
 }
 .card-bottom {
   padding: 5px;
 }
 .color-indicator {
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 100%;
   background: white;
+  /*
   border-bottom-right-radius: 100%;
   border-top-left-radius: 8px;
+  */
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -164,15 +175,32 @@ export default {
   position: absolute;
   bottom: 0px;
   min-width: 30px;
-  left: 4px;
+  left: 12px;
 }
 .product-name {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
   margin: auto;
   line-height: 90%;
+  /*color: rgb(68, 68, 68);*/
+  color: var(--info2-color);
+  box-sizing: border-box;
   letter-spacing: -0.05em;
 }
+.product-img-name {
+  position: absolute;
+  bottom: 25px;
+  right: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: auto;
+  line-height: 90%;
+  /*color: rgb(68, 68, 68);*/
+  color: var(--info2-color);
+  box-sizing: border-box;
+  letter-spacing: -0.05em;
+}
+
 .product-price {
   font-size: 14px;
   font-weight: bold;
@@ -180,9 +208,9 @@ export default {
   position: absolute;
   bottom: -8px;
   right: 8px;
-  color: var(--primary-color);
+  color: #fff;
   border: 0px solid var(--primary-color);
-  background: var(--light-secondary-color);
+  background: var(--info2-color);
   border-radius: 30px;
   padding-left: 5px;
   padding-right: 5px;
@@ -199,5 +227,11 @@ export default {
 }
 .settings {
   text-align: right;
+}
+.thumbnail {
+  height: 70px;
+  position: absolute;
+  top: -10px;
+  left: 20px;
 }
 </style>
