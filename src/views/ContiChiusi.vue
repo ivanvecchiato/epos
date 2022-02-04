@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import Conto from '../data/Conto.js';
+//import Conto from '../data/Conto.js';
 import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
@@ -183,7 +183,8 @@ export default {
           this.docs = [];
           snapshotChange.forEach((doc) => {
             var record = doc.data();
-            this.docs.push({ id: doc.id, data: record });
+            record.id = doc.id;
+            this.docs.push(record);
           });
           this.handleDocs();
         });
@@ -204,15 +205,15 @@ export default {
 
       for (var i = 0; i < this.docs.length; i++) {
         var source = "cassa";
-        if(this.docs[i].data.place != undefined) {
-          source = this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.place;
+        if(this.docs[i].place != undefined) {
+          source = this.docs[i].place.area.name + " / " + this.docs[i].place.place;
         }
         this.tableData.push({
-          date: utils.toDateTime(this.docs[i].data.lastModified),
+          date: utils.toDateTime(this.docs[i].lastModified),
           place: source,
-          amount: this.docs[i].data.totale.toFixed(2),
+          amount: this.docs[i].totale.toFixed(2),
         });
-        this.collectData(this.docs[i].data.orderList);
+        this.collectData(this.docs[i].orderList);
       }
       console.log('collectData', this.docsStats.collection)
       var sortedKeys = this.getSortedKeys(this.docsStats.collection);
@@ -242,9 +243,13 @@ export default {
       return Math.random();
     },
     handleDetail: function(index) {
+      /*
       this.currentBill = new Conto;
       this.currentBill.fillData(this.docs[index]);
       this.currentBill.groupByItems();
+      */
+
+      this.currentBill = this.docs[index];
       this.detailVisible = true;
     },
     initGraphOptions: function() {

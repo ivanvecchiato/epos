@@ -32,8 +32,8 @@
         </div>
         <div class="totale">{{ getTotale }}</div>
       </el-col>
-      <el-col :span="8" v-if="data.data.customer != null">
-        <customer-detail :data="data.data.customer"></customer-detail>
+      <el-col :span="8" v-if="data.customer != null">
+        <customer-detail :data="data.customer"></customer-detail>
       </el-col>
     </el-row>
   </div>
@@ -41,35 +41,40 @@
 
 <script>
 import CustomerDetail from "./CustomerDetail.vue";
+import Conto from '../data/Conto.js';
 
 export default {
   name: "BillDetail",
   props: ["data"],
   data() {
     return {
+      bill: null,
       tableData: [],
     };
   },
   components: { CustomerDetail },
   computed: {
     getTotale() {
-      return this.$t("bill.total") + ": " + this.data.data.totale.toFixed(2);
+      return this.$t("bill.total") + ": " + this.data.totale.toFixed(2);
     },
   },
   methods: {
     getIntestazioneConto() {
       var intest = this.$t('bill.bill') + " ";
-      console.log('getIntestazioneConto', this.data.data);
-      if(this.data.data.place == undefined) {
+      console.log('getIntestazioneConto', this.data);
+      if(this.data.place == undefined) {
         intest += "Cassa";
       } else {
-        intest += this.data.data.place.area.name + " / " + this.data.data.place.place
+        intest += this.data.place.area.name + " / " + this.data.place.place
       }
       return intest;
     },
     handleDetails: function() {
       this.tableData = [];
-      var items = this.data.data.orderList;
+      this.bill = new Conto;
+      this.bill.fillData(this.data);
+      var items = this.bill.groupByItems();
+
       for (var i = 0; i < items.length; i++) {
         if(items[i].status != -100) {
           this.tableData.push({
