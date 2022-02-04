@@ -283,6 +283,7 @@ export default {
   grid-row-gap: 15px;
   grid-column-gap: 15px;
   margin: 10px;
+  padding-right: 10px;
   text-align: left;
 }
 .table {
@@ -305,7 +306,7 @@ export default {
   top:-5px;
   right: -5px;
   border-radius: 8px;
-  background: rgb(188, 208, 245);
+  background: rgb(235, 235, 235);
   width: 50px;
   height: 40px;
   padding: 4px;
@@ -398,11 +399,11 @@ export default {
 }
 .button-idle {
   min-width: 150px;
-  background-color: var(--lightest-main-color);
+  background-color: #fff;
   color: var(--primary-color);
   font-weight: bold;
   font-size: 1.2em;
-  border: 1px solid var(--primary-color);
+  border: 0px solid var(--primary-color);
 }
 .button-new {
   min-width: 150px;

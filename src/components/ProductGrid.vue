@@ -137,7 +137,7 @@ export default {
 }
 .card {
   border: 0px solid lightgray;
-  background: white;
+  background: #fff;
   border-radius: 8px;
   min-height: 90px;
   position: relative;
@@ -179,7 +179,7 @@ export default {
 }
 .product-name {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: normal;
   margin: auto;
   line-height: 90%;
   /*color: rgb(68, 68, 68);*/
@@ -192,7 +192,7 @@ export default {
   bottom: 25px;
   right: 10px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: normal;
   margin: auto;
   line-height: 90%;
   /*color: rgb(68, 68, 68);*/
