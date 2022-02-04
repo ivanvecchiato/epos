@@ -129,6 +129,7 @@ export default class Conto {
   }
 
   addItem(p) {
+    p.quantity = 1;
     this.orderList.push(Object.assign({}, p));
     this.saveCache();
   }
