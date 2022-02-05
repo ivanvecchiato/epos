@@ -41,10 +41,10 @@
           class="indicator"
           src="@/assets/icons/scale.png"
         />
-        <el-icon v-if="isBundle(item.type)" :size="18" color="#409EFC">
+        <el-icon v-if="isBundle(item.type)" :size="18" color="#409EFC" class="indicator">
           <coin />
         </el-icon>
-        <el-icon v-if="isFavorite(item)" :size="18" color="#eab676">
+        <el-icon v-if="isFavorite(item)" :size="18" color="#eab676" class="indicator">
           <star />
         </el-icon>
       </div>
@@ -171,9 +171,9 @@ export default {
   left: 0px;
 }
 .icons {
-  display: inline-block;
+  display: flex;
   position: absolute;
-  bottom: 0px;
+  bottom: 2px;
   min-width: 30px;
   left: 12px;
 }
@@ -221,9 +221,13 @@ export default {
   transform: scale(1.02);
 }
 .indicator {
-  width: 18px;
-  margin-left: 4px;
-  margin-right: 4px;
+  width: 16px;
+  margin-left: 2px;
+  margin-right: 2px;
+  background-color: rgba(255, 0, 0, 0.235);
+  border: solid 1px red;
+  border-radius: 4px;
+  padding: 2px;
 }
 .settings {
   text-align: right;
