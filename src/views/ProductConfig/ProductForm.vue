@@ -12,31 +12,25 @@
                 <el-input v-model="product.code"></el-input>
               </el-form-item>
             </el-col>
-            <el-form-item :label="$t('product.category')">
-              <el-col :span="11">
-                <el-select
-                  v-model="product.category"
-                  :placeholder="$t('product.category')">
-                  <el-option label="none" value="none"></el-option>
-                  <el-option
-                    v-for="cat in categories"
-                    :key="cat.id"
-                    :label="cat.name"
-                    value="cat.name">
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="2">&nbsp;</el-col>
-              <el-col :span="11">
-                <el-button
-                  type="primary"
-                  plain
-                  size="small"
-                  @click="newCategory"
-                  >{{ $t("product.new_category") }}</el-button
-                >
-              </el-col>
-            </el-form-item>
+            <el-col :span="11">
+              <el-form-item :label="$t('product.category') + ':'">
+                <el-dropdown trigger="click" @command="handleCategorySelection">
+                  <span class="el-dropdown-link">
+                    {{product.category.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item
+                        v-for="cat in categories"
+                        :key="cat.id"
+                        :command="cat">
+                          <span class="dropdown-category">{{cat.name}}</span>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="6">
@@ -82,7 +76,7 @@
           </el-row>
 
           <el-form-item :label="$t('product.description')">
-            <el-input type="textarea" v-model="product.description"></el-input>
+            <el-input type="textarea" :rows="4" v-model="product.description"></el-input>
           </el-form-item>
         </el-tab-pane>
 
@@ -233,11 +227,16 @@ export default {
       isMounted: false,
       productions: [],
       checkedProductions: [],
-      imgUrl: ''
+      imgUrl: '',
+      currentCategory: {}
     };
   },
   components: { ColorSelector},
   methods: {
+    handleCategorySelection(selected) {
+      console.log(selected)
+      this.product.category = selected;
+    },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length)
@@ -307,18 +306,6 @@ export default {
     onCancel: function() {
       this.$emit("productCanceled", this.product);
     },
-    newCategory: function() {
-      var self = this;
-      this.$prompt(this.$t("product.new_category"), this.$t("product.name"), {
-        confirmButtonText: this.$t("generic.ok"),
-        cancelButtonText: this.$t("generic.cancel"),
-      })
-        .then(({ value }) => {
-          self.insertNewCategory(value);
-        })
-        .catch(() => {
-        });
-    },
     colorPicked: function(color) {
       this.product.color = color;
     },
@@ -348,8 +335,10 @@ export default {
             this.productions.push(record);
           });
 
-          for(var i=0; i<this.product.productionAreas.length; i++) {
-            this.checkedProductions.push(this.product.productionAreas[i].id);
+          if(this.product.productionAreas != undefined) {
+            for(var i=0; i<this.product.productionAreas.length; i++) {
+              this.checkedProductions.push(this.product.productionAreas[i].id);
+            }
           }
         });
     },
@@ -387,5 +376,10 @@ export default {
 }
 .thumbnail {
   width: 60px;
+}
+.dropdown-category {
+  font-size: 1.2em;
+  font-family: "Montserrat", sans-serif;
+  color: var(--primary-color);
 }
 </style>

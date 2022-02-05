@@ -218,6 +218,7 @@ export default {
         .collection("categories")
         .orderBy("id")
         .onSnapshot((snapshotChange) => {
+          this.categories = [];
           snapshotChange.forEach((doc) => {
             var record = doc.data();
             this.categories.push(record);

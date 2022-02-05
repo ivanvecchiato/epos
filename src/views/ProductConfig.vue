@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="pricelist">
       <div class="title">{{$t('pricelist.products_variants')}}</div>
       <el-tabs type="card" @tab-click="handleClick">
         <el-tab-pane :label="$t('pricelist.products')">
@@ -30,5 +30,7 @@ export default {
 </script>
 
 <style scoped>
-
+.pricelist {
+  background-color: rgb(250, 250, 250);
+}
 </style>
