@@ -5,6 +5,9 @@
         <el-tab-pane :label="$t('pricelist.products')">
           <inventory></inventory>
         </el-tab-pane>
+        <el-tab-pane :label="$t('pricelist.categories')">
+          <categories></categories>
+        </el-tab-pane>
         <el-tab-pane :label="$t('pricelist.variants')">
           <variants></variants>
         </el-tab-pane>
@@ -15,9 +18,10 @@
 <script>
 import Inventory from './ProductConfig/Inventory.vue'
 import Variants from './ProductConfig/Variants.vue'
+import Categories from './ProductConfig/Categories.vue'
 
 export default {
-   components: { Inventory, Variants },
+   components: { Inventory, Variants, Categories },
    data() {
      return {
      };

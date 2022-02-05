@@ -28,6 +28,8 @@
     "pricelist": "Listino",
     "product":"Prodotto",
     "products":"Prodotti",
+    "categories": "Categorie",
+    "category": "Categoria",
     "variants":"Varianti",
     "products_variants":"Prodotti e Varianti",
     "surcharges": "Maggiorazioni",
@@ -70,6 +72,14 @@
     "unfavorite": "Rimuovi da preferiti",
     "production": "Reparti di produzione",
     "images": "Immagini"
+  },
+  "category": {
+    "category": "Categoria",
+    "name": "Nome",
+    "code": "Codice",
+    "rate": "Aliquota",
+    "new": "Nuova categoria",
+    "ask_delete": "Rimuovere {name}?"
   },
   "product_type": {
     "normal": "Normale",

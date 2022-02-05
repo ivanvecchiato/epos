@@ -1,19 +1,12 @@
 
 export default class Category {
   constructor() {
-    this.id = [];
+    this.id = 0;
+    this.code = 0;
     this.name = '';
-  }
-
-  generate() {
-    var list = [];
-    for(var i=0; i<10; i++) {
-      list.push({
-        id: (i+1),
-        name: 'categoria ' + (i+1)
-      })
+    this.vat = {
+      id: 0,
+      rate: 0
     }
-    
-    return list;
   }
 }
