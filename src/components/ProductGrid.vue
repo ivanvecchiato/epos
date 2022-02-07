@@ -33,19 +33,17 @@
       <div class="icons" v-if="atLeastOneProp(item)">
         <img
           v-if="isToComplete(item.type)"
-          class="indicator"
-          src="@/assets/icons/steps.png"
-        />
+          class="indicator indicator-red"
+          src="@/assets/icons/steps.png"/>
         <img
           v-if="isMeasure(item.type)"
-          class="indicator"
-          src="@/assets/icons/scale.png"
-        />
-        <el-icon v-if="isBundle(item.type)" :size="18" color="#409EFC" class="indicator">
+          class="indicator indicator-gray"
+          src="@/assets/icons/scale.png"/>
+        <el-icon v-if="isBundle(item.type)" :size="14" color="#ffffff" class="indicator indicator-red">
           <coin />
         </el-icon>
-        <el-icon v-if="isFavorite(item)" :size="18" color="#eab676" class="indicator">
-          <star />
+        <el-icon v-if="isFavorite(item)" :size="14" color="#ffffff" class="indicator indicator-yellow">
+          <star-filled />
         </el-icon>
       </div>
       <div class="product-price">{{ formatPrice(item.price) }}</div>
@@ -57,7 +55,7 @@
 <script>
 import { Coin } from "@element-plus/icons";
 import { Setting } from '@element-plus/icons'
-import { Star } from '@element-plus/icons'
+import { StarFilled } from '@element-plus/icons'
 import Firebase from '../firebase.js'
 //import utils from '../utils.js'
 
@@ -66,7 +64,7 @@ export default {
   props: {
     data: Array,
   },
-  components: { Coin, Setting, Star },
+  components: { Coin, Setting, StarFilled },
   data() {
     return {
       bgc: {
@@ -221,13 +219,21 @@ export default {
   transform: scale(1.02);
 }
 .indicator {
-  width: 16px;
+  width: 14px;
+  height: 14px;
   margin-left: 2px;
   margin-right: 2px;
-  background-color: rgba(255, 0, 0, 0.235);
-  border: solid 1px red;
   border-radius: 4px;
   padding: 2px;
+}
+.indicator-red {
+  background-color: var(--info2-color);
+}
+.indicator-yellow {
+  background-color: var(--warning-color);
+}
+.indicator-gray {
+  background-color: var(--info-color);
 }
 .settings {
   text-align: right;

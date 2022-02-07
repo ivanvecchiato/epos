@@ -213,12 +213,15 @@ export default class Conto {
     localStorage.setItem('cart', JSON.stringify(this));
   }
 
-  setClosed(status, place) {
+  setClosed(status, place, callback) {
     this.lastModified = new Date();
     this.status = status;
     this.totale = this.getTotale();
 
     this.writeDoc(place);
+    if(callback != undefined) {
+      callback();
+    }
   }
 
   setOperatorAndTimestamp() {

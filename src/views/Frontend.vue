@@ -185,6 +185,7 @@ import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import utils from "../utils.js";
 import { Edit, CircleClose } from '@element-plus/icons'
+import printf from "../fiscal/printf.js";
 
 export default {
   name: "Frontend",
@@ -395,10 +396,18 @@ export default {
         this.conto.addCustomer(c);
         console.log('addCustomer', c);
     },
+    stampaScontrino() {
+      console.log('stampaScontrino');
+      printf.document(
+        this.conto.orderList,
+        this.conto.payments,
+        this.conto.customer
+      );
+    },
     pagaConto: function() {
       this.conto.addPayment(0, "contanti", this.conto.getTotale());
       console.log(this.conto);
-      this.conto.setClosed(1, this.currentPlace);
+      this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
     },
     loadCategories: function() {
       Firebase.db
