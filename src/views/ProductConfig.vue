@@ -31,6 +31,7 @@ export default {
 
 <style scoped>
 .pricelist {
-  background-color: rgb(250, 250, 250);
+  background-color: var(--background-color);
+  height: 100vh;
 }
 </style>
