@@ -73,6 +73,7 @@ html {
     --danger-color: #ff6b6b!important;
     --info-color: #8a9fad!important;
     --info2-color: #f38383!important;
+    --background-color: rgb(250, 250, 250);
 }
 .title {
   font-size: 3.0em;
