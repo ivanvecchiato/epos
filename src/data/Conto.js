@@ -82,7 +82,9 @@ export default class Conto {
   }
 
   addPayment(index, description, amount) {
-    this.payments.push(Object.assign({}, new Payment(index, description, amount)));
+    var payment = new Payment(index, description);
+    payment.amount = amount;
+    this.payments.push(Object.assign({}, payment));
   }
 
   addCustomer(customer) {
