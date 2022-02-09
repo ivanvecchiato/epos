@@ -46,6 +46,11 @@
             <i class="el-icon-setting"></i>
             <span>{{ $t("config.settings") }}</span>
           </el-menu-item>
+          <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
+            <i class="el-icon-magic-stick"></i>
+            <span>{{ $t("config.extra") }}</span>
+          </el-menu-item>
+      
         </el-menu>
       </div>
       <div class="center">
