@@ -15,6 +15,9 @@
       <el-tab-pane :label="$t('config.admin')">
         <admin></admin>
       </el-tab-pane>
+      <el-tab-pane :label="$t('config.fiscal-printer')">
+        <fiscal-printer></fiscal-printer>
+      </el-tab-pane>
     </el-tabs>  
   </div>
 </template>
@@ -22,12 +25,13 @@
 <script>
 import Operators from "./Operators/Operators.vue"
 import Admin from "./Admin/Admin.vue"
-import Configs from "./Admin/Configs.vue"
+//import Configs from "./Admin/Configs.vue"
+import FiscalPrinter from "./Admin/FiscalPrinter.vue"
 import AreeProduzione from "./Aree/AreeProduzione.vue"
 
 export default {
   name: "Settings",
-  components: { Operators, Admin, AreeProduzione, Configs },
+  components: { Operators, Admin, AreeProduzione, FiscalPrinter },
   data() {
     return {
     };
