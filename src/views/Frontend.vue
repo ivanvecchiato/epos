@@ -472,6 +472,14 @@ export default {
     },
     isPercentDiscount: function() {
       return (this.conto.discount.type == this.$t('generic.percent'));
+    },
+    testPrintf() {
+      printf.getStatus((resp) => {
+        console.log('testPrintf', resp)
+        if(resp.Service.ECRStatus[0].mode != 'R') {
+          printf.setKey('REG');
+        }
+      });
     }
   },
   mounted() {
@@ -501,6 +509,8 @@ export default {
     this.$bus.trigger('login', operator)
 
     this.loadCategories();
+
+    this.testPrintf();
   },
 };
 </script>

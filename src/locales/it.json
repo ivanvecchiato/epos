@@ -4,8 +4,10 @@
     "parameters": "Parametri",
     "data": "Dati",
     "admin": "Amministrazione",
+    "extra": "Extra",
     "production": "Aree di produzione",
     "operators": "Operatori",
+    "payments": "Pagamenti",
     "description": "Descrizione",
     "ask_delete": "Cancellare '{description}'?",
     "deletion": "Cancellazione",
@@ -14,7 +16,8 @@
     "select-operator": "Selezionare un operatore",
     "new-operator": "Nuovo operatore",
     "changes-saved": "Modifiche salvate",
-    "changes-fail": "Errore nel salvataggio"
+    "changes-fail": "Errore nel salvataggio",
+    "fiscal-printer": "Stampante Fiscale"
   },
   "floor": {
     "floor": "Piano tavoli",
@@ -135,7 +138,8 @@
     "cash-out": "Incassa",
     "send-to-cloud": "Invia a gestionale",
     "select_image": "Seleziona un immagine",
-    "delete_image": "Rimuovi immagine"
+    "delete_image": "Rimuovi immagine",
+    "test": "Test"
   },
   "bill": {
     "amount": "Somma",
@@ -223,6 +227,7 @@
     "ask_delete_product": "Rimuovere il prodotto?"
   },
   "permission": {
+    "issue-bill": "Può emettere documenti",
     "access-pricelist": "Ha accesso al listino",
     "access-inventory": "Ha accesso al magazzino",
     "delete-order": "Può cancellare un ordine",
