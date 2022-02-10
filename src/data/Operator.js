@@ -42,7 +42,7 @@ export default class Operator {
       });
   }
 
-  checkPermission (permission) {
+  checkPermission (permission, position) {
     var found = false;
     for(var m=0; m<this.permissions.length; m++) {
        if(this.permissions[m].id == permission.id) {
@@ -55,13 +55,14 @@ export default class Operator {
       if(this.admin) {
         newPermission.enabled = true;
       }
-      this.permissions.push(newPermission);
+//      this.permissions.push(newPermission);
+      this.permissions.splice(position, 0, newPermission);
     }
   }
 
   checkPermissions() {
     for(var j=0; j<permissions.length; j++) {
-      this.checkPermission(permissions[j])
+      this.checkPermission(permissions[j], j)
     }
   }
 

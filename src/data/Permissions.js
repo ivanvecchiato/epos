@@ -1,5 +1,10 @@
 const permissions = [
    {
+      id: 9,
+      name: 'issue-bill',
+      enabled: false
+   },
+   {
       id: 1,
       name: 'access-pricelist',
       enabled: false
