@@ -50,7 +50,11 @@
             <i class="el-icon-magic-stick"></i>
             <span>{{ $t("config.extra") }}</span>
           </el-menu-item>
-      
+          <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
+            <i class="el-icon-set-up"></i>
+            <span>{{ $t("config.actions") }}</span>
+          </el-menu-item>      
+
         </el-menu>
       </div>
       <div class="center">
@@ -160,7 +164,6 @@ export default {
 .sidemenu {
   text-align: left;
   flex: 0 0 60px;
-  height: 100vh;
   margin: 8px;
   background: #fff;
   border-radius: 10px;

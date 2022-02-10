@@ -17,7 +17,8 @@
     "new-operator": "Nuovo operatore",
     "changes-saved": "Modifiche salvate",
     "changes-fail": "Errore nel salvataggio",
-    "fiscal-printer": "Stampante Fiscale"
+    "fiscal-printer": "Stampante Fiscale",
+    "actions": "Azioni"
   },
   "floor": {
     "floor": "Piano tavoli",
