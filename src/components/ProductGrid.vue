@@ -15,7 +15,7 @@
           </el-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-if="item.favorite == false" icon="el-icon-star-off" @click="heartProduct(item)">{{$t('product.favorite')}}</el-dropdown-item>
+              <el-dropdown-item v-if="!isFavorite(item)" icon="el-icon-star-off" @click="heartProduct(item)">{{$t('product.favorite')}}</el-dropdown-item>
               <el-dropdown-item v-else icon="el-icon-star-on" @click="deheartProduct(item)">{{$t('product.unfavorite')}}</el-dropdown-item>
               <el-dropdown-item icon="el-icon-edit" @click="editProduct(item)">{{$t('product.edit')}}</el-dropdown-item>
             </el-dropdown-menu>
@@ -100,7 +100,10 @@ export default {
       return type == 2;
     },
     isFavorite: function(item) {
-      return item.favorite;
+      if(item.favorite == undefined)
+        return false;
+      else
+        return item.favorite;
     },
     heartProduct: function(item) {
       var ref = Firebase.db.collection('products').doc(item.id);
