@@ -91,9 +91,9 @@ export default {
          var self = this;
          printf.getConfig((resp) => {
             console.log('getPrintfConfig', resp);
-            var root = resp //.Service
+            var root = resp.Service
             for(var i=0; i<root.Prg[0].VAT.length; i++) {
-               if(resp.Prg[0].VAT[i].value != undefined && Number(root.Prg[0].VAT[i].value[0]) > 0)
+               if(root.Prg[0].VAT[i].value != undefined && Number(root.Prg[0].VAT[i].value[0]) > 0)
                   self.VAT.push(root.Prg[0].VAT[i]);
             }
 

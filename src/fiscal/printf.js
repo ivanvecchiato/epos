@@ -3,7 +3,7 @@ import xml from "./xml.js";
 import axios from 'axios';
 var parseString = require('xml2js').parseString;
 
-var cfg = require('../data/cfg.json');
+//var cfg = require('../data/cfg.json');
 
 const clearCmd = "=K";
 const keyCmd = "=C";
@@ -53,7 +53,7 @@ export default {
       this.sendCommand(xml.buildCmd(statusCmd), callback);
    },
    getConfig(callback) {
-      callback(cfg);
+      //callback(cfg);
       this.sendCommand(xml.buildCmd(getCfgCmd), callback);
    },
    setKey(key) {
