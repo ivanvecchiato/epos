@@ -312,6 +312,9 @@ export default {
     getPzs: function() {
       return this.conto.getQuantity();
     },
+    selectFavorites: function() {
+      this.loadPreferiti();
+    },
     selectCategory: function(c) {
       this.currentCategory = c;
       this.products = this.getProducts(c);
