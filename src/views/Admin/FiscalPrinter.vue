@@ -106,7 +106,7 @@ export default {
             for(i=0; i<root.Prg[0].Payment.length; i++) {
                self.tenders.push(root.Prg[0].Payment[i]);
             }
-});
+         });
       }
    },
    mounted() {
