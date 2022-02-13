@@ -9,6 +9,7 @@ const clearCmd = "=K";
 const keyCmd = "=C";
 const statusCmd = "<</?s";
 const getCfgCmd = "<</?C";
+const chiusuraCmd = "=C10"
 //const sellCmd = "=R";
 
 export default {
@@ -56,7 +57,7 @@ export default {
       //callback(cfg);
       this.sendCommand(xml.buildCmd(getCfgCmd), callback);
    },
-   setKey(key) {
+   getKeyCmd(key) {
       var index = 1;
       if(key == 'REG') {
          index = '1';
@@ -69,7 +70,10 @@ export default {
       } else if(key == 'SRV') {
          index = '5';
       }
-      return this.sendCommand(xml.buildCmd(keyCmd+index));
+      return (keyCmd+index)
+   },
+   setKey(key) {
+      return this.sendCommand(xml.buildCmd(this.getKeyCmd(key)));
    },
    document(items, payments,customer){
       console.log("PRINTF", items, payments,customer);
@@ -99,5 +103,12 @@ export default {
          }
       }
       return lines;
+   },
+   chiusuraGiornaliera(callback) {
+      var cmds = [
+         this.getKeyCmd('Z'),
+         chiusuraCmd
+      ];
+      this.sendCommand(xml.getCommands(cmds), callback);
    }
 };
