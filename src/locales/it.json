@@ -26,7 +26,10 @@
     "places_number": "Numero di tavoli"
   },
   "cashier": {
-    "cashier": "Cassa"
+    "cashier": "Cassa",
+    "zreport": "Chiusura fiscale",
+    "zreport-done": "Chiusura giornaliera completata",
+    "zreport-confirm": "Eseguire la chiusura giornaliera?"
   },
   "pricelist": {
     "pricelist": "Listino",

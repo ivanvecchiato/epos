@@ -50,7 +50,7 @@
             <i class="el-icon-magic-stick"></i>
             <span>{{ $t("config.extra") }}</span>
           </el-menu-item>
-          <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
+          <el-menu-item index="7" @click="openActions" :disabled="!admin()">
             <i class="el-icon-set-up"></i>
             <span>{{ $t("config.actions") }}</span>
           </el-menu-item>      
@@ -61,22 +61,35 @@
         <router-view/>
       </div>
     </div>
+
+    <el-dialog
+      :title="$t('config.actions')"
+      v-model="showActions"
+      :center="false"
+      width="40%"
+      destroy-on-close>
+      <frontend-actions>
+      </frontend-actions>
+      
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Operator from '../data/Operator.js';
 import operator from "../store/user.js"
+import FrontendActions from "./FrontendActions.vue"
 
 export default {
   name: 'Home',
   components: {
-    //Frontend
+    FrontendActions
   },
   data() {
     return {
       isCollapse: false,
-      loggedIn: false
+      loggedIn: false,
+      showActions: false
     }
   },
   methods: {
@@ -122,6 +135,9 @@ export default {
     },
     openSettings: function() {
       this.$router.push("/settings");
+    },
+    openActions: function() {
+      this.showActions = true;
     },
     checkAuth: function() {
       var data = JSON.parse(localStorage.getItem('user'));
