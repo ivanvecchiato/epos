@@ -240,5 +240,12 @@
     "modify-park": "Può modificare il parcheggio conti",
     "apply-discount": "Può applicare uno sconto",
     "access-stats": "Ha accesso alle statistiche"
+  },
+  "docs": {
+    "document": "Documento",
+    "documento-commerciale": "Documento commerciale",
+    "documento-intestato": "Documento intestato",
+    "preconto": "Proforma",
+    "estratto-conto": "Estratto conto"
   }
 }
