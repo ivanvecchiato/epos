@@ -3,6 +3,10 @@ class Event{
       this.events = {};
    }
 
+   reset() {
+      this.events = {};
+   }
+
    on(eventName, fn) {
       this.events[eventName] = this.events[eventName] || [];
       this.events[eventName].push(fn);
