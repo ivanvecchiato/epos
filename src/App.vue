@@ -60,22 +60,21 @@ html {
   height: 100vh;
   overflow: hidden;
   color: #1e1d57;
-  background: #DEE8FF;
+  background: --var(--background-color);
 }
 :root{
-    --primary-color: #667BCC!important;
-    --secondary-color: #e98077!important;
-    --tertiary-color: #FAF8F6!important;
-    --light-secondary-color: #FFE8E6!important;
-    --light-main-color: #DFE9FE!important;
-    --lightest-main-color: #e2e8ff!important;
-    --success-color: #FB8C00!important;
-    --warning-color: #FFC108!important;
-    --error-color: #ef4d4d!important;
-    --danger-color: #ff6b6b!important;
-    --info-color: #8a9fad!important;
-    --info2-color: #f38383!important;
-    --background-color: rgb(250, 250, 250);
+  --primary-color: #102A68!important;
+  --secondary-color: #FE9D34!important;
+  --light-secondary-color: ##FE0B2!important;
+  --tertiary-color: rgb(201, 219, 251)!important;
+  --light-main-color: rgba(148, 163, 236, 0.2)!important;
+  --success-color: #FF5621!important;
+  --warning-color: #FFC108!important;
+  --error-color: #ef4d4d!important;
+  --danger-color: #ff6b6b!important;
+  --info-color: #6f788d!important;
+  --info2-color: #f38383!important;
+  --background-color: #F8FAFF;
 }
 .title {
   font-size: 3.0em;
