@@ -131,7 +131,6 @@ export default {
   },
   methods: {
     reassignedConto: function() {
-      console.log("reassignedConto", "********************");
       this.currentPlace = null;
       var msg = "Conto riassegnato";//this.$t('bill.reassigned');
       this.$message({
@@ -219,8 +218,8 @@ export default {
           //console.log("URL", url)
           item.imgUrl = url;
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
+          //console.log(error)
         });
     },
     annullaConto: function() {
@@ -238,11 +237,6 @@ export default {
     },
     pagaConto: function() {
       this.showPaymentDialog();
-      /*
-      this.conto.addPayment(0, "contanti", this.conto.getTotale());
-      console.log(this.conto);
-      this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
-      */
     },
     loadCategories: function() {
       Firebase.db
@@ -275,7 +269,7 @@ export default {
     testPrintf() {
       printf.getStatus((resp) => {
         console.log('testPrintf', resp)
-        if(resp.Service.ECRStatus[0].mode != 'R') {
+        if(resp.Service.ECRStatus[0].mode != 'REG') {
           printf.setKey('REG');
         }
       });
