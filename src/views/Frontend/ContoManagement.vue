@@ -151,7 +151,11 @@ export default {
     pagaConto: function() {
       if(this.conto.size() == 0)
         return;
-      this.$emit('pagaConto', this.conto);
+      this.conto.addPayment(0, "contanti", this.conto.getTotale());
+      console.log(this.conto);
+      this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
+
+      //this.$emit('pagaConto', this.conto);
     },
     annullaConto: function() {
       this.conto.clear();
