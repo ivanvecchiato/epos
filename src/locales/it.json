@@ -72,6 +72,8 @@
     "specify_price": "Specificare prezzo all'emissione del conto",
     "type": "Tipo",
     "description": "Descrizione",
+    "short-description": "Descrizione breve",
+    "long-description": "Descrizione lunga",
     "settings": "Impostazioni",
     "options": "Opzioni",
     "vat": "Iva",
