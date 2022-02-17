@@ -44,7 +44,7 @@ export default {
    processResponse(response, callback) {
       parseString(response, function (err, result) {
          console.log(result);
-         callback(result)
+         if(callback) callback(result)
        }); 
    },
    clear() {
