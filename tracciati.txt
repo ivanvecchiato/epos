@@ -9448,3 +9448,54 @@
         }
     ]
 }
+
+// chiusura
+{
+    "Request": [
+        {
+            "errorCode": [
+                "0"
+            ],
+            "printerError": [
+                "0"
+            ],
+            "paperEnd": [
+                "0"
+            ],
+            "coverOpen": [
+                "0"
+            ],
+            "lastCmd": [
+                "2"
+            ],
+            "ECRStatus": [
+                {
+                    "mode": [
+                        "Z"
+                    ],
+                    "idleState": [
+                        "0"
+                    ]
+                }
+            ],
+            "lastZ": [
+                "137"
+            ],
+            "lastDocF": [
+                "0"
+            ],
+            "lastDocNF": [
+                "1"
+            ],
+            "lastCreditNoteN": [
+                "0"
+            ],
+            "lastInvoiceN": [
+                "2"
+            ],
+            "busy": [
+                "0"
+            ]
+        }
+    ]
+}
