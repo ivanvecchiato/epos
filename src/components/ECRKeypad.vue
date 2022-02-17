@@ -103,7 +103,7 @@ export default {
   background-color: #e98177dc;
   padding: 5px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   color: #fff;
   border-radius: 3px;
 }
@@ -124,7 +124,7 @@ export default {
   border-radius: 4px;
   margin: 4px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   color: #fff;
   text-align: center;
   transition: all 0.2s ease-in-out;

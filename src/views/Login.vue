@@ -128,7 +128,7 @@ export default {
 .pin {
   border: solid 1px #FED59E;
   color: #8158548e;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   padding: 5px;
   width: 200px;
   margin: auto;
@@ -158,7 +158,7 @@ export default {
   width: 100px;
   height: 40px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   background: #fff;
   color: #8158548e;
   border: solid 1px #8158548e;
@@ -169,7 +169,7 @@ export default {
   width: 70px;
   height: 70px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   background: #fff;
   color: #8158548e;
   border: solid 1px #8158548e;
@@ -189,7 +189,7 @@ export default {
   width: 100px;
   height: 40px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   background: #8158548e;
   border: 0px;
   color: #fff;
@@ -200,7 +200,7 @@ export default {
   width: 70px;
   height: 70px;
   font-size: 1.5em;
-  font-family: "Montserrat-Bold", sans-serif;
+  font-weight: bold;
   background: #8158548e;
   border: 0px;
   color: #fff;

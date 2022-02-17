@@ -16,7 +16,7 @@ const routes = [
     component: Frontend,
     props:  (route) => ({
       ...route.params
-  })
+    })
   },
   {
     path: '/',

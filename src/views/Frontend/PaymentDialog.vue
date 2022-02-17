@@ -192,7 +192,7 @@ export default {
    padding: 5px;
    height: 100%;
    overflow: scroll;
-   font-family: "Montserrat-Bold", sans-serif;
+   font-weight: bold;
 }
 .doc-selector li:active {
    color: var(--success-color);
