@@ -75,8 +75,12 @@
             </el-col>
           </el-row>
 
-          <el-form-item :label="$t('product.description')">
-            <el-input type="textarea" :rows="4" v-model="product.description"></el-input>
+          <el-form-item :label="$t('product.short-description')">
+            <el-input type="textarea" :rows="3" v-model="product.short_description"></el-input>
+          </el-form-item>
+
+          <el-form-item :label="$t('product.long-description')">
+            <el-input type="textarea" :rows="6" v-model="product.long_description"></el-input>
           </el-form-item>
         </el-tab-pane>
 

@@ -6,7 +6,8 @@ export default class Product {
     this.code = 0;
     this.category = {id: 0, name: 'none' };
     this.name = '';
-    this.description = '';
+    this.short_description = '';
+    this.long_description = '';
     this.price = 0.0;
     this.cost = 0.0;    // prezzo di acquisto
     this.type = 0;    // 0: normal; 1: bundle; 2: measure; 3:to complete ; -1: variant; -2: ingrediente
