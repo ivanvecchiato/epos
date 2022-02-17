@@ -3,7 +3,7 @@
 
   <div class="discount">
     <div class="starting-amount">
-      {{$t('bill.total')}} &nbsp; {{amount}}
+      {{ getTotale }}
     </div>
     <div class="discount-type">
       <el-radio-group v-model="discount.type" size="medium" @change="changeDiscountType">
@@ -18,7 +18,7 @@
     </numeric-keypad>
 
     <div class="result">
-      {{$t('bill.discount')}} &nbsp; {{discount.value}}
+      {{getDiscount}}
     </div>
 
     <el-button type="success" class="block" @click="applyDiscount">
@@ -44,6 +44,12 @@ export default {
   },
   components: { NumericKeypad },
   computed: {
+    getTotale() {
+      return this.$t("bill.total") + ": " + this.amount.toFixed(2);
+    },
+    getDiscount() {
+      return this.$t('bill.discount') + ": " + this.discount.value.toFixed(2);
+    }
   },
   methods: {
     inputChange: function (inp) {
