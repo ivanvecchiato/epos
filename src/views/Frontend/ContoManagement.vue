@@ -116,6 +116,8 @@ import utils from "../../utils.js";
 import Conto from "../../data/Conto.js";
 import Table from "../../data/Table.js";
 import printf from "../../fiscal/printf.js";
+import operator from "../../store/user.js";
+import Settings from "@/settings/Settings.js";
 
 export default {
   name: 'ContoManagement',
@@ -129,7 +131,8 @@ export default {
      return {
        billLoaded: false,
        discountVisible: false,
-       conto: new Conto
+       conto: new Conto,
+       conf: new Settings
      }
   },
   computed: {
@@ -151,11 +154,15 @@ export default {
     pagaConto: function() {
       if(this.conto.size() == 0)
         return;
-      this.conto.addPayment(0, "contanti", this.conto.getTotale());
-      console.log(this.conto);
-      this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
 
-      //this.$emit('pagaConto', this.conto);
+      var condition = this.conf.getSettingValue('allowQuickBill');
+      if(condition) {
+        this.conto.addPayment(0, "contanti", this.conto.getTotale());
+        console.log(this.conto);
+        this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
+      } else {
+        this.$emit('pagaConto', this.conto);
+      }
     },
     annullaConto: function() {
       this.conto.clear();
@@ -308,6 +315,14 @@ export default {
     this.$bus.on('reassignPark', () => {
       this.reassignPark();
     });
+    this.$bus.on('loadCart', e => {
+      console.log('loadCart')
+      this.conto = e;
+    })
+    this.conto.operator = {
+      id: operator.id,
+      name: operator.name
+    }
   },
 }
 </script>
