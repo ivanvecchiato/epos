@@ -20,6 +20,13 @@
     "fiscal-printer": "Stampante Fiscale",
     "actions": "Azioni"
   },
+  "settings": {
+    "allow-quick-bill": "Permetti chiusura conto con singola pressione del tasto",
+    "starting-view": "Schermata iniziale",
+    "starting-view-frontend": "Schermata di cassa",
+    "starting-view-bills": "Schermata piano conti",
+    "product-grid-columns": "Numero di colonne della griglia prodotti"
+  },
   "floor": {
     "floor": "Piano tavoli",
     "new_area": "Nuova area",

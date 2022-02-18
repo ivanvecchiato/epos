@@ -4,11 +4,9 @@
       <el-tab-pane :label="$t('config.operators')">
         <operators></operators>
       </el-tab-pane>
-      <!--
-      <el-tab-pane label="Config">
+      <el-tab-pane :label="$t('config.settings')">
         <configs></configs>
       </el-tab-pane>
-      -->
       <el-tab-pane :label="$t('config.production')">
         <aree-produzione></aree-produzione>
       </el-tab-pane>
@@ -25,13 +23,13 @@
 <script>
 import Operators from "./Operators/Operators.vue"
 import Admin from "./Admin/Admin.vue"
-//import Configs from "./Admin/Configs.vue"
+import Configs from "./Admin/Configs.vue"
 import FiscalPrinter from "./Admin/FiscalPrinter.vue"
 import AreeProduzione from "./Aree/AreeProduzione.vue"
 
 export default {
   name: "Settings",
-  components: { Operators, Admin, AreeProduzione, FiscalPrinter },
+  components: { Operators, Admin, AreeProduzione, FiscalPrinter, Configs },
   data() {
     return {
     };
