@@ -37,10 +37,9 @@ export default {
     };
   },
   watch: {
-     // eslint-disable-next-line no-unused-vars
     conf: {
+     // eslint-disable-next-line no-unused-vars
       handler(newConf, oldConf) {
-         console.log(oldConf);
          localStorage.setItem('settings', JSON.stringify(newConf))
       },
       deep: true
