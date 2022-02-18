@@ -59,8 +59,8 @@ html {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  color: #1e1d57;
-  background: --var(--background-color);
+  color: var(--primary-color);
+  background: #DEE8FF;
 }
 :root{
   --primary-color: #102A68!important;
@@ -74,7 +74,7 @@ html {
   --danger-color: #ff6b6b!important;
   --info-color: #6f788d!important;
   --info2-color: #f38383!important;
-  --background-color: #F8FAFF;
+  --background-color: rgb(250, 250, 250);
 }
 .title {
   font-size: 3.0em;
