@@ -1,6 +1,6 @@
 <template>
    <div>
-      <el-row>
+      <el-row :gutter="10">
         <el-col :span="6">
             <div class="doc-types">
                <div class="doc-header">{{$t('docs.document')}}</div>
@@ -24,100 +24,15 @@
            cr
         </el-col>
         <el-col :span="6">
-           <div class="side">
-        <header>
-          <div class="info-conto-2" v-if="billLoaded == true">
-            <el-icon style="vertical-align: middle;" :color="getAttentionColor" size="14">
-              <edit />
-            </el-icon>
-            <span style="vertical-align: middle;">{{billStart()}}</span>
+          <div class="side">
+            <conto-management
+              ref="contoMgmt"
+              :currentPlace="currentPlace"
+              @annullaConto="annullaConto"
+              @reassignedConto="reassignedConto"
+              @pagaConto="pagaConto">
+            </conto-management>
           </div>
-          <div class="bottom-header">
-            <div class="note">
-              <el-icon :size="24" v-on:click.stop :color="getNoteColor" @click="setNote">
-                <edit />
-              </el-icon>
-            </div>
-          </div>
-        </header>
-
-        <main ref='cart'>
-            <div>
-              <shopping-cart
-                :orderList="groupedList"
-                @changeCart="changeCart"
-                @deleteItem="removeItem">
-              </shopping-cart>
-            </div>
-        </main>
-
-        <footer>
-          <div class="flat-card">
-
-          <div class="subtotale-section">
-            <span class="subtotale-label">
-              {{$t('bill.subtotal')}}
-            </span>
-            <span class="subtotale-amount">
-              {{subtotale}}
-            </span>
-          </div>
-
-          <div class="sconto-section" @click="openDiscount">
-            <div class="sconto-label">
-            <span>
-              <el-icon style="vertical-align: middle;">
-                <edit />
-              </el-icon>
-              {{$t('bill.discount')}}
-            </span>
-            <span v-if="conto.discount.value>0" style="margin-left: 10px">
-              {{conto.discount.rate}}%
-            </span>
-            </div>
-            <span class="sconto-amount">
-              {{formatAmount(conto.discount.value)}}
-            </span>
-          </div>
-
-          <div class="totale-section">
-            <span class="totale-label">
-              {{$t('bill.total')}}
-            </span>
-            <span class="totale-amount">
-              {{totale}}
-            </span>
-          </div>
-          </div>
-
-          <div class="flat-card">
-            <div class="buttons">
-              <el-button
-                type="danger"
-                plain
-                class="annulla"
-                @click="annullaConto">
-                {{ $t("bill.clear") }}
-              </el-button>
-              <el-button
-                type="primary"
-                class="block"
-                plain
-                @click="parcheggiaConto">
-                {{ $t("bill.save") }}
-              </el-button>
-            </div>
-            <div class="buttons" style="margin-top: 10px">
-              <el-button
-                type="success"
-                class="block bold"
-                @click="pagaConto">
-                {{ $t("bill.cash") }}
-              </el-button>
-            </div>
-          </div>
-        </footer>
-      </div>
         </el-col>
       </el-row>
 
@@ -128,7 +43,7 @@
 import docs from '../../data/Documents.js'
 import ECRKeypad from '@/components/ECRKeypad.vue'
 import Conto from "../../data/Conto.js";
-import ShoppingCart from "../../components/ShoppingCart.vue";
+import ContoManagement from '../Frontend/ContoManagement.vue';
 import utils from "../../utils.js";
 
 export default {
@@ -158,7 +73,16 @@ export default {
          ]
       }
    },
-   components: {ECRKeypad, ShoppingCart},
+   watch: {
+      conto: {
+     // eslint-disable-next-line no-unused-vars
+         handler(newConto, oldConto) {
+            console.log('watch', newConto);
+         },
+         deep:true
+      }
+   },
+   components: {ECRKeypad, ContoManagement},
    methods: {
       formatAmount: function(amount) {
          return utils.formatPrice(amount);
@@ -169,8 +93,10 @@ export default {
    },
    mounted() {
       this.documenti = docs.documents;
-      this.conto = this.data;
-      console.log('PaymentDialog', this.conto);
+      this.$bus.on('setConto', (e) => {
+         this.conto = e;
+         this.$bus.trigger('loadCart', this.conto);
+      });
    },
 }
 </script>
@@ -196,6 +122,13 @@ export default {
 }
 .doc-selector li:active {
    color: var(--success-color);
+}
+.side {
+  height: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
 }
 ul {
   list-style-type: none;
