@@ -24,24 +24,18 @@ export default {
       return {
          calculatorValue: "",
          btnArr: [
-            "C",
-            "*",
-            "/",
-            "-",
             "7",
             "8",
             "9",
-            "+",
             "4",
             "5",
             "6",
-            "%",
             "1",
             "2",
             "3",
-            "=",
             "0",
             ".",
+            "C",
          ],
          operator: null,
          previousCalculatorValue: "",
@@ -87,7 +81,7 @@ export default {
 .output {
   text-align: right;
   background-color: #e9817754;
-  width: min(350px, 100%);
+  width: min(320px, 90%);
   margin: 10px auto;
   padding: 10px;
   border: 0.5px solid #e98077;
@@ -109,7 +103,7 @@ export default {
 }
 .buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: minmax(50px, auto);
   width: min(350px, 100%);
   border-radius: 4px;
