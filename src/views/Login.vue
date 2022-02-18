@@ -160,8 +160,8 @@ export default {
   font-size: 1.5em;
   font-weight: bold;
   background: #fff;
-  color: #8158548e;
-  border: solid 1px #8158548e;
+  color: var(--secondary-color);
+  border: solid 1px var(--secondary-color);
   border-radius: 8px;
   box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
@@ -171,17 +171,17 @@ export default {
   font-size: 1.5em;
   font-weight: bold;
   background: #fff;
-  color: #8158548e;
-  border: solid 1px #8158548e;
+  color: var(--secondary-color);
+  border: solid 1px var(--secondary-color);
   border-radius: 50%;
 }
 .regular-button:focus {
-  background: #8158548e;
+  background: var(--secondary-color);
   transform: scale(1.02);
   color: #fff;
 }
 .regular-circle-button:focus {
-  background: #8158548e;
+  background: var(--secondary-color);
   transform: scale(1.02);
   color: #fff;
 }
@@ -190,7 +190,7 @@ export default {
   height: 40px;
   font-size: 1.5em;
   font-weight: bold;
-  background: #8158548e;
+  background: var(--secondary-color);
   border: 0px;
   color: #fff;
   border-radius: 8px;
@@ -201,17 +201,17 @@ export default {
   height: 70px;
   font-size: 1.5em;
   font-weight: bold;
-  background: #8158548e;
+  background: var(--secondary-color);
   border: 0px;
   color: #fff;
   border-radius: 50%;
 }
 .action-button:focus {
-  background: #d1b3b0;
+  background: #fff;
   transform: scale(1.02);
 }
 .action-circle-button:focus {
-  background: #d1b3b0;
+  background: #fff;
   transform: scale(1.02);
 }
 
