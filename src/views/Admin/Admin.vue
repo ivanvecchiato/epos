@@ -32,19 +32,20 @@ export default {
                var docId = doc.id;
                var floor = doc.data().places;
                for(var key in floor) {
-                  //console.log('resetOrders', utils.toDate(floor[key].conto.createdAt));
-                  if(floor[key].conto.orderList.length > 0) {
-                     var docRef = Firebase.db.collection('park').doc(docId);
-                     var place = "places." + key + ".conto";
-                     docRef.update({
-                        [place]: Object.assign({}, new Conto)
-                     })
-                     .then(() => {
-                       console.log("Document successfully written!");
-                     })
-                     .catch((error) => {
-                       console.error("Error writing document: ", error);
-                     });
+                  if(floor[key].conto != null && floor[key].conto != {}) {
+                     if(floor[key].conto.orderList.length > 0) {
+                        var docRef = Firebase.db.collection('park').doc(docId);
+                        var place = "places." + key + ".conto";
+                        docRef.update({
+                           [place]: Object.assign({}, new Conto)
+                        })
+                        .then(() => {
+                          console.log("Document successfully written!");
+                        })
+                        .catch((error) => {
+                          console.error("Error writing document: ", error);
+                        });
+                     }
                   }
                }
                this.resetPendingOrders();
