@@ -132,6 +132,7 @@ export default class Conto {
 
   addItem(p) {
     p.quantity = 1;
+    p.insertId = this.size() + 1;
     this.orderList.push(Object.assign({}, p));
     this.saveCache();
   }
@@ -148,6 +149,8 @@ export default class Conto {
       var noteCriteria = true;
       var variantCriteria = true;
       var timingCriteria = true; // per controllare se un item è appena inserito
+      var statusCriteria = true; // per controllare gli elementi cancellati
+
       if(params == undefined) {
         if(item.note == undefined && p.note == undefined) {
           noteCriteria = true;
@@ -170,7 +173,17 @@ export default class Conto {
         else
           timingCriteria = false;
       }
-      if(item.id === p.id && noteCriteria && variantCriteria && timingCriteria) {
+
+      if(p.status == -100) {
+        if(item.status != -100)
+          statusCriteria = true
+        else
+          statusCriteria = false
+      }
+      if(item.id === p.id
+          && noteCriteria && variantCriteria 
+          && timingCriteria && statusCriteria) {
+        item.insertId.pus(p.insertId);
         item.quantity++;
         inserted = true;
         break;
@@ -178,6 +191,9 @@ export default class Conto {
     }
     if(!inserted) {
       p.quantity = 1;
+      var id = p.insertId
+      p.insertId = [];
+      p.insertId.push(id);
       list.push(Object.assign({}, p));
     }
   }
