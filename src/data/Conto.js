@@ -142,9 +142,9 @@ export default class Conto {
     for(var i=0; i<list.length; i++) {
       var item = list[i];
 
-      if(item.status == -100) {
-        break;
-      }
+//      if(item.status == -100) {
+//        break;
+//      }
 
       var noteCriteria = true;
       var variantCriteria = true;
@@ -175,7 +175,7 @@ export default class Conto {
       }
 
       if(p.status == -100) {
-        if(item.status != -100)
+        if(item.status == -100)
           statusCriteria = true
         else
           statusCriteria = false
