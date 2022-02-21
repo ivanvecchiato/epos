@@ -190,7 +190,8 @@ export default {
     decrementItem: function(index) {
       this.conto.decrementItem(index);
     },
-    changeCart: function() {
+    changeCart: function(item ,delta) {
+      console.log('changeCart', item, delta);
       this.conto.saveCache();
     },
     openDiscount: function() {
@@ -249,10 +250,10 @@ export default {
         //this.groupedList = this.conto.groupByItems();
       } else {
         this.conto.place = this.currentPlace;
-        this.conto.operator = {
-          id: operator.id,
-          name: operator.name
-        }
+      }
+      this.conto.operator = {
+        id: operator.getId(),
+        name: operator.getName()
       }
     },
     reassignPark: function() {
@@ -319,9 +320,15 @@ export default {
       console.log('loadCart')
       this.conto = e;
     })
+    this.$bus.on('setOperator', e => {
     this.conto.operator = {
-      id: operator.id,
-      name: operator.name
+      id: e.getId(),
+      name: e.getName()
+    }
+    })
+    this.conto.operator = {
+      id: operator.getId(),
+      name: operator.getName()
     }
   },
 }

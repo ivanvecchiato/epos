@@ -77,8 +77,7 @@
       v-model="paymentDialogVisibile"
       width="80%"
       destroy-on-close>
-      <payment-dialog
-        :data="conto">
+      <payment-dialog>
       </payment-dialog>
     </el-dialog>
 
@@ -232,11 +231,14 @@ export default {
         //this.conto.addCustomer(c);
         //console.log('addCustomer', c);
     },
-    showPaymentDialog: function() {
+    showPaymentDialog: function(conto) {
       this.paymentDialogVisibile = true;
+      this.$nextTick(() => {
+        this.$bus.trigger('setConto', conto);
+      })
     },
-    pagaConto: function() {
-      this.showPaymentDialog();
+    pagaConto: function(conto) {
+      this.showPaymentDialog(conto);
     },
     loadCategories: function() {
       Firebase.db
@@ -290,11 +292,7 @@ export default {
     } else {
       this.$bus.trigger('checkPending', operator)
     }
-
-    this.$bus.trigger('login', operator)
-
     this.loadCategories();
-
     this.testPrintf();
   },
 };
