@@ -38,9 +38,8 @@
                 <el-input v-model="product.price"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="2">&nbsp;</el-col>
             <el-form-item :label="$t('product.vat')">
-              <el-col :span="8">
+              <el-col :span="10">
                 <el-select
                   v-model="product.vat.vatRate"
                   :placeholder="$t('product.vat')">
