@@ -87,9 +87,11 @@ export default {
       var rows = [];
       for(var i=0; i<items.length; i++) {
          var item = items[i];
-         rows.push("=R" + item.vat.vatIndex + "/" +
+         if(item.status != -100) {
+            rows.push("=R" + item.vat.vatIndex + "/" +
             "$" + (Number(item.price) * 100) +
             "/" + "(" + item.name + ")");
+         }
       }
       return rows;
    },
