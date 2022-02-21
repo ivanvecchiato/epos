@@ -183,7 +183,6 @@ export default class Conto {
       if(item.id === p.id
           && noteCriteria && variantCriteria 
           && timingCriteria && statusCriteria) {
-        item.insertId.pus(p.insertId);
         item.quantity++;
         inserted = true;
         break;
@@ -191,9 +190,6 @@ export default class Conto {
     }
     if(!inserted) {
       p.quantity = 1;
-      var id = p.insertId
-      p.insertId = [];
-      p.insertId.push(id);
       list.push(Object.assign({}, p));
     }
   }
