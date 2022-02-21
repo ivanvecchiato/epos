@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import operator from "../store/user.js"
+//import operator from "../store/user.js"
 import Firebase from "../firebase.js"
-import Log from "../data/Log.js"
+//import Log from "../data/Log.js"
 import Operator from '../data/Operator.js'
 
 export default {
-  name: 'Login',
+  name: 'Authentication',
   components: {
     //Frontend
   },
@@ -64,28 +64,16 @@ export default {
         });
         this.pin = '';
     },
-    setOperator: function(user) {
-      console.log("setOperator", user);
-      this.$message({
-        message: 'Welcome ' + user.getName(),
-        type: 'success'
-      });
-      this.$bus.trigger('login', operator)
-      this.$router.push("/frontend");
-    },
     loginSuccess: function (op) {
-      operator.setUserLogged({
-        loggedIn: true,
-        operator: op
-      });
-
+      /*
       var event = {
         type: Log.EVENT_LOGIN,
         description: op.name + " " + this.$t("login.loggedin"),
         comment: ''
       }
       new Log(event, 0).writeLog();
-      this.setOperator(operator);
+      */
+      this.$emit('auth', op)
     },
     userLogin: function() {
       this.fullscreenLoading = true;
@@ -203,16 +191,18 @@ export default {
   font-size: 1.5em;
   font-weight: bold;
   background: var(--secondary-color);
-  border: 0px;
+  border: solid 1px var(--secondary-color);
   color: #fff;
   border-radius: 50%;
 }
 .action-button:focus {
   background: #fff;
+  border: solid 1px var(--secondary-color);
   transform: scale(1.02);
 }
 .action-circle-button:focus {
   background: #fff;
+  color: var(--secondary-color);
   transform: scale(1.02);
 }
 

@@ -5,7 +5,7 @@ import Conti from './views/Conti.vue'
 import ProductConfig from './views/ProductConfig.vue'
 import Settings from './views/Settings.vue'
 import Floor from './views/Floor.vue'
-import Login from './views/Login.vue'
+//import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import Ordini from './views/Ordini.vue'
 
@@ -23,11 +23,13 @@ const routes = [
     name: 'home',
     component: Home
   },
+  /*
   {
     path: '/login',
     name: 'login',
     component: Login
   },
+  */
   {
     path: '/conti',
     name: 'conti',

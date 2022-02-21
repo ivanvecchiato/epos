@@ -72,6 +72,18 @@
       </frontend-actions>
       
     </el-dialog>
+
+    <el-dialog
+      v-model="loggedOut"
+      :center="true"
+      :fullscreen="true"
+      :close-on-press-escape="false"
+      :show-close="false"
+      destroy-on-close>
+      <authentication @auth="doAuth">
+      </authentication>
+      
+    </el-dialog>
   </div>
 </template>
 
@@ -79,11 +91,12 @@
 import Operator from '../data/Operator.js';
 import operator from "../store/user.js"
 import FrontendActions from "./FrontendActions.vue"
+import Authentication from "./Authentication.vue"
 
 export default {
   name: 'Home',
   components: {
-    FrontendActions
+    FrontendActions, Authentication
   },
   data() {
     return {
@@ -92,7 +105,27 @@ export default {
       showActions: false
     }
   },
+  computed: {
+    loggedOut() {
+      return !this.loggedIn;
+    }
+  },
   methods: {
+    doAuth(user) {
+      operator.setUserLogged({
+        loggedIn: true,
+        operator: user
+      });
+
+      console.log("setOperator", operator);
+      this.$message({
+        message: 'Welcome ' + operator.getName(),
+        type: 'success'
+      });
+
+      this.loggedIn = true;
+      this.$bus.trigger('setOperator', operator)
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -112,8 +145,7 @@ export default {
     logout: function() {
       this.loggedIn = false;
       operator.logoutUser();
-      this.$router.push("/login");
-      this.$emit('logout')
+      //this.$emit('logout')
     },
     userName: function() {
       return operator.getName();
@@ -143,7 +175,7 @@ export default {
       var data = JSON.parse(localStorage.getItem('user'));
       if(data == null) {
         this.loggedIn = false;
-        this.$router.push("/login");
+        //this.$router.push("/login");
       } else {
         var op = new Operator;
         op.fillData(data);
@@ -159,11 +191,6 @@ export default {
   mounted() {
     this.checkAuth();
     console.log("Home", "setting event listener");
-    this.$bus.on('login', e => {
-      console.log('eventReceived', e)
-      if(!this.loggedIn)
-        this.loggedIn = true;
-    })
   },
 }
 </script>
