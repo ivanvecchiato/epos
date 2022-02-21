@@ -179,7 +179,13 @@ export default class Conto {
           statusCriteria = true
         else
           statusCriteria = false
+      } else {
+        if(item.status == -100)
+          statusCriteria = false
+        else
+          statusCriteria = true
       }
+
       if(item.id === p.id
           && noteCriteria && variantCriteria 
           && timingCriteria && statusCriteria) {
