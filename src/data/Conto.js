@@ -156,7 +156,12 @@ export default class Conto {
           noteCriteria = true;
         } else {
           noteCriteria = (item.note == p.note);
-          variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);  
+        }
+
+        if(item.modifiers == undefined && p.modifiers == undefined) {
+          variantCriteria = true;
+        } else {
+          variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
         }
       } else {
         if(params.groupNote != undefined && params.groupNote == true) {
