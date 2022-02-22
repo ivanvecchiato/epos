@@ -237,7 +237,7 @@ export default {
     stampaScontrino() {
       console.log('stampaScontrino');
       printf.document(
-        this.conto.orderList,
+        this.groupedList,
         this.conto.payments,
         this.conto.customer
       );
