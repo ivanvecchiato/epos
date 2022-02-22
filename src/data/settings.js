@@ -5,6 +5,12 @@ let settings = {
          value: false
       }
    },
+   'printNoteOnBill': {
+      value: {
+         type: 'boolean',
+         value: true
+      }
+   },
    'startingView': {
       value: {
          type: 'radio',

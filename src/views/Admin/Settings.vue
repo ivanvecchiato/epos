@@ -6,6 +6,11 @@
           {{ $t("settings.allow-quick-bill") }}
         </el-checkbox>
       </el-form-item>
+      <el-form-item>
+        <el-checkbox v-model="conf.printNoteOnBill.value.value">
+          {{ $t("settings.print-note-bill") }}
+        </el-checkbox>
+      </el-form-item>
 
       <el-form-item :label="$t('settings.starting-view')">
         <el-radio-group v-model="conf.startingView.value.value">
@@ -28,7 +33,7 @@
 
 <script>
 //import Firebase from "../../firebase";
-import settings from './settings'
+import settings from '@/data/settings'
 
 export default {
   data() {

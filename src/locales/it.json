@@ -25,7 +25,8 @@
     "starting-view": "Schermata iniziale",
     "starting-view-frontend": "Schermata di cassa",
     "starting-view-bills": "Schermata piano conti",
-    "product-grid-columns": "Numero di colonne della griglia prodotti"
+    "product-grid-columns": "Numero di colonne della griglia prodotti",
+    "print-note-bill": "Stampa note su scontrino"
   },
   "floor": {
     "floor": "Piano tavoli",

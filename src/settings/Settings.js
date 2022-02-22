@@ -1,3 +1,5 @@
+import defaultSettings from "@/data/settings.js"
+
 export default class Settings {
 
    constructor() {
@@ -5,6 +7,10 @@ export default class Settings {
    }
 
    getSettingValue(option) {
-      return this.conf[option].value.value;
+      if(option in this.conf) {
+         return this.conf[option].value.value;
+      } else {
+         return defaultSettings[option].value.value;
+      }
    }
 }
