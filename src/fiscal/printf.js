@@ -78,13 +78,13 @@ export default {
    setKey(key) {
       return this.sendCommand(xml.buildCmd(this.getKeyCmd(key)));
    },
-   document(items, payments,customer){
+   document(items, payments,customer, callback){
       console.log("PRINTF", items, payments,customer);
       var rows = this.sellCmds(items);
       var payRows = this.paymentRows(payments);
 
       var buffer = xml.getCommands(rows.concat(payRows), true);
-      this.sendCommand(buffer);
+      this.sendCommand(buffer, callback);
    },
    sellCmds(items) {
       // eslint-disable-next-line no-unused-vars

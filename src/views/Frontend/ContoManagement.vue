@@ -159,7 +159,12 @@ export default {
       if(condition) {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
         console.log(this.conto);
-        this.conto.setClosed(1, this.currentPlace, this.stampaScontrino);
+        this.stampaScontrino((r) => {
+          console.log('stampaScontrino', r);
+          var progressive = r.Service.Request[0].lastDocF[0];
+          var zNum = r.Service.Request[0].lastZ[0];
+          this.conto.setClosed(1, this.currentPlace, progressive, zNum)
+        });
       } else {
         this.$emit('pagaConto', this.conto);
       }
@@ -234,12 +239,13 @@ export default {
         t.updateConto(this.currentPlace, this.conto);
       }
     },
-    stampaScontrino() {
+    stampaScontrino(callback) {
       console.log('stampaScontrino');
       printf.document(
         this.groupedList,
         this.conto.payments,
-        this.conto.customer
+        this.conto.customer,
+        callback
       );
     },
     checkPending(operator) {
