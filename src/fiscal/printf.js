@@ -2,6 +2,7 @@
 import xml from "./xml.js";
 import axios from 'axios';
 var parseString = require('xml2js').parseString;
+import Settings from "@/settings/Settings.js";
 
 //var cfg = require('../data/cfg.json');
 
@@ -11,6 +12,8 @@ const statusCmd = "<</?s";
 const getCfgCmd = "<</?C";
 const chiusuraCmd = "=C10"
 //const sellCmd = "=R";
+
+var conf = new Settings;
 
 export default {
    address: '192.168.0.9:80',
@@ -84,13 +87,24 @@ export default {
       this.sendCommand(buffer);
    },
    sellCmds(items) {
+      // eslint-disable-next-line no-unused-vars
+      var printNote = conf.getSettingValue('printNoteOnBill');
       var rows = [];
       for(var i=0; i<items.length; i++) {
          var item = items[i];
          if(item.status != -100) {
-            rows.push("=R" + item.vat.vatIndex + "/" +
-            "$" + (Number(item.price) * 100) +
-            "/" + "(" + item.name + ")");
+            var line = "=R" + item.vat.vatIndex + "/" +
+            "$" + (Number(item.price) * 100) + "/";
+            if(item.quantity > 1) {
+               line += "*" + item.quantity + "/";
+            }
+            line += "(" + item.name + ")";
+            rows.push(line);
+
+            if(printNote && item.note != undefined && item.note != null) {
+               if(item.note.length > 0)
+                  rows.push('="/?A/(' + item.note + ')');
+            }
          }
       }
       return rows;
