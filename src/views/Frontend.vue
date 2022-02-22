@@ -273,6 +273,8 @@ export default {
         console.log('testPrintf', resp)
         if(resp.Service.ECRStatus[0].mode != 'REG') {
           printf.setKey('REG');
+        } else {
+          printf.clear();
         }
       });
     }
