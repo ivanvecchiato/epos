@@ -21,7 +21,7 @@
             <shopping-cart
               :orderList="groupedList"
               @changeCart="changeCart"
-              @deleteItem="removeItem">
+              @deleteItem="removeItems">
             </shopping-cart>
           </div>
     </main>
@@ -160,7 +160,7 @@ export default {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
         console.log(this.conto);
         this.stampaScontrino((r) => {
-          console.log('stampaScontrino', r);
+          //console.log('stampaScontrino', r);
           var progressive = r.Service.Request[0].lastDocF[0];
           var zNum = r.Service.Request[0].lastZ[0];
           this.conto.setClosed(1, this.currentPlace, progressive, zNum)
@@ -186,17 +186,48 @@ export default {
       if(this.billLoaded)
         return utils.toDateTime(this.conto.createdAt);
     },
-    removeItem: function(index) {
-      this.conto.removeItem(index);
+    removeItems: function(ids) {
+      for(var i=0; i<this.conto.size(); i++) {
+        if(ids.indexOf(this.conto.getInsertId(i)) != -1) {
+          this.conto.removeItem(i);
+        }
+      }
     },
+    /*
     incrementItem: function(index) {
       this.conto.incrementItem(index);
     },
     decrementItem: function(index) {
       this.conto.decrementItem(index);
     },
-    changeCart: function(item ,delta) {
+    */
+    changeCart: function(item, delta) {
       console.log('changeCart', item, delta);
+
+      for(i=0; i<this.conto.size(); i++) {
+        if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+          this.conto.setNote(i, item.note);
+          this.conto.setPrice(i, item.price);
+        }
+      }
+
+      if(delta < 0) {
+        var count = 0;
+        for(var i=0; i<this.conto.size(); i++) {
+          if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+              this.conto.removeItem(i);
+              count ++;
+              if(count == Math. abs(delta)) break;
+          }
+        }
+      } else if(delta > 0) {
+        for(i=0; i<this.conto.size(); i++) {
+          if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+            this.conto.cloneItem(i, delta);
+          }
+        }
+      }
+
       this.conto.saveCache();
     },
     openDiscount: function() {

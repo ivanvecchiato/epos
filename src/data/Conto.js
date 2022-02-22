@@ -130,6 +130,10 @@ export default class Conto {
     this.saveCache();
   }
 
+  getInsertId(index) {
+    return this.orderList[index].insertId;
+  }
+
   addItem(p) {
     p.quantity = 1;
     p.insertId = this.size() + 1;
@@ -137,6 +141,21 @@ export default class Conto {
     this.saveCache();
   }
 
+  setPrice(index, price) {
+    this.orderList[index].price = price;
+  }
+
+  setNote(index, note) {
+    this.orderList[index].note = note;
+  }
+
+  cloneItem(index, count) {
+    console.log("cloning", count, this.orderList[index])
+    for(var i=0; i<count; i++) {
+      this.addItem(this.orderList[index])
+    }
+  }
+  
   groupItem(p, list, params) {
     var inserted = false;
     for(var i=0; i<list.length; i++) {
@@ -195,12 +214,14 @@ export default class Conto {
           && noteCriteria && variantCriteria 
           && timingCriteria && statusCriteria) {
         item.quantity++;
+        item.insertIds.push(p.insertId);
         inserted = true;
         break;
       }
     }
     if(!inserted) {
       p.quantity = 1;
+      p.insertIds = [p.insertId];
       list.push(Object.assign({}, p));
     }
   }
@@ -238,15 +259,14 @@ export default class Conto {
     localStorage.setItem('cart', JSON.stringify(this));
   }
 
-  setClosed(status, place, callback) {
+  setClosed(status, place, progressivo, chiusura) {
     this.lastModified = new Date();
     this.status = status;
     this.totale = this.getTotale();
+    this.progressivoFiscale = progressivo;
+    this.chiusuraFiscale = chiusura;
 
     this.writeDoc(place);
-    if(callback != undefined) {
-      callback();
-    }
   }
 
   setOperatorAndTimestamp() {

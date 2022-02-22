@@ -19,6 +19,7 @@ export default class Product {
     this.barcodes = [];   // String array
     this.takeaway = false;
     this.remote_order = false;
+    this.variable_price = false;
     this.inventory = {
       enabled: false,
       availability: 0,

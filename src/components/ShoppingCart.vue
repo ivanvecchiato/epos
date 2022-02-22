@@ -44,6 +44,15 @@ export default {
       currentIndex: -1
     }
   },
+  watch: {
+    orderList: {
+     // eslint-disable-next-line no-unused-vars
+      handler(newList, oldList) {
+        console.log(newList, oldList)
+      },
+      deep: true
+    }
+  },
   methods: {
     getItemClass: function(item) {
       if(item.status == -100) {
@@ -61,19 +70,22 @@ export default {
         return "item-name-crossed";
       } else return "item-name";
     },
-    onDelete: function() {
-      this.$emit('deleteItem', this.currentIndex);
+    onDelete: function(ids) {
+      this.$emit('deleteItem', ids);
       this.showModifications = false;
     },
     onChange: function(item) {
+      var delta = item.quantity - this.currentItem.quantity;
       this.currentItem.quantity = item.quantity;
       this.currentItem.note = item.note;
       this.currentItem.price = item.price;
 
-      this.$emit('changeCart');
+      this.$emit('changeCart', item, delta);
       this.showModifications = false;
     },
     showItemDetails: function(index, item) {
+      if(item.status == -100) return;
+      
       this.currentItem = item;
       this.currentIndex = index;
       this.showModifications = true;
@@ -90,7 +102,9 @@ export default {
     removeItem: function(index) {
       this.$emit('removeItem', index);
     }
-  }
+  },
+  mounted() {
+  },
 }
 </script>
 

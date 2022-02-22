@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     deleteItem: function() {
-      this.$emit('onDelete');
+      this.$emit('onDelete', this.item.insertIds);
     },
     saveModifications: function() {
       this.$emit('onChange', this.item);
