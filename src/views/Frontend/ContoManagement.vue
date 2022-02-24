@@ -268,6 +268,7 @@ export default {
       else {
         var t = new Table();
         t.updateConto(this.currentPlace, this.conto);
+        this.$emit('contoParked');
       }
     },
     stampaScontrino(callback) {

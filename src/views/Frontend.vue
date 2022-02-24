@@ -68,6 +68,7 @@
           :currentPlace="currentPlace"
           @annullaConto="annullaConto"
           @reassignedConto="reassignedConto"
+          @contoParked="contoParked"
           @pagaConto="pagaConto">
         </conto-management>
       </div>
@@ -145,6 +146,14 @@ export default {
     },
   },
   methods: {
+    contoParked: function() {
+      this.currentPlace = null;
+      var msg = "Conto parcheggiato";//this.$t('bill.reassigned');
+      this.$message({
+        type: 'success',
+        message: msg,
+      })
+    },
     reassignedConto: function() {
       this.currentPlace = null;
       var msg = "Conto riassegnato";//this.$t('bill.reassigned');
