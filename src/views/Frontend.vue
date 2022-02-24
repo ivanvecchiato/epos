@@ -81,6 +81,17 @@
       </payment-dialog>
     </el-dialog>
 
+    <el-dialog :title="$t('product.specify_price')"
+      v-model="priceDialogVisibile"
+      show-close="false"
+      destroy-on-close>
+      <ECRKeypad
+        :extended="true"
+        @cancel="cancelSelection"
+        @selectPrice="selectPrice">
+      </ECRKeypad>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -94,6 +105,8 @@ import { CircleClose } from '@element-plus/icons';
 import PaymentDialog from "./Frontend/PaymentDialog.vue";
 import printf from "../fiscal/printf.js";
 import ContoManagement from './Frontend/ContoManagement.vue';
+import ECRKeypad from '@/components/ECRKeypad.vue'
+
 
 export default {
   name: "Frontend",
@@ -101,7 +114,8 @@ export default {
     ProductGrid,
     CircleClose,
     PaymentDialog,
-    ContoManagement
+    ContoManagement,
+    ECRKeypad
   },
   props: ["place", "room"],
   data() {
@@ -113,7 +127,9 @@ export default {
       customer: null,
       currentPlace: null,
       search_pattern: '',
-      paymentDialogVisibile: false
+      paymentDialogVisibile: false,
+      priceDialogVisibile: false,
+      currentHandledProduct: null
     };
   },
   computed: {
@@ -161,21 +177,33 @@ export default {
       this.products = this.getProducts(c);
     },
     productSelected: function(p) {
-      if (p.add_note) {
-        this.openNote(p);
+      if(p.variable_price) {
+        this.openPriceinput(p);
       } else {
-        this.addItem(p);
+        if (p.add_note) {
+          this.openNote(p);
+        } else {
+          this.addItem(p);
+        }
       }
+    },
+    openPriceinput: function(p) {
+      this.priceDialogVisibile = true;
+      this.currentHandledProduct = p;
+    },
+    cancelSelection: function() {
+      this.priceDialogVisibile = false;
+      this.currentHandledProduct = null;
+    },
+    selectPrice: function(price, note) {
+      this.priceDialogVisibile = false;
+      this.currentHandledProduct.price = price;
+      this.currentHandledProduct.note = note;
+      console.log('selectPrice', price)
+      this.addItem(this.currentHandledProduct);
     },
     addItem: function(p) {
       this.$bus.trigger('addItem', p);
-      /*
-      this.conto.addItem(p);
-      this.$nextTick(() => {
-        var cart = this.$refs.contoMgmt;
-        cart.scroll();
-        })
-      */
     },
     openNote: function(p) {
       this.$prompt(this.$t("product.note"), p.name, {

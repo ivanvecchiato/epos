@@ -39,6 +39,9 @@
           v-if="isMeasure(item.type)"
           class="indicator indicator-gray"
           src="@/assets/icons/scale.png"/>
+        <el-icon v-if="isPriceVariable(item)" :size="14" color="#ffffff" class="indicator indicator-red">
+          <money />
+        </el-icon>
         <el-icon v-if="isBundle(item.type)" :size="14" color="#ffffff" class="indicator indicator-red">
           <coin />
         </el-icon>
@@ -53,7 +56,7 @@
 </template>
 
 <script>
-import { Coin } from "@element-plus/icons";
+import { Coin, Money } from "@element-plus/icons";
 import { Setting } from '@element-plus/icons'
 import { StarFilled } from '@element-plus/icons'
 import Firebase from '../firebase.js'
@@ -64,7 +67,7 @@ export default {
   props: {
     data: Array,
   },
-  components: { Coin, Setting, StarFilled },
+  components: { Coin, Money, Setting, StarFilled },
   data() {
     return {
       bgc: {
@@ -82,7 +85,9 @@ export default {
       return '';
     },
     atLeastOneProp: function(item) {
-      return (this.isBundle(item.type) || this.isToComplete(item.type) || this.isMeasure(item.type) || this.isFavorite(item));
+      return (this.isBundle(item.type) || this.isToComplete(item.type)
+        || this.isMeasure(item.type) || this.isFavorite(item))
+        || this.isPriceVariable(item);
     },
     formatPrice: function(price) {
       return Number(price).toFixed(2)
@@ -104,6 +109,9 @@ export default {
         return false;
       else
         return item.favorite;
+    },
+    isPriceVariable: function(item) {
+      return item.variable_price;
     },
     heartProduct: function(item) {
       var ref = Firebase.db.collection('products').doc(item.id);
@@ -230,7 +238,7 @@ export default {
   padding: 2px;
 }
 .indicator-red {
-  background-color: var(--info2-color);
+  background-color: var(--danger-color);
 }
 .indicator-yellow {
   background-color: var(--warning-color);

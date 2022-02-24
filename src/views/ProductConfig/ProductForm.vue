@@ -159,11 +159,21 @@
           <el-row>
             <el-col :span="12">
               <el-form-item>
-                <div>{{$t('product.specify_price')}}</div>
+                <div>{{$t('product.specify_price_at_insert')}}</div>
+                <el-switch v-model="product.variable_price"></el-switch>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <el-form-item>
+                <div>{{$t('product.specify_price_before_closing')}}</div>
                 <el-switch v-model="product.price_to_be_confirmed"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
+
         </el-tab-pane>
 
         <el-tab-pane :label="$t('product.production')">

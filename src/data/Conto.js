@@ -164,7 +164,8 @@ export default class Conto {
 //      if(item.status == -100) {
 //        break;
 //      }
-
+    
+      var priceCriteria = true;
       var noteCriteria = true;
       var variantCriteria = true;
       var timingCriteria = true; // per controllare se un item è appena inserito
@@ -176,6 +177,8 @@ export default class Conto {
         } else {
           noteCriteria = (item.note == p.note);
         }
+
+        priceCriteria = (item.price == p.price);
 
         if(item.modifiers == undefined && p.modifiers == undefined) {
           variantCriteria = true;
@@ -212,7 +215,7 @@ export default class Conto {
 
       if(item.id === p.id
           && noteCriteria && variantCriteria 
-          && timingCriteria && statusCriteria) {
+          && timingCriteria && statusCriteria && priceCriteria) {
         item.quantity++;
         item.insertIds.push(p.insertId);
         inserted = true;

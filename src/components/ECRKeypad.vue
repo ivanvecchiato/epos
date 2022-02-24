@@ -15,11 +15,22 @@
            </div>
          </div>
       </div>
+      <div  v-if="extended">
+        <div class="note">
+          <el-input type="textarea" :rows="2" v-model="note" :placeholder="$t('product.note')"></el-input>
+        </div>
+        <div class="action-buttons">
+          <div class="undo-button" @click="actionCancel">Annulla</div>
+          <div class="action-button" @click="actionOk">OK</div>
+        </div>
+      </div>
    </div>
 </template>
 
 <script>
 export default {
+   name: 'ECRKeypad',
+   props: ['extended'],
    data() {
       return {
          calculatorValue: "",
@@ -38,6 +49,7 @@ export default {
             "C",
          ],
          operator: null,
+         note: '',
          previousCalculatorValue: "",
       }
    },
@@ -70,6 +82,12 @@ export default {
            this.operator = null;
          }
       },
+      actionOk: function() {
+        this.$emit('selectPrice', this.calculatorValue, this.note)
+      },
+      actionCancel: function() {
+        this.$emit('cancel')
+      }
    },
    mounted() {
       
@@ -125,5 +143,42 @@ export default {
 }
 .button:active {
   background-color: #cf5e54;
+}
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(50px, auto);
+  width: min(350px, 100%);
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+  gap: 5px;
+}
+.action-button {
+  background-color: var(--tertiary-color);
+  padding: 6px;
+  border-radius: 4px;
+  margin: 4px;
+  font-size: 1.5em;
+  font-weight: normal;
+  color: var(--primary-color);
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+.undo-button {
+  color: var(--tertiary-color);
+  padding: 6px;
+  border: solid 1px var(--tertiary-color);
+  border-radius: 4px;
+  margin: 4px;
+  font-size: 1.5em;
+  font-weight: normal;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+.note {
+  width: min(350px, 100%);
+  margin: auto;
 }
 </style>
