@@ -8,7 +8,7 @@
            class="button"
            v-for="n in btnArr"
            :key="n"
-           :class="{ operator: ['C', '*', '/', '-', '+', '%', '='].includes(n) }">
+           :class="{ operator: ['C', '%', '='].includes(n) }">
 
            <div class="btn" @click="action(n)">
              {{ n }}
@@ -143,6 +143,14 @@ export default {
 }
 .button:active {
   background-color: #cf5e54;
+}
+.operator {
+  background-color: #e9817756;
+  border:solid 1px #e98077;
+  color: #e98077;
+}
+.operator:hover {
+  background-color: rgb(255, 209, 148);
 }
 .action-buttons {
   display: grid;
