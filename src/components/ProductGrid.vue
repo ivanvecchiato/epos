@@ -188,7 +188,7 @@ export default {
 }
 .product-name {
   font-size: 18px;
-  font-weight: normal;
+  font-weight: bold;
   margin: auto;
   line-height: 90%;
   /*color: rgb(68, 68, 68);*/
@@ -201,7 +201,7 @@ export default {
   bottom: 25px;
   right: 10px;
   font-size: 18px;
-  font-weight: normal;
+  font-weight: bold;
   margin: auto;
   line-height: 90%;
   /*color: rgb(68, 68, 68);*/
