@@ -23,7 +23,7 @@
       <div class="list">
         <el-table
           :data="tableData"
-          height="800"
+          height="100%"
           style="width: 90%"
           @row-click="rowClick">
           <el-table-column
@@ -351,5 +351,6 @@ export default {
 
 .list {
   padding: 10px;
+  height: 100vh;
 }
 </style>

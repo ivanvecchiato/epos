@@ -148,7 +148,7 @@ export default {
   methods: {
     contoParked: function() {
       this.currentPlace = null;
-      var msg = "Conto parcheggiato";//this.$t('bill.reassigned');
+      var msg = "Conto parcheggiato";//this.$t('bill.parked');
       this.$message({
         type: 'success',
         message: msg,
