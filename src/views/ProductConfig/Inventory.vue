@@ -33,18 +33,25 @@
           </el-table-column>
           <el-table-column
             prop="name"
+            sortable
             :label="$t('product.name')"
             width="280">
           </el-table-column>
           <el-table-column
+            prop="category"
+            sortable
+            :label="$t('product.category')"
+            width="200">
+          </el-table-column>
+          <el-table-column
             prop="price"
             :label="$t('product.price')"
-            width="180">
+            width="100">
           </el-table-column>
           <el-table-column
             prop="inventory"
             :label="$t('inventory.availability')"
-            width="180">
+            width="120">
           </el-table-column>
           <el-table-column label="" width="100">
             <template #default="scope">
@@ -232,6 +239,7 @@ export default {
         this.tableData.push({
           code: this.products[i].code,
           name: this.products[i].name,
+          category: this.products[i].category.name,
           price: Number(this.products[i].price).toFixed(2),
           inventory: Number(this.products[i].inventory.availability)
         });
