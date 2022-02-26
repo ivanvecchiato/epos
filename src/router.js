@@ -43,7 +43,10 @@ const routes = [
   {
     path: '/floor',
     name: 'floor',
-    component: Floor
+    component: Floor,
+    props:  (route) => ({
+      ...route.params
+    })
   },
   {
     path: '/settings',
