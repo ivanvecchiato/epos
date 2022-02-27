@@ -65,7 +65,7 @@ html {
 :root{
   --primary-color: #102A68!important;
   --secondary-color: #FE9D34!important;
-  --light-secondary-color: ##FE0B2!important;
+  --light-secondary-color: #ffe2c3!important;
   --tertiary-color: rgb(201, 219, 251)!important;
   --light-main-color: rgba(148, 163, 236, 0.2)!important;
   --success-color: #FF5621!important;
