@@ -149,11 +149,15 @@ export default {
       this.$router.push({
         name: 'frontend',
         params: {
-          room: JSON.stringify({
-            docId: this.currentArea.docId,
-            id: this.currentArea.id,
-            name: this.currentArea.name}),
-          place: table.name
+          place: JSON.stringify({
+            id: table.key,
+            name: table.name,
+            area: {
+              docId: this.currentArea.docId,
+              id: this.currentArea.id,
+              name: this.currentArea.name
+            }
+          })
         }
       })
     },
@@ -261,6 +265,7 @@ export default {
                 places[n].conto = conto;
                 places[n].showMenu = false;
               }
+              places[n].key = n;
             }
             self.areas.push(area);
           });

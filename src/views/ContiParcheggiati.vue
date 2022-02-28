@@ -272,7 +272,7 @@ export default {
         this.stats.sospeso += this.docs[i].data.totale;
         this.tableData.push({
           date: utils.toDateTime(this.docs[i].data.lastModified),
-          place: this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.place,
+          place: this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.name,
           amount: this.docs[i].data.totale.toFixed(2),
         });
         this.collectData(this.docs[i].data.orderList);

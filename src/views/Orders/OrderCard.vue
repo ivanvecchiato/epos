@@ -45,7 +45,7 @@ export default {
    },
    computed: {
       place: function() {
-         return this.data.place.area.name + " / " + this.data.place.place;
+         return this.data.place.area.name + " / " + this.data.place.name;
       },
       time: function() {
          return utils.toLocaleDateTimeString(this.data.timestamp);

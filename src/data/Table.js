@@ -17,7 +17,7 @@ export default class Table {
     console.log('updateConto', place)
 
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
-    var key = "places." + place.place + ".conto";
+    var key = "places." + place.id + ".conto";
     docRef.update({
         [key]: Object.assign({}, new Conto)
       })
@@ -33,7 +33,7 @@ export default class Table {
     console.log('updateConto', place)
 
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
-    var key = "places." + place.place + ".conto";
+    var key = "places." + place.id + ".conto";
     docRef.update({
         [key]: Object.assign({}, conto)
       })

@@ -17,17 +17,17 @@
     </header>
 
     <main ref='cart'>
-          <div>
-            <shopping-cart
-              :orderList="groupedList"
-              @changeCart="changeCart"
-              @deleteItem="removeItems">
-            </shopping-cart>
-          </div>
+      <div>
+        <shopping-cart
+          :orderList="groupedList"
+          @changeCart="changeCart"
+          @deleteItem="removeItems">
+        </shopping-cart>
+      </div>
     </main>
 
     <footer>
-        <div class="flat-card">
+      <div class="flat-card">
 
         <div class="subtotale-section">
           <span class="subtotale-label">
@@ -63,34 +63,34 @@
             {{totale}}
           </span>
         </div>
-        </div>
+      </div>
 
-        <div class="flat-card">
-          <div class="buttons">
-            <el-button
-              type="danger"
-              plain
-              class="annulla"
-              @click="annullaConto">
-              {{ $t("bill.clear") }}
-            </el-button>
-            <el-button
-              type="primary"
-              class="block"
-              plain
-              @click="parcheggiaConto">
-              {{ $t("bill.save") }}
-            </el-button>
-          </div>
-          <div class="buttons" style="margin-top: 10px">
-            <el-button
-              type="success"
-              class="block bold"
-              @click="pagaConto">
-              {{ $t("bill.cash") }}
-            </el-button>
-          </div>
+      <div class="flat-card">
+        <div class="buttons">
+          <el-button
+            type="danger"
+            plain
+            class="annulla"
+            @click="annullaConto">
+            {{ $t("bill.clear") }}
+          </el-button>
+          <el-button
+            type="primary"
+            class="block"
+            plain
+            @click="parcheggiaConto">
+            {{ $t("bill.save") }}
+          </el-button>
         </div>
+        <div class="buttons" style="margin-top: 10px">
+          <el-button
+            type="success"
+            class="block bold"
+            @click="pagaConto">
+            {{ $t("bill.cash") }}
+          </el-button>
+        </div>
+      </div>
     </footer>
 
     <el-dialog
@@ -104,6 +104,17 @@
         @applyDiscount="applyDiscount">
       </discount-widget>
     </el-dialog>
+
+    <el-dialog
+      :title="$t('bill.doPark')"
+      v-model="placeSelectorVisible"
+      width="70%"
+      destroy-on-close>
+      <place-selector
+        @selectPlace="selectPlace">
+      </place-selector>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -118,6 +129,7 @@ import Table from "../../data/Table.js";
 import printf from "../../fiscal/printf.js";
 import operator from "../../store/user.js";
 import Settings from "@/settings/Settings.js";
+import PlaceSelector from "./PlaceSelector.vue"
 
 export default {
   name: 'ContoManagement',
@@ -125,6 +137,7 @@ export default {
    ShoppingCart,
    DiscountWidget,
    Edit,
+   PlaceSelector
   },
   props: ['currentPlace'],
   data() {
@@ -132,7 +145,8 @@ export default {
        billLoaded: false,
        discountVisible: false,
        conto: new Conto,
-       conf: new Settings
+       conf: new Settings,
+       placeSelectorVisible: false
      }
   },
   computed: {
@@ -260,12 +274,30 @@ export default {
         .catch(() => {
         })
     },
+    selectPlace: function(selectedPlace) {
+      console.log('selectPlace', selectedPlace);
+      this.conto.update(selectedPlace);
+      var t = new Table();
+      t.updateConto(selectedPlace, this.conto);
+      this.$emit('contoParked');
+    },
     parcheggiaConto: function() {
-      this.conto.update(this.currentPlace);
+      if(this.conto == null) return;
+      if(this.conto.size() == 0) return;
 
-      if (this.currentPlace == null || this.currentPlace == undefined)
-        this.$router.push("/floor");
+      if (this.currentPlace == null || this.currentPlace == undefined) {
+        /*
+        this.$router.push({
+          name: 'floor',
+          params: {
+            suspendedOrder: JSON.stringify(this.conto)
+          }
+        })
+        */
+       this.placeSelectorVisible = true;
+      }
       else {
+        this.conto.update(this.currentPlace);
         var t = new Table();
         t.updateConto(this.currentPlace, this.conto);
         this.$emit('contoParked');
@@ -322,10 +354,11 @@ export default {
         .doc(place.area.docId);
       docRef.get().then((doc) => {
         if (doc.exists) {
-          console.log("loadConto", doc.data().places[place.place].conto);
-          if(doc.data().places[place.place].conto.orderList.length > 0) {
-            this.conto.fillData(doc.data().places[place.place].conto);
-            this.billLoaded = true;
+          if(doc.data().places[place.id].conto != null) {
+            if(doc.data().places[place.id].conto.orderList.length > 0) {
+              this.conto.fillData(doc.data().places[place.id].conto);
+              this.billLoaded = true;
+            }
           }
         } else {
           console.log("No such document!");

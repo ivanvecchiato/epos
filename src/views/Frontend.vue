@@ -17,7 +17,7 @@
           <div v-if="currentPlace != null" class="title-2 info-conto">
             <span>{{currentPlace.area.name}}</span>            
             -
-            <span>{{$t('bill.place', {description: currentPlace.place})}}</span>
+            <span>{{$t('bill.place', {description: currentPlace.name})}}</span>
             &nbsp;
             <el-icon :size="24" color="#000" @click="reassignPark">
               <circle-close />
@@ -320,14 +320,10 @@ export default {
     this.$bus.reset();
   },
   mounted() {
-    if (this.place != undefined && this.place.length != 0) {
-      this.currentPlace = {
-        area: JSON.parse(this.room),
-        place: this.place
-      }
-//      console.log("Frontend", this.currentPlace);
+    if (this.place != undefined) {
+      this.currentPlace = JSON.parse(this.place);
+      console.log("Frontend", this.currentPlace);
       this.$bus.trigger('loadConto', this.currentPlace)
-//      this.loadConto();
     } else {
       this.$bus.trigger('checkPending', operator)
     }
@@ -392,13 +388,17 @@ export default {
 .button-active {
   background-color: var(--secondary-color);
   font-weight: bold;
+  font-family: 'Montserrat';
+  font-size: 1.1em;
   border: 0px;
 }
 .button-idle {
   /*background-color: var(--lightest-main-color);*/
   background-color: #ffffff;
   color: var(--primary-color);
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'Montserrat';
+  font-size: 1.1em;
   border: 0px solid var(--primary-color);
 }
 .customer {

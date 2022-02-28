@@ -206,7 +206,7 @@ export default {
       for (var i = 0; i < this.docs.length; i++) {
         var source = "cassa";
         if(this.docs[i].place != undefined) {
-          source = this.docs[i].place.area.name + " / " + this.docs[i].place.place;
+          source = this.docs[i].place.area.name + " / " + this.docs[i].place.name;
         }
         this.tableData.push({
           date: utils.toDateTime(this.docs[i].lastModified),

@@ -102,7 +102,6 @@ export default {
           };
           for(var i=0; i<tablesNum[j]; i++) {
             var obj = {
-              id: Number(i+1),
               name: (i+1).toString(),
               places: 2,
 //              conto: Object.assign({},new Conto)

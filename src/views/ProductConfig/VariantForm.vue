@@ -60,7 +60,7 @@
 
 <script>
 //import Firebase from "../../firebase";
-import Product from "../../data/Product.js";
+import Variant from "../../data/Variant.js";
 import utils from "../../utils.js"
 import ColorSelector from '../../components/ColorSelector.vue'
 import {CircleClose} from '@element-plus/icons'
@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       isMounted: false,
-      variant: new Product(),
+      variant: new Variant(),
       color: "",
       inputVisible: false,
       inputValue: '',
