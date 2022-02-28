@@ -185,7 +185,9 @@
     "area": "Area {description}",
     "ignore-changes": "Il conto è stato modificato. Annullare?",
     "reassign": "Riassegna conto",
-    "reassigned": "Conto riassegnato"
+    "reassigned": "Conto riassegnato",
+    "doPark": "Selezionare il conto su cui parcheggiare l'ordine",
+    "noBills": "Nessun conto trovato"
   },
   "orders": {
     "order": "Ordine",
