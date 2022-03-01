@@ -27,7 +27,7 @@ export default class Conto {
       value: 0
     };
     this.status = 0;    // 0=open, 1=closed, -100=deleted, 100=prebill
-    this.chiusura = 0;
+    this.chiusuraFiscale = 0;
     this.source = 0;    //0=frontend, 1000 = takeaway, 2000 = ecommerce, {obj}=tavolo
     this.customer = null;   // class Customer TBD
   }
