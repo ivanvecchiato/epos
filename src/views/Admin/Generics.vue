@@ -30,7 +30,7 @@ import Generics from './Generics.vue';
 
 export default {
    name: 'Configs',
-   components: {Payments, Settings},
+   components: {Payments, Settings, Generics},
    data() {
       return {
          currentContent: Payments,
