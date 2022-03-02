@@ -92,6 +92,7 @@ import Operator from '../data/Operator.js';
 import operator from "../store/user.js"
 import FrontendActions from "./FrontendActions.vue"
 import Authentication from "./Authentication.vue"
+import geolocation from '../store/geolocation'
 
 export default {
   name: 'Home',
@@ -186,9 +187,26 @@ export default {
         this.loggedIn = true;
         this.$router.push("/frontend");
       }
+    },
+    getGeolocation() {
+        this.gettingLocation = true;
+      // get position
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.gettingLocation = false;
+        this.location = pos;
+        geolocation.setGeoData(pos);
+      }, err => {
+        this.gettingLocation = false;
+        this.errorStr = err.message;
+      })
     }
   },
   mounted() {
+    if(("geolocation" in navigator)) {
+      console.log('geolocation available');
+      this.getGeolocation();
+    }
+
     this.checkAuth();
     console.log("Home", "setting event listener");
   },
