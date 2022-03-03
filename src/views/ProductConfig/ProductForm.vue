@@ -53,7 +53,7 @@
                 <color-selector
                   v-if="isMounted"
                   :key="product.id"
-                  :initialColor="product.color"
+                  :initialColor="product.properties.color"
                   @colorPicked='colorPicked'>
                 </color-selector>
               </el-col>
@@ -62,7 +62,7 @@
           <el-row>
             <el-col :span="24">
               <el-form-item :label="$t('product.type')">
-                <el-radio-group v-model="product.type">
+                <el-radio-group v-model="product.properties.type">
                   <el-radio :label="0">{{$t('product_type.normal')}}</el-radio>
                   <el-radio :label="1">{{$t('product_type.bundle')}}</el-radio>
                   <el-radio :label="2">{{$t('product_type.measure')}}</el-radio>
@@ -75,11 +75,11 @@
           </el-row>
 
           <el-form-item :label="$t('product.short-description')">
-            <el-input type="textarea" :rows="3" v-model="product.short_description"></el-input>
+            <el-input type="textarea" :rows="3" v-model="product.properties.short_description"></el-input>
           </el-form-item>
 
           <el-form-item :label="$t('product.long-description')">
-            <el-input type="textarea" :rows="6" v-model="product.long_description"></el-input>
+            <el-input type="textarea" :rows="6" v-model="product.properties.long_description"></el-input>
           </el-form-item>
         </el-tab-pane>
 
@@ -124,7 +124,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.available_for_takeaway')}}</div>
-                <el-switch v-model="product.takeaway"></el-switch>
+                <el-switch v-model="product.properties.takeaway"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -133,7 +133,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.available_for_remote_order')}}</div>
-                <el-switch v-model="product.remote_order"></el-switch>
+                <el-switch v-model="product.properties.remote_order"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -142,7 +142,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.add_variant')}}</div>
-                <el-switch v-model="product.add_variant"></el-switch>
+                <el-switch v-model="product.properties.add_variant"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -151,7 +151,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.add_note')}}</div>
-                <el-switch v-model="product.add_note"></el-switch>
+                <el-switch v-model="product.properties.add_note"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -160,7 +160,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.specify_price_at_insert')}}</div>
-                <el-switch v-model="product.variable_price"></el-switch>
+                <el-switch v-model="product.properties.variable_price"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -169,7 +169,7 @@
             <el-col :span="12">
               <el-form-item>
                 <div>{{$t('product.specify_price_before_closing')}}</div>
-                <el-switch v-model="product.price_to_be_confirmed"></el-switch>
+                <el-switch v-model="product.properties.price_to_be_confirmed"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -260,7 +260,7 @@ export default {
 
       storageRef.put(files[0]).then((snapshot) => {
         console.log('Uploaded a blob or file!', snapshot);
-        this.product.imgUrl = 'images/' + files[0].name;
+        this.product.properties.imgUrl = 'images/' + files[0].name;
       });
       this.createImage(files[0]);
     },
@@ -276,7 +276,7 @@ export default {
     removeImage: function (e) {
       console.log(e);
       this.imgUrl = '';
-      this.product.imgUrl = ''
+      this.product.properties.imgUrl = ''
     },
     setDestinations() {
       this.product.productionAreas = [];
@@ -356,11 +356,11 @@ export default {
         });
     },
     loadImage: function() {
-      if(this.product.imgUrl.length == 0) return;
+      if(this.product.properties.imgUrl.length == 0) return;
 
       const storage = Firebase.storage.ref();
-      var storageRef = storage.child(this.product.imgUrl);
-//      var pathReference = storage.ref(this.product.imgUrl);
+      var storageRef = storage.child(this.product.properties.imgUrl);
+//      var pathReference = storage.ref(this.product.properties.imgUrl);
 
       storageRef.getDownloadURL()
         .then((url) => {

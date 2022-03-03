@@ -23,8 +23,8 @@
         </el-dropdown>
       </div>
       <div class="card-body">
-        <el-image v-if="item.imgUrl.length>0" :src="item.imgUrl" class="thumbnail"/>
-        <p v-if="item.imgUrl.length>0" class="product-img-name">{{ item.name }}</p>
+        <el-image v-if="item.properties.imgUrl.length>0" :src="item.properties.imgUrl" class="thumbnail"/>
+        <p v-if="item.properties.imgUrl.length>0" class="product-img-name">{{ item.name }}</p>
         <p v-else class="product-name">{{ item.name }}</p>
       </div>
     </div>
@@ -32,11 +32,11 @@
     <div class="card-bottom">
       <div class="icons" v-if="atLeastOneProp(item)">
         <img
-          v-if="isToComplete(item.type)"
+          v-if="isToComplete(item.properties.type)"
           class="indicator indicator-red"
           src="@/assets/icons/steps.png"/>
         <img
-          v-if="isMeasure(item.type)"
+          v-if="isMeasure(item.properties.type)"
           class="indicator indicator-gray"
           src="@/assets/icons/scale.png"/>
         <el-icon v-if="isPriceVariable(item)" :size="14" color="#ffffff" class="indicator indicator-red">
@@ -77,16 +77,14 @@ export default {
   },
   methods: {
     getBgc: function(item) {
-      if(item.color != '') {
-        return "background: " + item.color;
-//        this.bgc.backgroundColor = item.color;
+      if(item.properties.color != '') {
+        return "background: " + item.properties.color;
       }
-//      return this.bgc;
       return '';
     },
     atLeastOneProp: function(item) {
-      return (this.isBundle(item.type) || this.isToComplete(item.type)
-        || this.isMeasure(item.type) || this.isFavorite(item))
+      return (this.isBundle(item.properties.type) || this.isToComplete(item.properties.type)
+        || this.isMeasure(item.properties.type) || this.isFavorite(item))
         || this.isPriceVariable(item);
     },
     formatPrice: function(price) {
@@ -105,25 +103,25 @@ export default {
       return type == 2;
     },
     isFavorite: function(item) {
-      if(item.favorite == undefined)
+      if(item.properties.favorite == undefined)
         return false;
       else
-        return item.favorite;
+        return item.properties.favorite;
     },
     isPriceVariable: function(item) {
-      return item.variable_price;
+      return item.properties.variable_price;
     },
     heartProduct: function(item) {
       var ref = Firebase.db.collection('products').doc(item.id);
-      ref.set({
-        favorite: true
-      }, {merge: true})
+      ref.update({
+        "properties.favorite": true
+      })
     },
     deheartProduct: function(item) {
       var ref = Firebase.db.collection('products').doc(item.id);
-      ref.set({
-        favorite: false
-      }, {merge: true})
+      ref.update({
+        "properties.favorite": false
+      })
     },
     editProduct: function(item) {
       console.log('editProduct', item.name);

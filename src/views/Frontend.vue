@@ -243,16 +243,16 @@ export default {
         });
     },
     loadImage: function(item) {
-      if(item.imgUrl.length == 0) return;
+      if(item.properties.imgUrl.length == 0) return;
 
       const storage = Firebase.storage.ref();
-      var storageRef = storage.child(item.imgUrl);
-//      var pathReference = storage.ref(this.product.imgUrl);
+      var storageRef = storage.child(item.properties.imgUrl);
+//      var pathReference = storage.ref(this.product.properties.imgUrl);
 
       storageRef.getDownloadURL()
         .then((url) => {
           //console.log("URL", url)
-          item.imgUrl = url;
+          item.properties.imgUrl = url;
         })
         .catch(() => {
           //console.log(error)
@@ -293,7 +293,7 @@ export default {
     loadPreferiti: function() {
       Firebase.db
         .collection("products")
-        .where("favorite", "==", true)
+        .where("properties.favorite", "==", true)
         .where("status", "==", 1)
         .onSnapshot((snapshotChange) => {
           this.products = [];
