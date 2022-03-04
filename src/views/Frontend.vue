@@ -186,10 +186,10 @@ export default {
       this.products = this.getProducts(c);
     },
     productSelected: function(p) {
-      if(p.variable_price) {
+      if(p.properties.variable_price) {
         this.openPriceinput(p);
       } else {
-        if (p.add_note) {
+        if (p.properties.add_note) {
           this.openNote(p);
         } else {
           this.addItem(p);

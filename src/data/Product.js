@@ -1,5 +1,3 @@
-var faker = require('faker');
-import utils from '../utils';
 export default class Product {
   constructor() {
     this.id = '';
@@ -31,17 +29,5 @@ export default class Product {
     },
     this.productionAreas = [];
     this.status = 1;  // 1=active, 0=inactive; -1 deleted
-  }
-
-  randomize() {
-    faker.locale = "it";
-    this.name = faker.commerce.productName();
-    this.id = faker.datatype.uuid();
-    this.code = faker.datatype.number();
-    this.add_note = (utils.getRandomInt(1, 4) > 1) ? true:false;
-    this.add_variant = (utils.getRandomInt(1, 4) > 1) ? true:false;
-    this.price = faker.commerce.price();
-    this.imgUrl = faker.image.food();
-    this.type = utils.getRandomInt(1, 4);
   }
 }
