@@ -104,7 +104,7 @@ import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import { CircleClose } from '@element-plus/icons';
 import PaymentDialog from "./Frontend/PaymentDialog.vue";
-import printf from "../fiscal/printf.js";
+import printf from "../fiscalprinter/printf.js";
 import ContoManagement from './Frontend/ContoManagement.vue';
 import ECRKeypad from '@/components/ECRKeypad.vue'
 

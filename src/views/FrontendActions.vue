@@ -8,7 +8,7 @@
 
 <script>
 //import Firebase from "../firebase.js";
-import printf from "../fiscal/printf.js"
+import printf from "../fiscalprinter/printf.js"
 
 export default {
   name: "FrontendActions",

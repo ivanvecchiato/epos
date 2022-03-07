@@ -126,7 +126,7 @@ import { Edit } from '@element-plus/icons';
 import utils from "../../utils.js";
 import Conto from "../../data/Conto.js";
 import Table from "../../data/Table.js";
-import printf from "../../fiscal/printf.js";
+import printf from "../../fiscalprinter/printf.js";
 import operator from "../../store/user.js";
 import Settings from "@/settings/Settings.js";
 import PlaceSelector from "./PlaceSelector.vue"
@@ -164,6 +164,11 @@ export default {
     scroll: function() {
       var cart = this.$refs.cart;
       cart.scrollTop = cart.scrollHeight;
+    },
+    preconto: function() {
+      if(this.conto.size() == 0)
+        return;
+
     },
     pagaConto: function() {
       if(this.conto.size() == 0)

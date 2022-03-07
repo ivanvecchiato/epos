@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import printf from "../../fiscal/printf.js";
+import printf from "../../fiscalprinter/printf.js";
 
 export default {
    data() {
