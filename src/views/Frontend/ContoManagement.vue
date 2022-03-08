@@ -1,92 +1,95 @@
 <template>
   <div class="conto">
     <header>
-        <div class="info-conto-2" v-if="billLoaded == true">
-          <el-icon style="vertical-align: middle;" :color="getAttentionColor()" :size="14">
+      <div class="info-conto-2" v-if="billLoaded == true">
+        <el-icon
+          style="vertical-align: middle"
+          :color="getAttentionColor()"
+          :size="14"
+        >
+          <edit />
+        </el-icon>
+        <span style="vertical-align: middle">{{ billStart() }}</span>
+      </div>
+      <div class="bottom-header">
+        <div class="note">
+          <el-icon
+            :size="24"
+            v-on:click.stop
+            :color="getNoteColor()"
+            @click="setNote"
+          >
             <edit />
           </el-icon>
-          <span style="vertical-align: middle;">{{billStart()}}</span>
         </div>
-        <div class="bottom-header">
-          <div class="note">
-            <el-icon :size="24" v-on:click.stop :color="getNoteColor()" @click="setNote">
-              <edit />
-            </el-icon>
-          </div>
-        </div>
+      </div>
     </header>
 
-    <main ref='cart'>
+    <main ref="cart">
       <div>
         <shopping-cart
           :orderList="groupedList"
           @changeCart="changeCart"
-          @deleteItem="removeItems">
+          @deleteItem="removeItems"
+        >
         </shopping-cart>
       </div>
     </main>
 
     <footer>
       <div class="flat-card">
-
         <div class="subtotale-section">
           <span class="subtotale-label">
-            {{$t('bill.subtotal')}}
+            {{ $t("bill.subtotal") }}
           </span>
           <span class="subtotale-amount">
-            {{subtotale}}
+            {{ subtotale }}
           </span>
         </div>
 
         <div class="sconto-section" @click="openDiscount">
           <div class="sconto-label">
-          <span>
-            <el-icon style="vertical-align: middle;">
-              <edit />
-            </el-icon>
-            {{$t('bill.discount')}}
-          </span>
-          <span v-if="conto.discount.value>0" style="margin-left: 10px">
-            {{conto.discount.rate}}%
-          </span>
+            <span>
+              <el-icon style="vertical-align: middle">
+                <edit />
+              </el-icon>
+              {{ $t("bill.discount") }}
+            </span>
+            <span v-if="conto.discount.value > 0" style="margin-left: 10px">
+              {{ conto.discount.rate }}%
+            </span>
           </div>
           <span class="sconto-amount">
-            {{formatAmount(conto.discount.value)}}
+            {{ formatAmount(conto.discount.value) }}
           </span>
         </div>
 
         <div class="totale-section">
           <span class="totale-label">
-            {{$t('bill.total')}}
+            {{ $t("bill.total") }}
           </span>
           <span class="totale-amount">
-            {{totale}}
+            {{ totale }}
           </span>
         </div>
       </div>
 
       <div class="flat-card">
         <div class="buttons">
-          <el-button
-            type="danger"
-            plain
-            class="annulla"
-            @click="annullaConto">
+          <el-button type="danger" plain class="annulla" @click="annullaConto">
             {{ $t("bill.clear") }}
           </el-button>
           <el-button
             type="primary"
             class="block"
             plain
-            @click="parcheggiaConto">
+            @click="parcheggiaConto"
+          >
             {{ $t("bill.save") }}
           </el-button>
         </div>
         <div class="buttons" style="margin-top: 10px">
-          <el-button
-            type="success"
-            class="block bold"
-            @click="pagaConto">
+          <el-button type="success" class="block bold" @click="preconto">
             {{ $t("bill.cash") }}
           </el-button>
         </div>
@@ -98,10 +101,9 @@
       v-model="discountVisible"
       :center="false"
       width="40%"
-      destroy-on-close>
-      <discount-widget
-        :amount="conto.totale"
-        @applyDiscount="applyDiscount">
+      destroy-on-close
+    >
+      <discount-widget :amount="conto.totale" @applyDiscount="applyDiscount">
       </discount-widget>
     </el-dialog>
 
@@ -109,12 +111,10 @@
       :title="$t('bill.doPark')"
       v-model="placeSelectorVisible"
       width="70%"
-      destroy-on-close>
-      <place-selector
-        @selectPlace="selectPlace">
-      </place-selector>
+      destroy-on-close
+    >
+      <place-selector @selectPlace="selectPlace"> </place-selector>
     </el-dialog>
-
   </div>
 </template>
 
@@ -122,92 +122,90 @@
 import Firebase from "../../firebase.js";
 import ShoppingCart from "../../components/ShoppingCart.vue";
 import DiscountWidget from "../../components/DiscountWidget.vue";
-import { Edit } from '@element-plus/icons';
+import { Edit } from "@element-plus/icons";
 import utils from "../../utils.js";
 import Conto from "../../data/Conto.js";
 import Table from "../../data/Table.js";
 import printf from "../../fiscalprinter/printf.js";
+import escposprinter from "../../escposprinter/escposprinter.js";
+import Document from "../../documents/Document.js";
 import operator from "../../store/user.js";
 import Settings from "@/settings/Settings.js";
-import PlaceSelector from "./PlaceSelector.vue"
+import PlaceSelector from "./PlaceSelector.vue";
 
 export default {
-  name: 'ContoManagement',
+  name: "ContoManagement",
   components: {
-   ShoppingCart,
-   DiscountWidget,
-   Edit,
-   PlaceSelector
+    ShoppingCart,
+    DiscountWidget,
+    Edit,
+    PlaceSelector,
   },
-  props: ['currentPlace'],
+  props: ["currentPlace"],
   data() {
-     return {
-       billLoaded: false,
-       discountVisible: false,
-       conto: new Conto,
-       conf: new Settings,
-       placeSelectorVisible: false
-     }
+    return {
+      billLoaded: false,
+      discountVisible: false,
+      conto: new Conto(),
+      conf: new Settings(),
+      placeSelectorVisible: false,
+    };
   },
   computed: {
-     subtotale: function() {
-        return utils.formatPrice(this.conto.getTotale());
-     },
-     totale: function() {
-        return utils.formatPrice(this.conto.getTotaleNetto());
-     },
-     groupedList: function () {
-       return this.conto.groupByItems();
-     },
+    subtotale: function () {
+      return utils.formatPrice(this.conto.getTotale());
+    },
+    totale: function () {
+      return utils.formatPrice(this.conto.getTotaleNetto());
+    },
+    groupedList: function () {
+      return this.conto.groupByItems();
+    },
   },
   methods: {
-    scroll: function() {
+    scroll: function () {
       var cart = this.$refs.cart;
       cart.scrollTop = cart.scrollHeight;
     },
-    preconto: function() {
-      if(this.conto.size() == 0)
-        return;
+    preconto: function () {
+      if (this.conto.size() == 0) return;
 
+      this.stampaScontrinoNonFiscale();
     },
-    pagaConto: function() {
-      if(this.conto.size() == 0)
-        return;
+    pagaConto: function () {
+      if (this.conto.size() == 0) return;
 
-      var condition = this.conf.getSettingValue('allowQuickBill');
-      if(condition) {
+      var condition = this.conf.getSettingValue("allowQuickBill");
+      if (condition) {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
         console.log(this.conto);
         this.stampaScontrino((r) => {
           //console.log('stampaScontrino', r);
           var progressive = r.Service.Request[0].lastDocF[0];
           var zNum = r.Service.Request[0].lastZ[0];
-          this.conto.setClosed(1, this.currentPlace, progressive, zNum)
+          this.conto.setClosed(1, this.currentPlace, progressive, zNum);
         });
       } else {
-        this.$emit('pagaConto', this.conto);
+        this.$emit("pagaConto", this.conto);
       }
     },
-    annullaConto: function() {
+    annullaConto: function () {
       this.conto.clear();
-      this.$emit('annullaConto');
+      this.$emit("annullaConto");
     },
-    getNoteColor: function() {
-      if(this.conto.note == '')
-        return "#cccaaa"
-      else
-        return "#ff6b6b"
+    getNoteColor: function () {
+      if (this.conto.note == "") return "#cccaaa";
+      else return "#ff6b6b";
     },
-    getAttentionColor: function() {
+    getAttentionColor: function () {
       return "#ff6b6b";
     },
-    billStart: function() {
-      if(this.billLoaded)
-        return utils.toDateTime(this.conto.createdAt);
+    billStart: function () {
+      if (this.billLoaded) return utils.toDateTime(this.conto.createdAt);
     },
-    removeItems: function(ids) {
-      for(var i=0; i<this.conto.size(); i++) {
-        if(ids.indexOf(this.conto.getInsertId(i)) != -1) {
+    removeItems: function (ids) {
+      for (var i = 0; i < this.conto.size(); i++) {
+        if (ids.indexOf(this.conto.getInsertId(i)) != -1) {
           this.conto.removeItem(i);
         }
       }
@@ -220,28 +218,28 @@ export default {
       this.conto.decrementItem(index);
     },
     */
-    changeCart: function(item, delta) {
-      console.log('changeCart', item, delta);
+    changeCart: function (item, delta) {
+      console.log("changeCart", item, delta);
 
-      for(i=0; i<this.conto.size(); i++) {
-        if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+      for (i = 0; i < this.conto.size(); i++) {
+        if (item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
           this.conto.setNote(i, item.note);
           this.conto.setPrice(i, item.price);
         }
       }
 
-      if(delta < 0) {
+      if (delta < 0) {
         var count = 0;
-        for(var i=0; i<this.conto.size(); i++) {
-          if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
-              this.conto.removeItem(i);
-              count ++;
-              if(count == Math. abs(delta)) break;
+        for (var i = 0; i < this.conto.size(); i++) {
+          if (item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+            this.conto.removeItem(i);
+            count++;
+            if (count == Math.abs(delta)) break;
           }
         }
-      } else if(delta > 0) {
-        for(i=0; i<this.conto.size(); i++) {
-          if(item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
+      } else if (delta > 0) {
+        for (i = 0; i < this.conto.size(); i++) {
+          if (item.insertIds.indexOf(this.conto.getInsertId(i)) != -1) {
             this.conto.cloneItem(i, delta);
           }
         }
@@ -249,46 +247,44 @@ export default {
 
       this.conto.saveCache();
     },
-    openDiscount: function() {
-      if(this.conto.size() == 0)
-        return;
+    openDiscount: function () {
+      if (this.conto.size() == 0) return;
       this.discountVisible = true;
     },
-    applyDiscount: function(discount) {
+    applyDiscount: function (discount) {
       this.conto.setDiscount(discount);
       this.discountVisible = false;
     },
-    isPercentDiscount: function() {
-      return (this.conto.discount.type == this.$t('generic.percent'));
+    isPercentDiscount: function () {
+      return this.conto.discount.type == this.$t("generic.percent");
     },
-    formatAmount: function(amount) {
+    formatAmount: function (amount) {
       return utils.formatPrice(amount);
     },
-    getPzs: function() {
+    getPzs: function () {
       return this.conto.getQuantity();
     },
-    setNote: function() {
-      this.$prompt('', this.$t('bill.note'), {
-          confirmButtonText: this.$t('generic.ok'),
-          cancelButtonText: this.$t('generic.cancel')
-        })
+    setNote: function () {
+      this.$prompt("", this.$t("bill.note"), {
+        confirmButtonText: this.$t("generic.ok"),
+        cancelButtonText: this.$t("generic.cancel"),
+      })
         .then(({ value }) => {
           this.conto.note = value;
           this.conto.saveCache();
         })
-        .catch(() => {
-        })
+        .catch(() => {});
     },
-    selectPlace: function(selectedPlace) {
-      console.log('selectPlace', selectedPlace);
+    selectPlace: function (selectedPlace) {
+      console.log("selectPlace", selectedPlace);
       this.conto.update(selectedPlace);
       var t = new Table();
       t.updateConto(selectedPlace, this.conto);
-      this.$emit('contoParked');
+      this.$emit("contoParked");
     },
-    parcheggiaConto: function() {
-      if(this.conto == null) return;
-      if(this.conto.size() == 0) return;
+    parcheggiaConto: function () {
+      if (this.conto == null) return;
+      if (this.conto.size() == 0) return;
 
       if (this.currentPlace == null || this.currentPlace == undefined) {
         /*
@@ -299,17 +295,16 @@ export default {
           }
         })
         */
-       this.placeSelectorVisible = true;
-      }
-      else {
+        this.placeSelectorVisible = true;
+      } else {
         this.conto.update(this.currentPlace);
         var t = new Table();
         t.updateConto(this.currentPlace, this.conto);
-        this.$emit('contoParked');
+        this.$emit("contoParked");
       }
     },
     stampaScontrino(callback) {
-      console.log('stampaScontrino');
+      console.log("stampaScontrino");
       printf.document(
         this.groupedList,
         this.conto.payments,
@@ -317,9 +312,16 @@ export default {
         callback
       );
     },
+    stampaScontrinoNonFiscale(callback) {
+      console.log("stampaScontrinoNonFiscale");
+      var doc = new Document();
+      doc.preconto(this.groupedList, this.conto.getTotale(), callback);
+
+      escposprinter.stampa(doc);
+    },
     checkPending(operator) {
-      var pendingString = localStorage.getItem('cart');
-      if(pendingString != null && pendingString.length > 0) {
+      var pendingString = localStorage.getItem("cart");
+      if (pendingString != null && pendingString.length > 0) {
         var ord = JSON.parse(pendingString);
         this.conto.fillData(ord);
         //this.groupedList = this.conto.groupByItems();
@@ -328,86 +330,86 @@ export default {
       }
       this.conto.operator = {
         id: operator.getId(),
-        name: operator.getName()
-      }
+        name: operator.getName(),
+      };
     },
-    reassignPark: function() {
-      if(this.conto.hasUnsavedChanges()) {
+    reassignPark: function () {
+      if (this.conto.hasUnsavedChanges()) {
         this.$confirm(
-          this.$t('bill.ignore-changes'),
-          this.$t('bill.reassign'),
+          this.$t("bill.ignore-changes"),
+          this.$t("bill.reassign"),
           {
             confirmButtonText: this.$t("generic.ok"),
             cancelButtonText: this.$t("generic.cancel"),
-            type: 'warning',
+            type: "warning",
           }
         )
-        .then(() => {
-          this.conto.clear();
-          this.$emit('reassignedConto')
-        })
-        .catch(() => {
-        })
+          .then(() => {
+            this.conto.clear();
+            this.$emit("reassignedConto");
+          })
+          .catch(() => {});
       } else {
         this.conto.clear();
-        this.$emit('reassignedConto', )
+        this.$emit("reassignedConto");
       }
     },
-    loadConto: function(place) {
-      var docRef = Firebase.db
-        .collection("park")
-        .doc(place.area.docId);
-      docRef.get().then((doc) => {
-        if (doc.exists) {
-          if(doc.data().places[place.id].conto != null) {
-            if(doc.data().places[place.id].conto.orderList.length > 0) {
-              this.conto.fillData(doc.data().places[place.id].conto);
-              this.billLoaded = true;
+    loadConto: function (place) {
+      var docRef = Firebase.db.collection("park").doc(place.area.docId);
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            if (doc.data().places[place.id].conto != null) {
+              if (doc.data().places[place.id].conto.orderList.length > 0) {
+                this.conto.fillData(doc.data().places[place.id].conto);
+                this.billLoaded = true;
+              }
             }
+          } else {
+            console.log("No such document!");
           }
-        } else {
-          console.log("No such document!");
-        }
-      }).catch((error) => {
-        console.log("Error getting document:", error);
-      });
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
     },
   },
   mounted() {
-    this.$bus.on('addItem', e => {
+    this.$bus.on("addItem", (e) => {
       this.conto.addItem(e);
       this.$nextTick(() => {
         this.scroll();
-      })
+      });
     });
-    this.$bus.on('addCustomer', e => {
+    this.$bus.on("addCustomer", (e) => {
       this.conto.addCustomer(e);
     });
-    this.$bus.on('checkPending', e => {
+    this.$bus.on("checkPending", (e) => {
       this.checkPending(e);
     });
-    this.$bus.on('loadConto', e => {
+    this.$bus.on("loadConto", (e) => {
       this.loadConto(e);
     });
-    this.$bus.on('reassignPark', () => {
+    this.$bus.on("reassignPark", () => {
       this.reassignPark();
     });
-    this.$bus.on('loadCart', e => {
-      console.log('loadCart')
+    this.$bus.on("loadCart", (e) => {
+      console.log("loadCart");
       this.conto = e;
-    })
-    this.$bus.on('setOperator', e => {
-    this.conto.operator = {
-      id: e.getId(),
-      name: e.getName()
-    }
-    })
+    });
+    this.$bus.on("setOperator", (e) => {
+      this.conto.operator = {
+        id: e.getId(),
+        name: e.getName(),
+      };
+    });
     this.conto.operator = {
       id: operator.getId(),
-      name: operator.getName()
-    }
+      name: operator.getName(),
+    };
   },
-}
+};
 </script>
 
 <style scoped>
@@ -417,7 +419,6 @@ export default {
   display: flex;
   flex-direction: column;
   background: #fff;
-
 }
 .info-conto-2 {
   color: var(--success-color);
@@ -519,5 +520,4 @@ main {
 }
 .annulla {
 }
-
 </style>

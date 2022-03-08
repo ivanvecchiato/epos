@@ -11,6 +11,12 @@ let settings = {
          value: true
       }
    },
+   'printHeaderOnPrebill': {
+      value: {
+         type: 'boolean',
+         value: true
+      }
+   },
    'startingView': {
       value: {
          type: 'radio',
