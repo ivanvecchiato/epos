@@ -19,26 +19,26 @@ export default class Conto {
     this.lastModified = new Date();
     this.done = false;
     this.id_order = Date.now();
-    this.payments = [];   // Payment obj
+    this.payments = []; // Payment obj
     this.totale = 0;
     this.discount = {
       type: 0,
       rate: 0,
       value: 0
     };
-    this.status = 0;    // 0=open, 1=closed, -100=deleted, 100=prebill
+    this.status = 0; // 0=open, 1=closed, -100=deleted, 100=prebill
     this.chiusuraFiscale = 0;
-    this.source = 0;    //0=frontend, 1000 = takeaway, 2000 = ecommerce, {obj}=tavolo
-    this.customer = null;   // class Customer TBD
+    this.source = 0; //0=frontend, 1000 = takeaway, 2000 = ecommerce, {obj}=tavolo
+    this.customer = null; // class Customer TBD
   }
 
   getTotale() {
     var amount = 0;
     this.orderList.forEach(item => {
-      if(item.status != -100)
-        amount += Number(item.price)/* * item.quantity*/;
+      if (item.status != -100)
+        amount += Number(item.price) /* * item.quantity*/ ;
     });
-    
+
     this.totale = amount;
     return amount;
   }
@@ -46,10 +46,10 @@ export default class Conto {
   getTotaleNetto() {
     var amount = 0;
     this.orderList.forEach(item => {
-      if(item.status != -100)
-        amount += Number(item.price)/* * item.quantity*/;
+      if (item.status != -100)
+        amount += Number(item.price) /* * item.quantity*/ ;
     });
-    
+
     this.totale = amount;
     return amount - this.discount.value;
   }
@@ -60,23 +60,23 @@ export default class Conto {
   }
 
   size() {
-    if(this.orderList === undefined)
+    if (this.orderList === undefined)
       return 0;
     return this.orderList.length;
   }
 
   getQuantity() {
-    var q=0;
-    for(var i=0; i<this.size(); i++) {
-      if(this.orderList[i].status != -100) q++;
+    var q = 0;
+    for (var i = 0; i < this.size(); i++) {
+      if (this.orderList[i].status != -100) q++;
     }
     return q;
   }
 
   getDeletedQuantity() {
-    var q=0;
-    for(var i=0; i<this.size(); i++) {
-      if(this.orderList[i].status == -100) q++;
+    var q = 0;
+    for (var i = 0; i < this.size(); i++) {
+      if (this.orderList[i].status == -100) q++;
     }
     return q;
   }
@@ -122,11 +122,11 @@ export default class Conto {
   }
 
   decrementItem(index) {
-    if(this.orderList[index].quantity == 1)
+    if (this.orderList[index].quantity == 1)
       this.removeItem(index);
     else
       this.orderList[index].quantity--;
-    
+
     this.saveCache();
   }
 
@@ -151,28 +151,28 @@ export default class Conto {
 
   cloneItem(index, count) {
     console.log("cloning", count, this.orderList[index])
-    for(var i=0; i<count; i++) {
+    for (var i = 0; i < count; i++) {
       this.addItem(this.orderList[index])
     }
   }
-  
+
   groupItem(p, list, params) {
     var inserted = false;
-    for(var i=0; i<list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
       var item = list[i];
 
-//      if(item.status == -100) {
-//        break;
-//      }
-    
+      //      if(item.status == -100) {
+      //        break;
+      //      }
+
       var priceCriteria = true;
       var noteCriteria = true;
       var variantCriteria = true;
       var timingCriteria = true; // per controllare se un item è appena inserito
       var statusCriteria = true; // per controllare gli elementi cancellati
 
-      if(params == undefined) {
-        if(item.note == undefined && p.note == undefined) {
+      if (params == undefined) {
+        if (item.note == undefined && p.note == undefined) {
           noteCriteria = true;
         } else {
           noteCriteria = (item.note == p.note);
@@ -180,49 +180,49 @@ export default class Conto {
 
         priceCriteria = (item.price == p.price);
 
-        if(item.modifiers == undefined && p.modifiers == undefined) {
+        if (item.modifiers == undefined && p.modifiers == undefined) {
           variantCriteria = true;
         } else {
           variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
         }
       } else {
-        if(params.groupNote != undefined && params.groupNote == true) {
+        if (params.groupNote != undefined && params.groupNote == true) {
           noteCriteria = (item.note != undefined && p.note != undefined && item.note == p.note);
         }
-        if(params.groupVariant != undefined && params.groupVariant == true) {
+        if (params.groupVariant != undefined && params.groupVariant == true) {
           variantCriteria = utils.arrayCompare(item.modifiers, p.modifiers);
         }
       }
-      
-      if(p.insertTime == undefined) {
-        if(item.insertTime == undefined)
+
+      if (p.insertTime == undefined) {
+        if (item.insertTime == undefined)
           timingCriteria = true;
         else
           timingCriteria = false;
       }
 
-      if(p.status == -100) {
-        if(item.status == -100)
+      if (p.status == -100) {
+        if (item.status == -100)
           statusCriteria = true
         else
           statusCriteria = false
       } else {
-        if(item.status == -100)
+        if (item.status == -100)
           statusCriteria = false
         else
           statusCriteria = true
       }
 
-      if(item.id === p.id
-          && noteCriteria && variantCriteria 
-          && timingCriteria && statusCriteria && priceCriteria) {
+      if (item.id === p.id &&
+        noteCriteria && variantCriteria &&
+        timingCriteria && statusCriteria && priceCriteria) {
         item.quantity++;
         item.insertIds.push(p.insertId);
         inserted = true;
         break;
       }
     }
-    if(!inserted) {
+    if (!inserted) {
       p.quantity = 1;
       p.insertIds = [p.insertId];
       list.push(Object.assign({}, p));
@@ -232,7 +232,7 @@ export default class Conto {
   groupByItems(params) {
     //console.log('groupByItems', params);
     var list = [];
-    for(var i=0; i<this.size(); i++) {
+    for (var i = 0; i < this.size(); i++) {
       var item = this.orderList[i];
       this.groupItem(item, list, params)
     }
@@ -243,16 +243,16 @@ export default class Conto {
   groupByTimestamp(params) {
     var lists = [];
     var prevTimestamp = 0;
-    for(var i=0; i<this.size(); i++) {
+    for (var i = 0; i < this.size(); i++) {
       var item = this.orderList[i];
-      if(prevTimestamp < item.insertTime) {
+      if (prevTimestamp < item.insertTime) {
         prevTimestamp = item.insertTime;
         lists.push({
           timestamp: prevTimestamp,
           list: []
         });
       }
-      this.groupItem(item, lists[lists.length-1].list, params)
+      this.groupItem(item, lists[lists.length - 1].list, params)
     }
 
     return lists;
@@ -276,15 +276,15 @@ export default class Conto {
     var partial = [];
     var tempo = new Date().getTime();
     this.orderList.forEach(item => {
-      if(item.insertTime == undefined) {
+      if (item.insertTime == undefined) {
         item.insertTime = tempo;
-        if(item.status != -100)
+        if (item.status != -100)
           item.status = 0;
         item.operator = {
           id: user.getId(),
           name: user.getName()
         }
-        if(item.status != -100)
+        if (item.status != -100)
           partial.push(item);
       }
     });
@@ -292,8 +292,8 @@ export default class Conto {
   }
 
   hasUnsavedChanges() {
-    for(var i=0; i<this.orderList.length; i++) {
-      if(this.orderList[i].insertTime == undefined) {
+    for (var i = 0; i < this.orderList.length; i++) {
+      if (this.orderList[i].insertTime == undefined) {
         return true;
       }
     }
@@ -319,37 +319,43 @@ export default class Conto {
     this.saveCache();
 
     Firebase.db.collection('ordini').add(Object.assign({}, partialObj))
-    .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id)
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error)
-    })
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        this.playSound();
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error)
+      })
+  }
+
+  playSound() {
+    var audio = new Audio(require('@/assets/bell.mp3'));
+    audio.play();
   }
 
   writeDoc(place) {
-    if(place != null) {
+    if (place != null) {
       this.place = place;
     }
     console.log('writeDoc', Object.assign({}, this));
     Firebase.db.collection('conti').add(Object.assign({}, this))
-    .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id)
-      if(place != null) {
-        var t = new Table;
-        t.updateConto(place, null);
-      }
-      this.clear();
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error)
-    })
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id)
+        if (place != null) {
+          var t = new Table;
+          t.updateConto(place, null);
+        }
+        this.clear();
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error)
+      })
   }
 
   fillData(data) {
     var keys = Object.keys(this);
     keys.forEach(element => {
-        this[element] = data[element];
+      this[element] = data[element];
     });
   }
 }

@@ -20,7 +20,7 @@ let settings = {
    'startingView': {
       value: {
          type: 'radio',
-         value: 0     //0=frontend, 1=conti
+         value: 0 //0=frontend, 1=conti
       }
    },
    'productGridColumns': {
@@ -28,7 +28,13 @@ let settings = {
          type: 'int',
          value: 6
       }
-   }
+   },
+   'bellSoundOnOrder': {
+      value: {
+         type: 'boolean',
+         value: true
+      }
+   },
 }
 
 export default settings;
