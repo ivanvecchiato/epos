@@ -72,11 +72,19 @@ export default {
       },
       initPrintf() {
          printf.getStatus((resp) => {
-            console.log('testPrintf', resp)
-            if(resp.Service.ECRStatus.mode == 'R') {
-               printf.setKey('REG');
+            if(resp.result == 'ok') {
+               var data = resp.data;
+               console.log('testPrintf', data)
+               if(data.Service.ECRStatus.mode == 'R') {
+                  printf.setKey('REG');
+               }
+            } else {
+               this.error(resp.error)
             }
          });
+      },
+      error(err) {
+         alert(err);
       },
       setPrintfIP() {
          printf.setIP(this.ipaddress);
@@ -90,21 +98,23 @@ export default {
       getPrintfConfig() {
          var self = this;
          printf.getConfig((resp) => {
-            console.log('getPrintfConfig', resp);
-            var root = resp.Service
-            for(var i=0; i<root.Prg[0].VAT.length; i++) {
-               if(root.Prg[0].VAT[i].value != undefined && Number(root.Prg[0].VAT[i].value[0]) > 0)
-                  self.VAT.push(root.Prg[0].VAT[i]);
-            }
+            if(resp.result == 'ok') {
+               console.log('getPrintfConfig', resp);
+               var root = resp.data.Service
+               for(var i=0; i<root.Prg[0].VAT.length; i++) {
+                  if(root.Prg[0].VAT[i].value != undefined && Number(root.Prg[0].VAT[i].value[0]) > 0)
+                     self.VAT.push(root.Prg[0].VAT[i]);
+               }
 
-            for(i=0; i<root.Prg[0].Department.length; i++) {
-               if(Number(root.Prg[0].Department[i].vatCode[0].value[0]) > 0 &&
-                  this.isValid(root.Prg[0].Department[i].vatCode[0].value[0]))
-                  self.depts.push(root.Prg[0].Department[i]);
-            }
+               for(i=0; i<root.Prg[0].Department.length; i++) {
+                  if(Number(root.Prg[0].Department[i].vatCode[0].value[0]) > 0 &&
+                     this.isValid(root.Prg[0].Department[i].vatCode[0].value[0]))
+                     self.depts.push(root.Prg[0].Department[i]);
+               }
 
-            for(i=0; i<root.Prg[0].Payment.length; i++) {
-               self.tenders.push(root.Prg[0].Payment[i]);
+               for(i=0; i<root.Prg[0].Payment.length; i++) {
+                  self.tenders.push(root.Prg[0].Payment[i]);
+               }
             }
          });
       }

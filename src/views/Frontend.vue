@@ -306,12 +306,18 @@ export default {
         });
     },
     testPrintf() {
+      printf.init();
       printf.getStatus((resp) => {
         console.log('testPrintf', resp)
-        if(resp.Service.ECRStatus[0].mode != 'REG') {
-          printf.setKey('REG');
+        if(resp.result == 'ok') {
+          var data = resp.data;
+          if(data.Service.ECRStatus[0].mode != 'REG') {
+            printf.setKey('REG');
+          } else {
+            printf.clear();
+          }
         } else {
-          printf.clear();
+          alert('errore printf')
         }
       });
     }

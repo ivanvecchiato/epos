@@ -18,6 +18,9 @@ var conf = new Settings;
 export default {
    address: '192.168.0.9:80',
 
+   init() {
+      this.getIP();
+   },
    setIP(ip) {
       this.address = ip;
       localStorage.setItem('printf', ip);
@@ -42,12 +45,19 @@ export default {
        })
        .catch(function (error) {
          console.log(error);
+         callback({
+            'result': 'error',
+            'data': error
+         })
        });
    },
    processResponse(response, callback) {
       parseString(response, function (err, result) {
          console.log(result);
-         if(callback) callback(result)
+         if(callback) callback({
+            'result': 'ok',
+            'data': result
+         })
        }); 
    },
    clear() {
@@ -57,7 +67,6 @@ export default {
       this.sendCommand(xml.buildCmd(statusCmd), callback);
    },
    getConfig(callback) {
-      //callback(cfg);
       this.sendCommand(xml.buildCmd(getCfgCmd), callback);
    },
    getKeyCmd(key) {
