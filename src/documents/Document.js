@@ -42,7 +42,7 @@ export default class Document {
          let formats = [];
          formats.push(tags.FORMAT_DOUBLE_H);
          if (item.status != -100) {
-            left += item.quantity + " X " + item.name;
+            left += item.quantity + " x " + item.name;
             right = Number(item.price).toFixed(2);
             tot += Number(item.quantity) * Number(item.price);
             var line = '';
@@ -125,7 +125,7 @@ export default class Document {
          let formats = [];
          formats.push(tags.FORMAT_NORMAL);
          if (item.status != -100) {
-            left += item.quantity + " X " + item.name;
+            left += item.quantity + " x " + item.name;
             right = Number(item.price).toFixed(2);
             var line = this.leftRight(left, right);
             this.addLine(line, formats);
