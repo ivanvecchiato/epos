@@ -93,6 +93,7 @@ import operator from "../store/user.js"
 import FrontendActions from "./FrontendActions.vue"
 import Authentication from "./Authentication.vue"
 import geolocation from '../store/geolocation'
+import Firebase from "../firebase.js";
 
 export default {
   name: 'Home',
@@ -199,6 +200,23 @@ export default {
         this.gettingLocation = false;
         this.errorStr = err.message;
       })
+    },
+    playSound() {
+      var audio = new Audio(require('@/assets/bell.mp3'));
+      audio.play();
+    },
+    startOrderMonitor() {
+      Firebase.db
+        .collection("ordini")
+        .where("done", "==", false)
+        .orderBy("timestamp")
+        .onSnapshot((snapshotChange) => {
+          this.playSound();
+          snapshotChange.forEach((doc) => {
+            var record = doc.data();
+            console.log('orderMonitor', record);
+          });
+        });
     }
   },
   mounted() {
@@ -209,6 +227,8 @@ export default {
 
     this.checkAuth();
     console.log("Home", "setting event listener");
+
+    this.startOrderMonitor();
   },
 }
 </script>
