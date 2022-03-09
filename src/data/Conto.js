@@ -321,16 +321,10 @@ export default class Conto {
     Firebase.db.collection('ordini').add(Object.assign({}, partialObj))
       .then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
-        this.playSound();
       })
       .catch((error) => {
         console.error("Error adding document: ", error)
       })
-  }
-
-  playSound() {
-    var audio = new Audio(require('@/assets/bell.mp3'));
-    audio.play();
   }
 
   writeDoc(place) {
