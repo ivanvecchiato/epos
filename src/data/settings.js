@@ -35,6 +35,12 @@ let settings = {
          value: true
       }
    },
+   'printPricesOnOrder': {
+      value: {
+         type: 'boolean',
+         value: false
+      }
+   }
 }
 
 export default settings;

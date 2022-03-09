@@ -1,5 +1,7 @@
 import Settings from "@/settings/Settings.js";
 import tags from "./tags";
+import i18n from "../i18n"
+const { t } = i18n.global;
 
 export default class Document {
    conf = new Settings;
@@ -21,8 +23,50 @@ export default class Document {
       this.addBlankLine();
       // totale
       this.addAmountRow(amount);
+   }
 
-      //this.sendBuffer(buffer, callback);
+   comanda(time, place, operator, orderToBePrinted) {
+      console.log('orderToBePrinted', orderToBePrinted)
+      var printNote = this.conf.getSettingValue('printNoteOnBill');
+      var pricesOnOrder = this.conf.getSettingValue('printPricesOnOrder');
+
+      this.addLine('COMANDA ' + time, [tags.FORMAT_NORMAL]);
+      this.addLine(place, [tags.FORMAT_DOUBLE_H]);
+      this.addBlankLine();
+
+      var tot = 0;
+      for (var i = 0; i < orderToBePrinted.length; i++) {
+         var item = orderToBePrinted[i];
+         var left = '';
+         var right = '';
+         let formats = [];
+         formats.push(tags.FORMAT_DOUBLE_H);
+         if (item.status != -100) {
+            left += item.quantity + " X " + item.name;
+            right = Number(item.price).toFixed(2);
+            tot += Number(item.quantity) * Number(item.price);
+            var line = '';
+            if(pricesOnOrder) {
+               line = this.leftRight(left, right);
+            } else {
+               line = left;
+            }
+            this.addLine(line, formats);
+
+            // NOTA
+            if (printNote && item.note != undefined && item.note != null) {
+               if (item.note.length > 0)
+                  this.addLine(' *' + item.note, formats + '*');
+            }
+         }
+      }
+      if(pricesOnOrder) {
+         left = t("generic.total").toUpperCase();
+         right = Number(tot).toFixed(2);
+         this.addLine(this.leftRight(left, right));
+      }
+      this.addSeparatorLine();
+      this.addLine(operator, [tags.FORMAT_NORMAL]);
    }
 
    addAmountRow(amount) {
@@ -41,6 +85,16 @@ export default class Document {
          obj['format'] = format
       }
       this.documentRows.push(obj);
+   }
+
+   addSeparatorLine() {
+      let formats = [];
+      formats.push(tags.FORMAT_NORMAL);
+      var line = '';
+      for(var i=0; i<this.width; i++) {
+         line += "-";
+      }
+      this.addLine(line, formats);
    }
 
    addBlankLine() {
