@@ -46,7 +46,7 @@
             <i class="el-icon-setting"></i>
             <span>{{ $t("config.settings") }}</span>
           </el-menu-item>
-          <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
+          <el-menu-item index="7" @click="openExtra" :disabled="!admin()">
             <i class="el-icon-magic-stick"></i>
             <span>{{ $t("config.extra") }}</span>
           </el-menu-item>
@@ -170,6 +170,9 @@ export default {
     openSettings: function() {
       this.$router.push("/settings");
     },
+    openExtra: function() {
+      this.$router.push("/extras");
+    },
     openActions: function() {
       this.showActions = true;
     },
@@ -212,9 +215,10 @@ export default {
         .orderBy("timestamp")
         .onSnapshot((snapshotChange) => {
           this.playSound();
+         // eslint-disable-next-line no-unused-vars
           snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            console.log('orderMonitor', record);
+            //var record = doc.data();
+            //console.log('orderMonitor', record);
           });
         });
     }

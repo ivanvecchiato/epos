@@ -112,11 +112,12 @@ export default {
   padding: 20px;
 }
 .logo {
-  margin: 20px
+  margin: 20px;
+  float: left;
 }
 .pin {
-  border: solid 1px #FED59E;
-  color: #8158548e;
+  border: solid 1px var(--secondary-color);
+  color: var(--secondary-color);
   font-weight: bold;
   padding: 5px;
   width: 200px;
@@ -140,6 +141,7 @@ export default {
   background: #fff;
   border-radius: 20px;
   padding: 10px;
+  float: right;
   width: 30%;
   margin: auto;
 }

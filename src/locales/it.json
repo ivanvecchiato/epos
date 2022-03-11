@@ -262,5 +262,10 @@
     "documento-intestato": "Documento intestato",
     "preconto": "Proforma",
     "estratto-conto": "Estratto conto"
+  },
+  "qrcode": {
+    "qrcode": "QR Code",
+    "generate": "Genera",
+    "print": "Stampa"
   }
 }

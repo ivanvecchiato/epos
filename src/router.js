@@ -4,6 +4,7 @@ import Frontend from './views/Frontend.vue'
 import Conti from './views/Conti.vue'
 import ProductConfig from './views/ProductConfig.vue'
 import Settings from './views/Settings.vue'
+import Extras from './views/Extras.vue'
 import Floor from './views/Floor.vue'
 //import Login from './views/Login.vue'
 import Home from './views/Home.vue'
@@ -52,6 +53,11 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: Settings
+  },
+  {
+    path: '/extras',
+    name: 'extras',
+    component: Extras
   },
   {
     path: '/prodconfig',
