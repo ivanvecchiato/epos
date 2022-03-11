@@ -100,7 +100,7 @@ export default {
           for(var i=0; i<tablesNum[j]; i++) {
             var obj = {
               name: (i+1).toString(),
-              places: 2,
+              seats: 2,
 //              conto: Object.assign({},new Conto)
               conto: null
             };
