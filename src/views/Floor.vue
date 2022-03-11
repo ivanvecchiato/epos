@@ -228,7 +228,7 @@ export default {
             .add({
               id: this.getNextAreaId(),
               name: value,
-              places: []
+              places: {}
             })
             .then(function(docRef) {
               console.log("Document written with ID: ", docRef.id);
