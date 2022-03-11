@@ -1,13 +1,5 @@
 <template>
    <div>
-      <!--
-      <el-input
-         class="search"
-         :placeholder="$t('generic.search')"
-         v-model="searchInput"
-         @input="inputChange">
-      </el-input>
-      -->
       <div class="search">
          <input class="search-input" :placeholder="$t('generic.search')"
             v-model="searchInput"
