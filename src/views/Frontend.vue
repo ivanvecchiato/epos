@@ -4,7 +4,7 @@
       <div class="toolbar">
       <el-row align="middle" :gutter="20">
         <el-col :span="3">
-          <img style="height: 40px;" src="@/assets/logo.png"/>
+          <img style="height: 80px;" src="@/assets/logo.png"/>
         </el-col>
         <el-col :span="6">
           <div class="search">
