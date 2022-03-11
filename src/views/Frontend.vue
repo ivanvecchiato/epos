@@ -402,7 +402,7 @@ export default {
   /*background-color: var(--lightest-main-color);*/
   background-color: #ffffff;
   color: var(--primary-color);
-  font-weight: normal;
+  font-weight: bold;
   font-family: 'Montserrat';
   font-size: 1.1em;
   border: 0px solid var(--primary-color);
