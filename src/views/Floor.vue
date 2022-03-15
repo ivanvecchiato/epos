@@ -19,6 +19,7 @@
           {{$t('floor.new_area')}}
         </el-button>
       </div>
+      <div class="area-indicator" :style="setColor(currentArea.color)"></div>
     </div>
     <div class="grid">
       <div v-for="t in currentArea.places" :key="t.name" class="table">
@@ -173,6 +174,9 @@ export default {
         }
       }
     },
+    setColor: function(color) {
+      return "background-color: " + color;
+    },
     getLastMod: function(t) {
       if(t.conto.size() > 0) {
         var now = new Date();
@@ -251,7 +255,7 @@ export default {
       var self = this;
       Firebase.db
         .collection("park")
-        .orderBy("id")
+        .orderBy("order")
         .onSnapshot((snapshotChange) => {
           self.areas = [];
           snapshotChange.forEach((doc) => {
@@ -394,6 +398,11 @@ export default {
 }
 .area-buttons::-webkit-scrollbar {
   display: none;
+}
+.area-indicator {
+  height: 5px;
+  margin: 5px;
+  width: 70%;
 }
 .button-active {
   background-color: var(--secondary-color);

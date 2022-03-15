@@ -95,6 +95,7 @@ export default {
           var roomObj = {
             id: Number(j+1),
             name: "Area " + (j+1),
+            order: Number(j+1),
             places: {}
           };
           for(var i=0; i<tablesNum[j]; i++) {
