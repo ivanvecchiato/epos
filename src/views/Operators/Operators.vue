@@ -39,6 +39,7 @@
                   </li>
                </ul>
 
+               <el-button type="danger" plain @click="deleteOperator">{{$t('generic.delete')}}</el-button>
                <el-button type="primary" plain @click="saveOperator">{{$t('generic.save')}}</el-button>
             </div>
          </el-main>
@@ -80,6 +81,33 @@ export default {
          this.$message({
             message: msg,
             type: 'error',
+         })
+      },
+      deleteOperator() {
+         this.$confirm(
+            this.$t("config.ask_delete", {description: this.currentOperator.name}),
+            this.$t("config.alert"),
+            {
+               confirmButtonText: this.$t("generic.ok"),
+               cancelButtonText: this.$t("generic.cancel"),
+               type: "warning",
+            }
+         ).then(()=>{
+            var self = this;
+            var docId = this.docIds[this.currentIndex];
+            Firebase.db.collection('operators')
+                  .doc(docId)
+                  .delete()
+                  .then(()=>{
+                     this.$message({
+                        message: self.$t('config.delete_ok'),
+                        type: 'warning'
+                     });
+                  })
+                  .catch();
+
+         }).catch(()=>{
+
          })
       },
       saveOperator: function() {

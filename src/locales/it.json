@@ -1,5 +1,6 @@
 {
   "config": {
+    "alert": "Attenzione",
     "generic": "Generali",
     "settings": "Impostazioni",
     "parameters": "Parametri",
