@@ -211,8 +211,21 @@ export default {
       console.log('selectPrice', price)
       this.addItem(this.currentHandledProduct);
     },
+    replacer(key, value) {
+      if (key=="barcodes") return undefined;
+      else if (key=="properties") return undefined;
+      else if (key=="inventory") return undefined;
+      else if (key=="long_description") return undefined;
+      else if (key=="short_description") return undefined;
+      else if (key=="cost") return undefined;
+      else return value;
+    },
+    subset(prod) {
+      let tmp = JSON.stringify(prod, this.replacer);
+      return JSON.parse(tmp);
+    },
     addItem: function(p) {
-      this.$bus.trigger('addItem', p);
+      this.$bus.trigger('addItem', this.subset(p));
     },
     openNote: function(p) {
       this.$prompt(this.$t("product.note"), p.name, {
