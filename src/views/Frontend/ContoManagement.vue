@@ -89,7 +89,7 @@
           </el-button>
         </div>
         <div class="buttons" style="margin-top: 10px">
-          <el-button type="success" class="block bold" @click="preconto">
+          <el-button type="success" class="block bold" @click="pagaConto()">
             {{ $t("bill.cash") }}
           </el-button>
         </div>
@@ -172,6 +172,12 @@ export default {
 
       this.stampaScontrinoNonFiscale();
     },
+    showError(text) {
+        this.$message({
+          type: 'error',
+          message: text,
+        })
+    },
     pagaConto: function () {
       if (this.conto.size() == 0) return;
 
@@ -180,10 +186,14 @@ export default {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
         console.log(this.conto);
         this.stampaScontrino((r) => {
-          //console.log('stampaScontrino', r);
-          var progressive = r.Service.Request[0].lastDocF[0];
-          var zNum = r.Service.Request[0].lastZ[0];
+          if(r.result == 'ok') {
+          var data = r.data;
+          var progressive = data.Service.Request[0].lastDocF[0];
+          var zNum = data.Service.Request[0].lastZ[0];
           this.conto.setClosed(1, this.currentPlace, progressive, zNum);
+          } else {
+            this.showError(this.$t('cashier.print-error'));
+          }
         });
       } else {
         this.$emit("pagaConto", this.conto);
