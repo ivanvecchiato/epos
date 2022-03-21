@@ -40,7 +40,8 @@
     "cashier": "Cassa",
     "zreport": "Chiusura fiscale",
     "zreport-done": "Chiusura giornaliera completata",
-    "zreport-confirm": "Eseguire la chiusura giornaliera?"
+    "zreport-confirm": "Eseguire la chiusura giornaliera?",
+    "print-error": "Si è verificato un errore durante la stampa"
   },
   "pricelist": {
     "pricelist": "Listino",
@@ -130,6 +131,7 @@
     "quantity": "Quantità",
     "value": "Valore",
     "total": "Totale",
+    "docs": "Documenti",
     "most_popular": "Più venduti"
   },
   "generic": {
@@ -171,6 +173,8 @@
     "detailed": "Dettagliato",
     "grouped": "Raggruppato",
     "started": "Iniziato:",
+    "createdAt": "Iniziato",
+    "lastModification": "Ultima modifica",
     "subtotal": "Subtotale",
     "discount": "Sconto",
     "apply_discount": "Applica sconto",

@@ -55,7 +55,7 @@ export default {
   components: { CustomerDetail },
   computed: {
     getTotale() {
-      return this.$t("bill.total") + ": " + this.data.totale.toFixed(2);
+      return this.$t("bill.total") + ": " + Number(this.data.totale).toFixed(2);
     },
   },
   methods: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">{{$t('bill.docs_bills')}}</div>
-    <el-tabs class="conti-tab" type="card" @tab-click="handleTabClick">
+    <el-tabs class="conti-tab" type="border-card" @tab-click="handleTabClick">
       <el-tab-pane :label="$t('bill.closed')">
         <conti-chiusi></conti-chiusi>
       </el-tab-pane>
@@ -43,8 +43,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .conti-tab {
   margin: 10px;
 }
+.stats-totale {
+  font-weight: bold;
+  color: var(--secondary-color);
+  font-size: 2.0em;
+  margin: 5px;
+}
+.stats-amount {
+  color: var(--info-color);
+}
+
 </style>

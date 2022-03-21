@@ -2,9 +2,9 @@
   <div>
     <div style="text-align: left">
       <el-form-item>
-        <el-checkbox v-model="searchByRange" @change="rangeChecked">{{
-          $t("bill.search_by_range")
-        }}</el-checkbox>
+        <el-checkbox v-model="searchByRange" @change="rangeChecked">
+          {{$t("bill.search_by_range")}}
+        </el-checkbox>
         &nbsp;&nbsp;
         <el-date-picker
           v-model="daterange"
@@ -18,13 +18,28 @@
       </el-form-item>
     </div>
     <el-row>
-      <el-col :span="12">
-      <div class="list">
-
+      <el-col :span="6">
+        <el-card class="box-card" shadow="hover">
+          <span class="stats-totale">{{$t('stats.opened_bills')}}</span>
+          <span class="stats-totale stats-amount">{{stats.contiAperti.numero}}</span>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card class="box-card" shadow="hover">
+          <span class="stats-totale">{{$t('stats.total')}}</span>
+          <span class="stats-totale stats-amount">{{formatAmount(stats.contiAperti.totale)}}</span>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <div class="list">
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" :label="$t('generic.date')" width="150">
-          </el-table-column>
           <el-table-column prop="place" :label="$t('bill.place')" width="150">
+          </el-table-column>
+          <el-table-column prop="createdAt" :label="$t('bill.createdAt')" width="150">
+          </el-table-column>
+          <el-table-column prop="lastModified" :label="$t('bill.lastModification')" width="150">
           </el-table-column>
           <el-table-column prop="amount" :label="$t('bill.amount')" width="185">
           </el-table-column>
@@ -38,7 +53,13 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+
+      <el-col :span="12">
 
       <el-card class="box-card" shadow="hover">
         <template #header>
@@ -66,20 +87,6 @@
 
       </el-col>
       <el-col :span="12">
-        <el-row>
-          <el-col :span="12">
-            <el-card class="box-card" shadow="hover">
-              <span class="stats-totale">{{$t('stats.total')}}</span>
-              <span class="stats-totale stats-amount">{{formatAmount(stats.sospeso)}}</span>
-            </el-card>
-          </el-col>
-          <el-col :span="12">
-            <el-card class="box-card" shadow="hover">
-              <span class="stats-totale">{{$t('stats.opened_bills')}}</span>
-              <span class="stats-totale stats-amount">{{stats.contiAperti}}</span>
-            </el-card>
-          </el-col>
-        </el-row>
         <el-row>
           <el-col :span="24">
 
@@ -183,8 +190,10 @@ export default {
         },
       ],
       stats: {
-        sospeso: 0,
-        contiAperti: 0,
+        contiAperti: {
+          numero: 0,
+          totale: 0
+        },
         collection: {}
       }
     };
@@ -217,14 +226,15 @@ export default {
             this.docs = [];
             snapshotChange.forEach((doc) => {
               var record = doc.data().conto;
-              this.docs.push({ id: doc.id, data: record });
+              record.id = doc.id;
+              this.docs.push(record);
             });
             this.handleDocs();
           });
       } else {
         Firebase.db
           .collection("park")
-          .orderBy("id")
+          //.orderBy("id")
           .onSnapshot((snapshotChange) => {            
             this.docs = [];
             snapshotChange.forEach((doc) => {
@@ -232,19 +242,22 @@ export default {
               var places = area.places;
               for(var n in places) {
                 if(places[n].conto != null) {
-                  var conto = new Conto;
-                  conto.fillData(places[n].conto);
-                  places[n].conto = conto;
                   var record = places[n].conto;
-                  if(record.orderList.length > 0) {
-                    record.place = {
-                      area: {
-                        id: area.id,
-                        name: area.name
-                      },
-                      place: places[n].name
+                  if(record.orderList != undefined) {
+                    if(record.orderList.length > 0) {
+                      var conto = new Conto;
+                      conto.fillData(places[n].conto);
+                      places[n].conto = conto;
+                      record.place = {
+                        area: {
+                          id: area.id,
+                          name: area.name
+                        },
+                        name: places[n].name
+                      }
+                      record.id = doc.id;
+                      this.docs.push(record);
                     }
-                    this.docs.push({ id: doc.id, data: record });
                   }
                 }
               }
@@ -259,7 +272,8 @@ export default {
       this.incassatoSeries[0].data = [];
       this.popularSeries[0].data = [];
       this.stats.sospeso = 0;
-      this.stats.contiAperti = 0;
+      this.stats.contiAperti.numero = 0;
+      this.stats.contiAperti.totale = 0;
       this.stats.collection = {};
 
       for(var j=0; j<=16; j++) {
@@ -267,15 +281,17 @@ export default {
         this.incassatoSeries[0].data[j] = 0;
       }
 
-      this.stats.contiAperti = this.docs.length;
+      this.stats.contiAperti.numero = this.docs.length;
       for (var i = 0; i < this.docs.length; i++) {
-        this.stats.sospeso += this.docs[i].data.totale;
+        this.stats.sospeso += this.docs[i].totale;
         this.tableData.push({
-          date: utils.toDateTime(this.docs[i].data.lastModified),
-          place: this.docs[i].data.place.area.name + " / " + this.docs[i].data.place.name,
-          amount: this.docs[i].data.totale.toFixed(2),
+          createdAt: utils.toDateTime(this.docs[i].createdAt),
+          lastModified: utils.toDateTime(this.docs[i].lastModified),
+          place: this.docs[i].place.area.name + " / " + this.docs[i].place.name,
+          amount: this.docs[i].totale.toFixed(2),
         });
-        this.collectData(this.docs[i].data.orderList);
+        this.stats.contiAperti.totale += this.docs[i].totale;
+        this.collectData(this.docs[i].orderList);
       }
       console.log('collectData', this.stats.collection)
       var sortedKeys = this.getSortedKeys(this.stats.collection);
@@ -324,6 +340,7 @@ export default {
 <style scoped>
 .list {
   text-align: left;
+  padding: 10px;
 }
 .box-card {
   margin: 5px;
@@ -332,14 +349,5 @@ export default {
   font-weight: bold;
   color: var(--primary-color);
   text-align: left;
-}
-.stats-totale {
-  font-weight: bold;
-  color: var(--primary-color);
-  font-size: 2.0em;
-  margin: 5px;
-}
-.stats-amount {
-  color: var(--danger-color);
 }
 </style>

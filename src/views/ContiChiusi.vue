@@ -52,14 +52,14 @@
         <el-row>
           <el-col :span="12">
             <el-card class="box-card" shadow="hover">
-              <span class="stats-totale">{{$t('stats.total')}}</span>
-              <span class="stats-totale stats-amount">{{formatAmount(docsStats.sospeso)}}</span>
+              <span class="stats-totale">{{$t('stats.docs')}}</span>
+              <span class="stats-totale stats-amount">{{docsStats.docEmessi.numero}}</span>
             </el-card>
           </el-col>
           <el-col :span="12">
             <el-card class="box-card" shadow="hover">
-              <span class="stats-totale">{{$t('stats.opened_bills')}}</span>
-              <span class="stats-totale stats-amount">{{docsStats.contiAperti}}</span>
+              <span class="stats-totale">{{$t('stats.total')}}</span>
+              <span class="stats-totale stats-amount">{{formatAmount(docsStats.docEmessi.totale)}}</span>
             </el-card>
           </el-col>
         </el-row>
@@ -164,8 +164,10 @@ export default {
         },
       ],
       docsStats: {
-        sospeso: 0,
-        contiAperti: 0,
+        docEmessi: {
+          numero: 0,
+          totale: 0
+        },
         collection: {}
       }
     };
@@ -194,8 +196,8 @@ export default {
       this.docsPopularSeries[0].data = [];
       this.docsVendutoSeries[0].data = [];
       this.docsIncassatoSeries[0].data = [];
-      this.docsStats.sospeso = 0;
-      this.docsStats.contiAperti = 0;
+      this.docsStats.docEmessi.numero = this.docs.length;
+      this.docsStats.docEmessi.totale = 0;
       this.docsStats.collection = {};
 
       for(var j=0; j<=16; j++) {
@@ -213,6 +215,7 @@ export default {
           place: source,
           amount: this.docs[i].totale.toFixed(2),
         });
+        this.docsStats.docEmessi.totale += this.docs[i].totale;
         this.collectData(this.docs[i].orderList);
       }
       console.log('collectData', this.docsStats.collection)
@@ -243,12 +246,6 @@ export default {
       return Math.random();
     },
     handleDetail: function(index) {
-      /*
-      this.currentBill = new Conto;
-      this.currentBill.fillData(this.docs[index]);
-      this.currentBill.groupByItems();
-      */
-
       this.currentBill = this.docs[index];
       this.detailVisible = true;
     },
@@ -274,16 +271,7 @@ export default {
 }
 .card-header {
   font-weight: bold;
-  color: var(--primary-color);
+  color: var(--tertiary-color);
   text-align: left;
-}
-.stats-totale {
-  font-weight: bold;
-  color: var(--primary-color);
-  font-size: 2.0em;
-  margin: 5px;
-}
-.stats-amount {
-  color: var(--danger-color);
 }
 </style>
