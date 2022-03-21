@@ -7,7 +7,7 @@ import user from "../store/user.js";
 export default class Conto {
   constructor() {
     this.id = '';
-    this.docId = 0;
+    //this.docId = 0;
     this.operator = {
       id: 0,
       name: ''
