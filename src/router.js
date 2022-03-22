@@ -24,13 +24,6 @@ const routes = [
     name: 'home',
     component: Home
   },
-  /*
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  */
   {
     path: '/conti',
     name: 'conti',
