@@ -300,6 +300,42 @@ export default class Conto {
     return false;
   }
 
+  append(partial, place) {
+    var now = new Date().getTime();
+    for(var i=0; i<partial.orderList.length; i++) {
+      var item = partial.orderList[i];
+      item.insertTime = now;
+      if (item.status != -100)
+        item.status = 0;
+      item.operator = {
+        id: user.getId(),
+        name: user.getName()
+      }
+    }
+  
+    var partialObj = {
+      'timestamp': now,
+      'comanda': partial.orderList,
+      'done': false,
+      'place': place,
+      'operator': {
+        id: user.getId(),
+        name: user.getName()
+      }
+    };
+    this.lastModified = now;
+    this.getTotale();
+    this.saveCache();
+
+    Firebase.db.collection('ordini').add(Object.assign({}, partialObj))
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error)
+      })
+  }
+
   update(place) {
     var partial = this.setOperatorAndTimestamp();
     var now = new Date();

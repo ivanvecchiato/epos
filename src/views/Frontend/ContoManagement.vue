@@ -101,8 +101,7 @@
       v-model="discountVisible"
       :center="false"
       width="40%"
-      destroy-on-close
-    >
+      destroy-on-closeß>
       <discount-widget :amount="conto.totale" @applyDiscount="applyDiscount">
       </discount-widget>
     </el-dialog>
@@ -111,8 +110,7 @@
       :title="$t('bill.doPark')"
       v-model="placeSelectorVisible"
       width="70%"
-      destroy-on-close
-    >
+      destroy-on-close>
       <place-selector @selectPlace="selectPlace"> </place-selector>
     </el-dialog>
   </div>
@@ -287,9 +285,17 @@ export default {
     },
     selectPlace: function (selectedPlace) {
       console.log("selectPlace", selectedPlace);
-      this.conto.update(selectedPlace);
+      var prevConto = new Conto();
+      if(selectedPlace.conto != undefined) {
+        prevConto.fillData(selectedPlace.conto);
+        delete(selectedPlace.conto);
+      }
+      delete(selectedPlace.seats);        
+      prevConto.append(this.conto, selectedPlace);
+
+      //append
       var t = new Table();
-      t.updateConto(selectedPlace, this.conto);
+      t.updateConto(selectedPlace, prevConto);
       this.$emit("contoParked");
     },
     parcheggiaConto: function () {
