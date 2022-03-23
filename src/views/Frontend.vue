@@ -9,7 +9,7 @@
         <el-col :span="6">
           <div class="search">
             <input class="search-input" :placeholder="$t('generic.search')"
-              v-model="search_pattern"/>
+              v-model="searchInput" :oninput="inputChange()"/>
             <i class="el-input__icon el-icon-search" @click="searchItem"></i>
           </div>
         </el-col>
@@ -130,7 +130,9 @@ export default {
       search_pattern: '',
       paymentDialogVisibile: false,
       priceDialogVisibile: false,
-      currentHandledProduct: null
+      currentHandledProduct: null,
+      catalog: [],
+      searchInput: ''
     };
   },
   computed: {
@@ -146,6 +148,20 @@ export default {
     },
   },
   methods: {
+    inputChange: function() {
+       var input = this.searchInput;
+       if(input.length<2) return;
+
+      this.products = [];
+      this.resultCount = 0;
+      for(var p in this.catalog) {
+        var name = this.catalog[p].name;
+        if((name.toLowerCase()).startsWith(input.toLowerCase())) {
+          this.products.push(this.catalog[p]);
+          this.loadImage(this.products[this.products.length-1]);
+        }
+      }
+    },
     contoParked: function() {
       this.currentPlace = null;
       var msg = "Conto parcheggiato";//this.$t('bill.parked');
@@ -238,6 +254,19 @@ export default {
         })
         .catch(() => {
           this.addItem(p);
+        });
+    },
+    getAllProducts() {
+      Firebase.db
+        .collection("products")
+        .where("status", "==", 1)
+        .onSnapshot((snapshotChange) => {
+          this.catalog = [];
+          snapshotChange.forEach((doc) => {
+            var record = doc.data();
+            record.id = doc.id;
+            this.catalog.push(record);
+          });
         });
     },
     getProducts: function(cat) {
@@ -347,6 +376,7 @@ export default {
       this.$bus.trigger('checkPending', operator)
     }
     this.loadCategories();
+    this.getAllProducts();
     this.testPrintf();
   },
 };
