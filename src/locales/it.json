@@ -94,7 +94,8 @@
     "favorite": "Preferito",
     "unfavorite": "Rimuovi da preferiti",
     "production": "Reparti di produzione",
-    "images": "Immagini"
+    "images": "Immagini",
+    "no_product_found": "Nessun prodotto trovato"
   },
   "category": {
     "category": "Categoria",

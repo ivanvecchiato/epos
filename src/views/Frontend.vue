@@ -55,6 +55,7 @@
         </el-button>
       </div>
       <div class="center">
+        <span v-if="products.length==0" class="none-found">{{$t('product.no_product_found')}}</span>
         <product-grid
           :data="products"
           @productSelected="productSelected">
@@ -471,5 +472,9 @@ export default {
 }
 .toolbar {
   padding: 10px;
+}
+.none-found {
+  font-size: 1.5em;
+  margin: 40px;
 }
 </style>
