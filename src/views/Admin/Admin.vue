@@ -89,6 +89,20 @@ export default {
              console.log("Error getting documents: ", error);
          });
       },
+      randomColor() {
+         let h = ~~(360 * Math.random());
+         let s = 70;
+         let l = 80;
+
+         l /= 100;
+         const a = s * Math.min(l, 1 - l) / 100;
+         const f = n => {
+           const k = (n + h / 30) % 12;
+           const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+           return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+         };
+         return `#${f(0)}${f(8)}${f(4)}`;
+      },
       generate: function() {
         var tablesNum = [50, 20, 15, 10];
         for(var j=0; j<4; j++) {
@@ -96,6 +110,7 @@ export default {
             id: Number(j+1),
             name: "Area " + (j+1),
             order: Number(j+1),
+            color: this.randomColor(),
             places: {}
           };
           for(var i=0; i<tablesNum[j]; i++) {
