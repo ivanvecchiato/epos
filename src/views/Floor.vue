@@ -315,7 +315,7 @@ export default {
   top:-5px;
   right: -5px;
   border-radius: 8px;
-  background: rgb(235, 235, 235);
+  background: rgb(255, 255, 255);
   width: 50px;
   height: 40px;
   padding: 4px;
