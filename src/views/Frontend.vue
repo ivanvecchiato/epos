@@ -403,10 +403,13 @@ export default {
 }
 .side {
   height: 100%;
-  margin-bottom: 10px;
+  margin: 10px 10px 30px 10px;
+  border: solid 0px rgb(134, 131, 131);
+  border-radius: 12px;
   display: flex;
+  padding: 5px;
   flex-direction: column;
-  background: #fff;
+  background: #FFF;
 }
 .categories {
   display: flex;
