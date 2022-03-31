@@ -8,14 +8,14 @@
       <div class="pin">{{maskPin()}}</div>
       <div class="keypad">
         <button
-        class="regular-circle-button"
+        class="regular-button"
           v-for="key in keys"
           :key="key"
           @click="press(key)">
             {{ key }}
         </button>
-        <button class="action-circle-button" plain @click="clear">&larr;</button>
-        <button class="action-circle-button" plain @click="enter"
+        <button class="action-button" plain @click="clear">&larr;</button>
+        <button class="action-button" plain @click="enter"
           v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
       </div>
     </div>
@@ -110,21 +110,22 @@ export default {
 #login {
   text-align: center;
   padding: 20px;
+  height: 100vh;
+  --login-color: rgba(187, 149, 80, 0.767)!important;
 }
 .logo {
   margin: 20px;
-  float: left;
 }
 .pin {
-  border: solid 1px var(--secondary-color);
-  color: var(--secondary-color);
+  border: solid 1px var(--login-color);
+  color: var(--login-color);
   font-weight: bold;
   padding: 5px;
   width: 200px;
   margin: auto;
   min-height: 20px;
   margin-bottom: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .keypad {
   display: grid;
@@ -138,23 +139,21 @@ export default {
   align-items: center;
 }
 .container {
-  background: #fff;
-  border-radius: 20px;
+  background: white;
+  border-radius: 16px;
+  border: solid 1px var(--login-color);
   padding: 10px;
-  float: right;
-  width: 30%;
   margin: auto;
 }
 .regular-button {
   width: 100px;
-  height: 40px;
+  height: 60px;
   font-size: 1.5em;
   font-weight: bold;
   background: #fff;
-  color: var(--secondary-color);
-  border: solid 1px var(--secondary-color);
+  color: var(--login-color);
+  border: solid 1px var(--login-color);
   border-radius: 8px;
-  box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
 .regular-circle-button {
   width: 70px;
@@ -167,7 +166,7 @@ export default {
   border-radius: 50%;
 }
 .regular-button:focus {
-  background: var(--secondary-color);
+  background: var(--login-color);
   transform: scale(1.02);
   color: #fff;
 }
@@ -178,14 +177,13 @@ export default {
 }
 .action-button {
   width: 100px;
-  height: 40px;
+  height: 60px;
   font-size: 1.5em;
   font-weight: bold;
-  background: var(--secondary-color);
+  background: var(--login-color);
   border: 0px;
   color: #fff;
   border-radius: 8px;
-  box-shadow: 3px 3px 4px 0 rgba(0,0,0,0.4);
 }
 .action-circle-button {
   width: 70px;
@@ -199,7 +197,8 @@ export default {
 }
 .action-button:focus {
   background: #fff;
-  border: solid 1px var(--secondary-color);
+  color: var(--login-color);
+  border: solid 1px var(--login-color);
   transform: scale(1.02);
 }
 .action-circle-button:focus {
