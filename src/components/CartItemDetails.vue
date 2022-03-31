@@ -26,7 +26,7 @@
         {{$t('product.price')}}
       </el-col>
       <el-col :span="4">
-        <el-input v-model="item.price" ></el-input>
+        <input class="form-input" size="5" v-model="item.price">
       </el-col>
     </el-row>
     <el-row :gutter="20" align="middle">
@@ -34,7 +34,7 @@
         {{$t('product.note')}}
       </el-col>
       <el-col :span="12">
-        <el-input type="textarea" v-model="item.note" ></el-input>
+        <textarea class="text-area" cols="40" rows="5" v-model="item.note"/>
       </el-col>
     </el-row>
 

@@ -112,5 +112,27 @@ html {
 .primary-button {
   background: var(--primary-color);
 }
-
+.form-input {
+  font-family: "Montserrat";
+  font-size: 14px;
+  background-color: #F9F7F3;
+  color: #616161;
+  border: none;
+  border-radius: 8px;
+  padding: 0px 10px 0px 10px;
+  height: 36px;
+}
+.form-input:disabled {
+  background-color: #FAFAFC;
+  color: #b8b1b1;
+}
+.text-area {
+  font-family: "Montserrat";
+  font-size: 14px;
+  background-color: #F9F7F3;
+  color: #616161;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
 </style>

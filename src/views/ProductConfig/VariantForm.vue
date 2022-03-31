@@ -4,19 +4,19 @@
       <el-row>
         <el-col :span="6">
           <el-form-item :label="$t('variant.code')">
-            <el-input v-model="variant.code"></el-input>
+            <input class="form-input" v-model="variant.code">
           </el-form-item>
         </el-col>
         <el-col :span="18">
           <el-form-item :label="$t('variant.name')">
-            <el-input v-model="variant.name"></el-input>
+            <input class="form-input" v-model="variant.name">
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="6">
           <el-form-item :label="$t('variant.price')">
-            <el-input v-model="variant.defaultprice"></el-input>
+            <input class="form-input" v-model="variant.defaultprice">
           </el-form-item>
         </el-col>
         <el-col :span="2">&nbsp;</el-col>
@@ -30,10 +30,10 @@
       <el-row v-for="item, index in variant.values" :key="index" align="middle" :gutter="20">
         <span class="row-index">{{index+1}}</span>
         <el-col :span="6">
-          <el-input v-model="item.attribute" placeholder="attributo"></el-input>
+          <input class="form-input" style="margin-top: 5px;" v-model="item.attribute" placeholder="attributo">
         </el-col>
         <el-col :span="4">
-          <el-input v-model="item.price" placeholder=""></el-input>
+          <input class="form-input" v-model="item.price" placeholder="">
         </el-col>
         <el-col :span="2">
           <el-icon color="#F44336" :size="24" @click="deleteVariant(index)"><CircleClose/></el-icon>

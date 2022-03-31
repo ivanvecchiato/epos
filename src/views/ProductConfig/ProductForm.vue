@@ -4,16 +4,17 @@
       <el-tabs class="conti-tab" type="card">
         <el-tab-pane :label="$t('product.settings')">
           <el-form-item :label="$t('product.name')">
-            <el-input v-model="product.name"></el-input>
+            <input class="form-input" v-model="product.name"/>
           </el-form-item>
           <el-row>
             <el-col :span="6">
               <el-form-item :label="$t('product.code')">
-                <el-input v-model="product.code"></el-input>
+                <input class="form-input" v-model="product.code"/>
               </el-form-item>
             </el-col>
-            <el-col :span="11">
+            <el-col :span="8">
               <el-form-item :label="$t('product.category') + ':'">
+                <div class="form-input">
                 <el-dropdown trigger="click" @command="handleCategorySelection">
                   <span class="el-dropdown-link">
                     {{product.category.name}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -29,13 +30,14 @@
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="6">
               <el-form-item :label="$t('product.price')">
-                <el-input v-model="product.price"></el-input>
+                <input class="form-input" v-model="product.price"/>
               </el-form-item>
             </el-col>
             <el-form-item :label="$t('product.vat')">
@@ -75,11 +77,11 @@
           </el-row>
 
           <el-form-item :label="$t('product.short-description')">
-            <el-input type="textarea" :rows="3" v-model="product.properties.short_description"></el-input>
+            <textarea class="text-area" rows="3" cols="60" v-model="product.properties.short_description"/>
           </el-form-item>
 
           <el-form-item :label="$t('product.long-description')">
-            <el-input type="textarea" :rows="6" v-model="product.properties.long_description"></el-input>
+            <textarea class="text-area" rows="6"  cols="60" v-model="product.properties.long_description"/>
           </el-form-item>
         </el-tab-pane>
 
@@ -94,18 +96,18 @@
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('inventory.availability')">
-                <el-input
+                <input class="form-input"
+                  size="10"
                   v-model="product.inventory.availability"
-                  :disabled="product.inventory.enabled == false">
-                </el-input>
+                  :disabled="product.inventory.enabled == false"/>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item :label="$t('inventory.alarm')">
-                <el-input
+                <input class="form-input"
+                  size="10"
                   v-model="product.inventory.alarm"
-                  :disabled="product.inventory.enabled == false">
-                </el-input>
+                  :disabled="product.inventory.enabled == false"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -115,7 +117,7 @@
           <el-row>
             <el-form-item :label="$t('product.cost')">
               <el-col :span="11">
-                <el-input v-model="product.cost"></el-input>
+                <input class="form-input" v-model="product.cost"/>
               </el-col>
             </el-form-item>
           </el-row>

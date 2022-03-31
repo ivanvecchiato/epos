@@ -21,8 +21,7 @@
             :label="$t('category.code')"
             width="100">
             <template #default="scope">
-              <el-input v-model="scope.row.code">
-              </el-input>
+              <input class="form-input" size=4 v-model="scope.row.code">
             </template>
           </el-table-column>
           <el-table-column
@@ -30,8 +29,7 @@
             :label="$t('category.name')"
             width="180">
             <template #default="scope">
-              <el-input v-model="scope.row.name">
-              </el-input>
+              <input class="form-input" size=16 v-model="scope.row.name">
             </template>
           </el-table-column>
           <el-table-column
@@ -39,8 +37,7 @@
             :label="$t('category.rate')"
             width="100">
             <template #default="scope">
-              <el-input v-model="scope.row.rate">
-              </el-input>
+              <input class="form-input" size=4 v-model="scope.row.rate">
             </template>
 
           </el-table-column>

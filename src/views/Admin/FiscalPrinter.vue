@@ -2,7 +2,7 @@
 <div style="padding:20px">
    <el-row :gutter="20">
      <el-col :span="6">
-         <el-input v-model="ipaddress" placeholder="IP"></el-input>
+         <input class="form-input" v-model="ipaddress" placeholder="IP">
      </el-col>
      <el-col :span="2">
         <el-button @click="setPrintfIP">{{$t('generic.save')}}</el-button>

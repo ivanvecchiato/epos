@@ -2,10 +2,10 @@
   <div class="row">
     <el-row :gutter="20" align="middle">
       <el-col :span="4">
-        <el-input id="f1" v-model="name" placeholder="name" />
+        <input class="form-input" id="f1" v-model="name" placeholder="name">
       </el-col>
       <el-col :span="4">
-        <el-input id="f2" v-model="printerAddress" placeholder="IP Stampante" />
+        <input class="form-input" id="f2" v-model="printerAddress" placeholder="IP Stampante">
       </el-col>
       <el-col :span="2">
         <el-checkbox v-model="isLocal" @change="localChecked"></el-checkbox>

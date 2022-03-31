@@ -18,10 +18,10 @@
                <div>
                <el-row :gutter="10" align="middle">
                   <el-col :span="8">
-                     <el-input v-model="currentOperator.name" placeholder="name"></el-input>
+                     <input class="form-input" v-model="currentOperator.name" placeholder="name">
                   </el-col>
                   <el-col :span="8">
-                     <el-input v-model="currentOperator.pin" placeholder="PIN code"></el-input>
+                     <input class="form-input" v-model="currentOperator.pin" placeholder="PIN code">
                   </el-col>
                   <el-col :span="8">
                      <el-checkbox label="admin" v-model="currentOperator.admin" @change="setAdmin"></el-checkbox>

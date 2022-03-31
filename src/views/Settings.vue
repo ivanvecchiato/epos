@@ -48,6 +48,6 @@ export default {
 
 <style scoped>
 .settings {
-  background-color: var(--background-color);
+  background-color: white;
 }
 </style>
