@@ -20,7 +20,9 @@ export default {
   methods: {
     testPrintf() {
       printf.getStatus((resp) => {
-        console.log('testPrintf', resp)
+        if(resp.result == 'ok') {
+          console.log('testPrintf', resp.data)
+        }
       });
     },
     zReport() {
