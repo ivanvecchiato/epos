@@ -1,17 +1,12 @@
 <template>
    <div>
-      <div v-if="composition == undefined || composition.length==0">
+      <div v-if="product.components == undefined || product.components.length==0">
          {{$t('product.no_components')}}
       </div>
-      <ul>
-         <li class="component-list" v-for="c in components" :key="c.id">
-            <el-tag closable @close="removeComponent(c)">{{c.name}}</el-tag>
-         </li>
-      </ul>
+
       <div class="search">
-         <input class="form-input search-input" :placeholder="$t('generic.search')"
+         <input id="search" class="form-input search-input" :placeholder="$t('generic.search')"
            v-model="searchInput" :oninput="inputChange()"/>
-            <i class="el-input__icon el-icon-search" @click="searchItem"></i>
       </div>
       <div class="search-results" v-if="results.length > 0">
          <ul style="max-height: 100px; overflow:scroll">
@@ -20,13 +15,41 @@
             </li>
          </ul>
       </div>
+      <ul>
+         <li class="component-list" v-for="c, index in components" :key="c.id">
+            <el-row :gutter="20" align="middle">
+               <el-col :span="8">{{c.name}}</el-col>
+               <el-col :span="6">
+                  <input class="form-input" style="margin-top: 3px" size=5 v-model="c.price"/>
+               </el-col>
+               <el-col :span="2">
+                 <el-button
+                   size="small"
+                   type="danger"
+                   icon="el-icon-delete"
+                   circle plain
+                   @click="deleteItem(index)"></el-button>
+               </el-col>
+            </el-row>
+         </li>
+      </ul>
+
+      <div class="bundle-price">
+         Prezzo bundle: {{formatPrice(product.price)}}
+      </div>
+      <div :class="getCalculatedPriceStyle()">
+         Prezzo calcolato: {{totalPrice}}
+      </div>
+
    </div>
 </template>
 
 <script>
+import utils from '@/utils.js'
+
 export default {
    name: 'ProductComposition',
-   props: ['composition', 'catalog'],
+   props: ['product', 'catalog'],
    data() {
       return {
          loaded: false,
@@ -35,7 +58,22 @@ export default {
          results: []
       }
    },
+   computed: {
+      totalPrice: function() {
+         var p=0;
+         for(var i=0; i<this.components.length; i++) {
+            p += Number(this.components[i].price);
+         }
+         return utils.formatPrice(p);
+      }
+   },
    methods: {
+      deleteItem: function(index) {
+         this.components.splice(index, 1);
+      },
+      formatPrice: function(price) {
+         return utils.formatPrice(price)
+      },
       removeComponent: function(c) {
          var i=0;
          while (i<this.components.length) {
@@ -47,12 +85,14 @@ export default {
          }
       },
       selectProd: function(p) {
-         this.components.push(p);
+         var subset = this.product.subset(p);
+         this.components.push(subset);
          this.$emit('componentsUpdate', this.components)
+         this.searchInput = '';
       },
       inputChange: function() {
-          var input = this.searchInput;
-          if(input.length<2) return;
+         var input = this.searchInput;
+         if(input.length<2) return;
 
          this.results = [];
          this.resultCount = 0;
@@ -63,9 +103,16 @@ export default {
            }
          }
       },
+      getCalculatedPriceStyle() {
+         if(Number(this.product.price) != Number(this.totalPrice)) {
+            return 'calculated-price'
+         } else {
+            return 'bundle-price'
+         }
+      }
    },
    mounted() {
-     this.components = this.composition;
+      this.components = this.product.components.slice(0);
    },
 }
 </script>
@@ -76,11 +123,6 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-}
-
-.component-list {
-  float: left;
-  margin: 5px;
 }
 
 .search {
@@ -98,5 +140,15 @@ ul {
    border-radius: 8px;
    border: solid 1px var(--info-color);
    padding: 5px;
+}
+.bundle-price {
+   color: var(--primary-color);
+   font-weight: bold;
+   margin: 4px;
+}
+.calculated-price {
+   color: var(--danger-color);
+   font-weight: bold;
+   margin: 4px;
 }
 </style>

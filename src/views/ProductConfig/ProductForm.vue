@@ -77,14 +77,17 @@
           </el-row>
 
           <el-row v-if="product.properties.type == 1">
-            <el-col :span="12">
+            <el-col :span="24">
               <el-form-item :label="$t('product.composition')">
-                <product-composition
-                  v-if="isMounted"
-                  :composition="product.components"
-                  :catalog="catalog"
-                  @componentsUpdate="componentsUpdate">
-                </product-composition>
+                <div v-if="product.components == undefined || product.components.length==0">
+                  {{$t('product.no_components')}}
+                </div>
+                <ul>
+                  <li class="component-list" v-for="c in product.components" :key="c.id">
+                    <el-tag>{{c.name}}</el-tag>
+                  </li>
+                </ul>
+                <el-icon :size='24' @click="editComposition()"><edit /></el-icon>
               </el-form-item>
             </el-col>
           </el-row>
@@ -234,6 +237,15 @@
         </el-button>
       </el-form-item>
     </el-form>
+
+    <el-dialog v-model="editBundle">
+      <product-composition
+        v-if="isMounted"
+        :product="product"
+        :catalog="catalog"
+        @componentsUpdate="componentsUpdate">
+      </product-composition>
+    </el-dialog>
   </div>
 </template>
 
@@ -243,6 +255,7 @@ import Product from "../../data/Product.js";
 import utils from "../../utils.js";
 import ColorSelector from '../../components/ColorSelector.vue'
 import ProductComposition from './ProductComposition.vue'
+import { Edit }from '@element-plus/icons-vue'
 
 export default {
   name: "ProductForm",
@@ -257,11 +270,15 @@ export default {
       productions: [],
       checkedProductions: [],
       imgUrl: '',
-      currentCategory: {}
+      currentCategory: {},
+      editBundle: false
     };
   },
-  components: { ColorSelector, ProductComposition},
+  components: { ColorSelector, ProductComposition, Edit},
   methods: {
+    editComposition: function() {
+      this.editBundle = true
+    },
     componentsUpdate: function(components) {
       this.product.components = components;
     },
@@ -393,7 +410,8 @@ export default {
   },
   mounted() {
     console.log("mounted", this.data);
-    this.product = this.data;
+    this.product = new Product;
+    this.product.fillData(this.data);
     this.isMounted = true;
     this.loadProductionAreas();
     this.loadImage();
@@ -413,5 +431,15 @@ export default {
   font-size: 1.2em;
   font-family: "Montserrat", sans-serif;
   color: var(--primary-color);
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.component-list {
+  float: left;
+  margin: 5px;
 }
 </style>

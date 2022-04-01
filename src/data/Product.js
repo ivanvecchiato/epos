@@ -31,4 +31,27 @@ export default class Product {
     this.productionAreas = [];
     this.status = 1;  // 1=active, 0=inactive; -1 deleted
   }
+
+  fillData(data) {
+    var keys = Object.keys(this);
+    keys.forEach(element => {
+      if(data[element] == undefined) data[element] = '';
+      this[element] = data[element];
+    });
+  }
+
+  subset(prod) {
+    let tmp = JSON.stringify(prod, this.replacer);
+    return JSON.parse(tmp);
+  }
+
+  replacer(key, value) {
+    if (key=="barcodes") return undefined;
+    else if (key=="properties") return undefined;
+    else if (key=="inventory") return undefined;
+    else if (key=="long_description") return undefined;
+    else if (key=="short_description") return undefined;
+    else if (key=="cost") return undefined;
+    else return value;
+  }
 }
