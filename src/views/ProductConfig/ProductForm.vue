@@ -76,6 +76,19 @@
             </el-col>
           </el-row>
 
+          <el-row v-if="product.properties.type == 1">
+            <el-col :span="12">
+              <el-form-item :label="$t('product.composition')">
+                <product-composition
+                  v-if="isMounted"
+                  :composition="product.components"
+                  :catalog="catalog"
+                  @componentsUpdate="componentsUpdate">
+                </product-composition>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
           <el-form-item :label="$t('product.short-description')">
             <textarea class="text-area" rows="3" cols="60" v-model="product.properties.short_description"/>
           </el-form-item>
@@ -229,10 +242,11 @@ import Firebase from "../../firebase";
 import Product from "../../data/Product.js";
 import utils from "../../utils.js";
 import ColorSelector from '../../components/ColorSelector.vue'
+import ProductComposition from './ProductComposition.vue'
 
 export default {
   name: "ProductForm",
-  props: ["data", "documentId", "categories"],
+  props: ["data", "documentId", "categories", "catalog"],
   data() {
     return {
       product: new Product(),
@@ -246,8 +260,11 @@ export default {
       currentCategory: {}
     };
   },
-  components: { ColorSelector},
+  components: { ColorSelector, ProductComposition},
   methods: {
+    componentsUpdate: function(components) {
+      this.product.components = components;
+    },
     handleCategorySelection(selected) {
       console.log(selected)
       this.product.category = selected;

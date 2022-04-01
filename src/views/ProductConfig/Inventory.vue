@@ -99,6 +99,7 @@
             :data="currentProduct"
             :documentId="documentId"
             :categories="categories"
+            :catalog="products"
             :key="randKey"
             @productUpdated="productUpdated"
             @productCreated="productCreated"
