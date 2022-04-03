@@ -31,7 +31,7 @@ export default {
       if(color != '') {
         this.bgc.backgroundColor = color;
       }
-      return this.bgc;
+      return 'background-color: ' + color + ';';
     },
     selectColor: function(color, index) {
       this.active_el = Number(index);
