@@ -59,7 +59,7 @@
                 type="primary"
                 plain
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">
+                @click="handleEdit(scope.row)">
                 {{ $t("product.edit") }}
               </el-button>
             </template>
@@ -70,7 +70,7 @@
                 type="warning"
                 plain
                 size="mini"
-                @click="handleDuplicate(scope.$index, scope.row)"
+                @click="handleDuplicate(scope.row)"
                 >{{ $t("product.duplicate") }}</el-button>
             </template>
           </el-table-column>
@@ -158,14 +158,23 @@ export default {
       console.log("productUpdated", event);
       this.resetDialog();
     },
-    handleEdit: function (index) {
-      this.currentProduct = this.products[index];
-      this.documentId = this.products[index].id;
-      console.log("handleEdit", this.currentProduct);
+    handleEdit: function (row) {
+      for(var i=0; i<this.products.length; i++) {
+        if(this.products[i].id == row.id) {
+          this.currentProduct = this.products[i];
+          this.documentId = this.products[i].id;
+        }
+      }
+      //console.log("handleEdit", row);
       this.dialogVisible = true;
     },
-    handleDuplicate: function (index) {
-      var p = this.products[index];
+    handleDuplicate: function (row) {
+      var p=null;
+      for(var i=0; i<this.products.length; i++) {
+        if(this.products[i].id == row.id) {
+          p = this.products[i];
+        }
+      }
       var obj = Object.assign({}, p);
       obj.name = obj.name + " (copia)";
       Firebase.db
@@ -238,6 +247,7 @@ export default {
       this.tableData = [];
       for (var i = 0; i < this.products.length; i++) {
         this.tableData.push({
+          id: this.products[i].id,
           code: this.products[i].code,
           name: this.products[i].name,
           category: this.products[i].category.name,
