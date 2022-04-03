@@ -13,6 +13,7 @@
       <ul>
         <li class="item" v-for="item in comandaToBePrinted" :key="item.id">
           <div class="item-name">{{ item.quantity }} {{ item.name }}</div>
+          <div v-if="hasDetails(item)" class="item-details">{{ getItemDetails(item) }}</div>
           <div class="item-note">{{ item.note }}</div>
         </li>
       </ul>
@@ -64,6 +65,20 @@ export default {
     },
   },
   methods: {
+    getItemDetails: function(item) {
+      if(item.components == undefined) return '';
+      if(item.components.length == 0) return '';
+      
+      var details = ''
+      for(var i=0; i<item.components.length; i++) {
+        if(i > 0) details += '; ';
+        details += item.components[i].name;
+      }
+      return details;
+    },
+    hasDetails: function(item) {
+      return (item.type == 1 || item.type == 3);
+    },
     addToComanda(item) {
       var inserted = false;
       for (var i = 0; i < this.comandaToBePrinted.length; i++) {
@@ -130,6 +145,10 @@ export default {
   color: var(--primary-color);
 }
 .item-note {
+  font-size: 0.7em;
+  color: var(--danger-color);
+}
+.item-details {
   font-size: 0.7em;
   color: var(--danger-color);
 }

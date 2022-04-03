@@ -7,6 +7,7 @@
         <span class="item-unitary-price" v-if="item.quantity>1">
           {{item.quantity}} x {{formatPrice(item.price)}}
         </span>
+        <span v-if="hasDetails(item)" class="item-specs">{{getItemDetails(item)}}</span>
         <span class="item-note">{{item.note}}</span>
       </div>
       <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
@@ -54,6 +55,20 @@ export default {
     }
   },
   methods: {
+    getItemDetails: function(item) {
+      if(item.components == undefined) return '';
+      if(item.components.length == 0) return '';
+      
+      var details = ''
+      for(var i=0; i<item.components.length; i++) {
+        if(i > 0) details += '; ';
+        details += item.components[i].name;
+      }
+      return details;
+    },
+    hasDetails: function(item) {
+      return (item.type == 1 || item.type == 3);
+    },
     getItemClass: function(item) {
       if(item.status == -100) {
         return 'cart-item';
@@ -190,6 +205,10 @@ export default {
 .item-note {
   color: var(--info-color);
   font-size: 0.9em;
+}
+.item-specs {
+  color: var(--info-color);
+  font-size: 0.8em;
 }
 .item-unitary-price {
   color: var(--info-color);
