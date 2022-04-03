@@ -6,8 +6,8 @@ export default class Product {
     this.name = '';
     this.price = 0.0;
     this.cost = 0.0;    // prezzo di acquisto
+    this.type = 0,    // 0: normal; 1: bundle; 2: measure; 3:to complete ; -1: variant; -2: ingrediente
     this.properties = {
-      type: 0,    // 0: normal; 1: bundle; 2: measure; 3:to complete ; -1: variant; -2: ingrediente
       short_description: '',
       long_description: '',
       measure: 'unit',    // 'unit', 'g', 'm', 'l'

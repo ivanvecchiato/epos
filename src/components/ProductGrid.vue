@@ -32,11 +32,11 @@
     <div class="card-bottom">
       <div class="icons" v-if="atLeastOneProp(item)">
         <img
-          v-if="isToComplete(item.properties.type)"
+          v-if="isToComplete(item.type)"
           class="indicator indicator-red"
           src="@/assets/icons/steps.png"/>
         <img
-          v-if="isMeasure(item.properties.type)"
+          v-if="isMeasure(item.type)"
           class="indicator indicator-gray"
           src="@/assets/icons/scale.png"/>
         <el-icon v-if="isPriceVariable(item)" :size="14" color="#ffffff" class="indicator indicator-red">
@@ -83,8 +83,8 @@ export default {
       return '';
     },
     atLeastOneProp: function(item) {
-      return (this.isBundle(item.properties.type) || this.isToComplete(item.properties.type)
-        || this.isMeasure(item.properties.type) || this.isFavorite(item))
+      return (this.isBundle(item.type) || this.isToComplete(item.type)
+        || this.isMeasure(item.type) || this.isFavorite(item))
         || this.isPriceVariable(item);
     },
     formatPrice: function(price) {

@@ -64,7 +64,7 @@
           <el-row>
             <el-col :span="24">
               <el-form-item :label="$t('product.type')">
-                <el-radio-group v-model="product.properties.type">
+                <el-radio-group v-model="product.type">
                   <el-radio :label="0">{{$t('product_type.normal')}}</el-radio>
                   <el-radio :label="1">{{$t('product_type.bundle')}}</el-radio>
                   <el-radio :label="2">{{$t('product_type.measure')}}</el-radio>
@@ -76,7 +76,7 @@
             </el-col>
           </el-row>
 
-          <el-row v-if="product.properties.type == 1">
+          <el-row v-if="product.type == 1">
             <el-col :span="24">
               <el-form-item :label="$t('product.composition')">
                 <div v-if="product.components == undefined || product.components.length==0">
@@ -356,7 +356,7 @@ export default {
       this.$emit("productCanceled", this.product);
     },
     colorPicked: function(color) {
-      this.product.color = color;
+      this.product.properties.color = color;
     },
     insertNewCategory: function(value) {
       Firebase.db
