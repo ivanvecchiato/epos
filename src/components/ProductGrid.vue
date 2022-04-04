@@ -33,7 +33,7 @@
       <div class="icons" v-if="atLeastOneProp(item)">
         <img
           v-if="isToComplete(item.type)"
-          class="indicator indicator-red"
+          class="indicator indicator-green"
           src="@/assets/icons/steps.png"/>
         <img
           v-if="isMeasure(item.type)"
@@ -42,7 +42,7 @@
         <el-icon v-if="isPriceVariable(item)" :size="14" color="#ffffff" class="indicator indicator-red">
           <money />
         </el-icon>
-        <el-icon v-if="isBundle(item.type)" :size="14" color="#ffffff" class="indicator indicator-red">
+        <el-icon v-if="isBundle(item.type)" :size="14" color="#ffffff" class="indicator indicator-purple">
           <coin />
         </el-icon>
         <el-icon v-if="isFavorite(item)" :size="14" color="#ffffff" class="indicator indicator-yellow">
@@ -237,6 +237,15 @@ export default {
 }
 .indicator-red {
   background-color: var(--danger-color);
+}
+.indicator-orange {
+  background-color: #F57C00;
+}
+.indicator-green {
+  background-color: #009688;
+}
+.indicator-purple {
+  background-color: #E1BEE7;
 }
 .indicator-yellow {
   background-color: var(--warning-color);
