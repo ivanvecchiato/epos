@@ -76,11 +76,11 @@
     </div>
 
     <el-dialog
-      v-model="paymentDialogVisibile"
+      v-model="checkoutDialogVisibile"
       width="80%"
       destroy-on-close>
-      <payment-dialog>
-      </payment-dialog>
+      <checkout-dialog>
+      </checkout-dialog>
     </el-dialog>
 
     <el-dialog :title="$t('product.specify_price')"
@@ -104,7 +104,7 @@ import Customer from "../data/Customer.js";
 import Firebase from "../firebase.js";
 import operator from "../store/user.js";
 import { CircleClose } from '@element-plus/icons';
-import PaymentDialog from "./Frontend/PaymentDialog.vue";
+import CheckoutDialog from "./Frontend/CheckoutDialog.vue";
 import printf from "../fiscalprinter/printf.js";
 import ContoManagement from './Frontend/ContoManagement.vue';
 import ECRKeypad from '@/components/ECRKeypad.vue'
@@ -115,7 +115,7 @@ export default {
   components: {
     ProductGrid,
     CircleClose,
-    PaymentDialog,
+    CheckoutDialog,
     ContoManagement,
     ECRKeypad
   },
@@ -129,7 +129,7 @@ export default {
       customer: null,
       currentPlace: null,
       search_pattern: '',
-      paymentDialogVisibile: false,
+      checkoutDialogVisibile: false,
       priceDialogVisibile: false,
       currentHandledProduct: null,
       catalog: [],
@@ -302,14 +302,14 @@ export default {
         //this.conto.addCustomer(c);
         //console.log('addCustomer', c);
     },
-    showPaymentDialog: function(conto) {
-      this.paymentDialogVisibile = true;
+    showCheckoutDialog: function(conto) {
+      this.checkoutDialogVisibile = true;
       this.$nextTick(() => {
         this.$bus.trigger('setConto', conto);
       })
     },
     pagaConto: function(conto) {
-      this.showPaymentDialog(conto);
+      this.showCheckoutDialog(conto);
     },
     loadCategories: function() {
       Firebase.db

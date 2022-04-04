@@ -113,6 +113,7 @@
       destroy-on-close>
       <place-selector @selectPlace="selectPlace"> </place-selector>
     </el-dialog>
+
   </div>
 </template>
 
@@ -137,7 +138,7 @@ export default {
     ShoppingCart,
     DiscountWidget,
     Edit,
-    PlaceSelector,
+    PlaceSelector
   },
   props: ["currentPlace"],
   data() {
@@ -146,7 +147,7 @@ export default {
       discountVisible: false,
       conto: new Conto(),
       conf: new Settings(),
-      placeSelectorVisible: false,
+      placeSelectorVisible: false
     };
   },
   computed: {

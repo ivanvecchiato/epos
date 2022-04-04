@@ -26,6 +26,7 @@
         <el-col :span="6">
           <div class="side">
             <conto-management
+               style="border-radius: 10px; border: solid 1px lightgray"
               ref="contoMgmt"
               :currentPlace="currentPlace"
               @annullaConto="annullaConto"
@@ -43,11 +44,11 @@
 import docs from '../../data/Documents.js'
 import ECRKeypad from '@/components/ECRKeypad.vue'
 import Conto from "../../data/Conto.js";
-import ContoManagement from '../Frontend/ContoManagement.vue';
+import ContoManagement from './ContoManagement.vue';
 import utils from "../../utils.js";
 
 export default {
-   name: "PaymentDialog",
+   name: "CheckoutDialog",
    props: ['data'],
    data() {
       return {
@@ -128,7 +129,7 @@ export default {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  padding: 5px;
 }
 ul {
   list-style-type: none;
