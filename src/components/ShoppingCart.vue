@@ -49,7 +49,7 @@ export default {
     orderList: {
      // eslint-disable-next-line no-unused-vars
       handler(newList, oldList) {
-        console.log(newList, oldList)
+        //console.log(newList, oldList)
       },
       deep: true
     }
