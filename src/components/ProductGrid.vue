@@ -10,9 +10,12 @@
       <div class="color-indicator" :style="getBgc(item)"/>
       <div class="settings">
         <el-dropdown trigger="click">
+          <!--
           <el-icon :size="20" v-on:click.stop color="#FF8A65">
             <setting />
           </el-icon>
+          -->
+          <el-icon  :size="20" v-on:click.stop color="#FF8A65"><more-filled /></el-icon>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item v-if="!isFavorite(item)" icon="el-icon-star-off" @click="heartProduct(item)">{{$t('product.favorite')}}</el-dropdown-item>
@@ -57,7 +60,8 @@
 
 <script>
 import { Coin, Money } from "@element-plus/icons";
-import { Setting } from '@element-plus/icons'
+//import { Setting } from '@element-plus/icons'
+import { MoreFilled } from '@element-plus/icons'
 import { StarFilled } from '@element-plus/icons'
 import Firebase from '../firebase.js'
 //import utils from '../utils.js'
@@ -67,7 +71,7 @@ export default {
   props: {
     data: Array,
   },
-  components: { Coin, Money, Setting, StarFilled },
+  components: { Coin, Money, MoreFilled, StarFilled },
   data() {
     return {
       bgc: {
