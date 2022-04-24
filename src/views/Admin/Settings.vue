@@ -2,18 +2,18 @@
   <div class="settings-form">
     <el-form :model="conf" label-width="150px">
       <el-form-item>
-        <el-checkbox v-model="conf.allowQuickBill.value.value">
+        <el-checkbox v-model="allowQuickBill">
           {{ $t("settings.allow-quick-bill") }}
         </el-checkbox>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="conf.printNoteOnBill.value.value">
+        <el-checkbox v-model="printNoteOnBill">
           {{ $t("settings.print-note-bill") }}
         </el-checkbox>
       </el-form-item>
 
       <el-form-item :label="$t('settings.starting-view')">
-        <el-radio-group v-model="conf.startingView.value.value">
+        <el-radio-group v-model="startingView">
            <el-radio :label="0">{{$t('settings.starting-view-frontend')}}</el-radio>
            <el-radio :label="1">{{$t('settings.starting-view-bills')}}</el-radio>
         </el-radio-group>
@@ -21,7 +21,7 @@
 
       <el-form-item :label="$t('settings.product-grid-columns')">
         <el-input-number
-           v-model="conf.productGridColumns.value.value"
+           v-model="productGridColumns"
            @change="handleChangeColumns"
            :min="2"
            :max="10">
@@ -33,12 +33,12 @@
 
 <script>
 //import Firebase from "../../firebase";
-import settings from '@/data/settings'
+import Settings from "@/settings/Settings.js";
 
 export default {
   data() {
     return {
-       conf: settings
+      conf: new Settings()
     };
   },
   watch: {
@@ -50,16 +50,26 @@ export default {
       deep: true
     }
   },
+  computed: {
+    printNoteOnBill: function() {
+      return this.conf.getSettingValue('printNoteOnBill');
+    },
+    allowQuickBill: function() {
+      return this.conf.getSettingValue('allowQuickBill');
+    },
+    startingView: function() {
+      return this.conf.getSettingValue('startingView');
+    },
+    productGridColumns: function() {
+      return this.conf.getSettingValue('productGridColumns');
+    },
+  },
   methods: {
      handleChangeColumns() {
         console.log(this.conf)
      }
   },
   mounted() {
-     var param = JSON.parse(localStorage.getItem('settings'));
-     if(param != null) {
-        this.conf = param;
-     }
   },
 };
 </script>
