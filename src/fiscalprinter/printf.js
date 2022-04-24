@@ -17,6 +17,7 @@ var conf = new Settings;
 
 export default {
    address: '192.168.0.9:80',
+   connected: false,
 
    init() {
       this.getIP();
@@ -31,6 +32,12 @@ export default {
          this.address = param;
       }
       return this.address;
+   },
+   setConnectedStatus (connected) {
+      this.connected = connected;
+   },
+   getConnectedStatus () {
+      return this.connected;
    },
    sendCommand(cmdBuffer, callback) {
       console.log('sendCommand', cmdBuffer)
