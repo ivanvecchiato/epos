@@ -89,7 +89,7 @@
           </el-button>
         </div>
         <div class="buttons" style="margin-top: 10px">
-          <el-button type="success" class="block bold" @click="pagaConto()">
+          <el-button type="danger" class="checkout" @click="pagaConto()">
             {{ $t("bill.cash") }}
           </el-button>
         </div>
@@ -528,8 +528,11 @@ main {
 .block {
   width: 100%;
 }
-.bold {
+.checkout {
   font-weight: bold;
+  height: 70px;
+  font-size: 1.5em;
+  width: 100%;
 }
 .buttons {
   display: flex;

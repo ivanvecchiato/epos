@@ -135,4 +135,10 @@ html {
   border-radius: 8px;
   padding: 10px;
 }
+button {
+  font-family: "Montserrat";
+}
+input {
+  font-family: "Montserrat";
+}
 </style>
