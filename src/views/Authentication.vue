@@ -1,23 +1,19 @@
 <template>
-  <div id="login">
-    <div class="logo">
-      <img src="@/assets/logo.png"/>
-    </div>
-
-    <div class="container">
-      <div class="pin">{{maskPin()}}</div>
-      <div class="keypad">
-        <button
+  <div class="login">
+    <div style="text-align:center;margin: auto;">
+    <div class="pin">{{maskPin()}}</div>
+    <div class="keypad">
+      <button
         class="regular-button"
-          v-for="key in keys"
-          :key="key"
-          @click="press(key)">
-            {{ key }}
-        </button>
-        <button class="action-button" plain @click="clear">&larr;</button>
-        <button class="action-button" plain @click="enter"
-          v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
-      </div>
+        v-for="key in keys"
+        :key="key"
+        @click="press(key)">
+          {{ key }}
+      </button>
+      <button class="action-button" plain @click="clear">&larr;</button>
+      <button class="action-button" plain @click="enter"
+        v-loading.fullscreen.lock="fullscreenLoading">Ok</button>
+    </div>
     </div>
   </div>
 </template>
@@ -107,17 +103,20 @@ export default {
 </script>
 
 <style scoped>
-#login {
+.login {
   text-align: center;
   padding: 20px;
+  width: 100%;
   height: 100vh;
+  /*
+  background-image: url("../assets/logo.png");
+  background-repeat: no-repeat;
+  */
   --login-color: rgba(187, 149, 80, 0.767)!important;
 }
-.logo {
-  margin: 20px;
-}
 .pin {
-  border: solid 1px var(--login-color);
+  /*border: solid 1px var(--login-color);*/
+  background: transparent;
   color: var(--login-color);
   font-weight: bold;
   padding: 5px;
@@ -129,30 +128,20 @@ export default {
 }
 .keypad {
   display: grid;
-  grid-template-columns: 20px 20px 20px;
+  grid-template-columns: 120px 120px 120px;
   grid-template-rows: auto;
-  grid-gap: 10px;
-  padding: 10px;
-  justify-content: space-evenly;
-  justify-items: center;
-  align-content: space-evenly;
-  align-items: center;
-}
-.container {
-  background: white;
-  border-radius: 16px;
-  border: solid 1px var(--login-color);
+  grid-gap: 5px;
   padding: 10px;
   margin: auto;
 }
 .regular-button {
   width: 100px;
   height: 60px;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 2em;
+  font-weight: 900;
   background: #fff;
   color: var(--login-color);
-  border: solid 1px var(--login-color);
+  border: solid 2px var(--login-color);
   border-radius: 8px;
 }
 .regular-circle-button {
@@ -178,8 +167,8 @@ export default {
 .action-button {
   width: 100px;
   height: 60px;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 2em;
+  font-weight: 900;
   background: var(--login-color);
   border: 0px;
   color: #fff;
