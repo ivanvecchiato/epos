@@ -5,6 +5,21 @@
             <div class="doc-types">
                <div class="doc-header">{{$t('docs.document')}}</div>
                <div class="doc-selector">
+                  <el-dropdown trigger="click" @command="handleCategorySelection">
+                    <span class="el-dropdown-link">
+                      {{product.category.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item
+                          v-for="doc in documenti"
+                          :key="doc.id"
+                          :command="doc">
+                           <span class="dropdown-category">{{cat.name}}</span>
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                   <ul>
                      <li v-for="doc in documenti" :key="doc.id">
                         {{$t(doc.type)}}
@@ -78,7 +93,7 @@ export default {
       conto: {
      // eslint-disable-next-line no-unused-vars
          handler(newConto, oldConto) {
-            console.log('watch', newConto);
+            //console.log('watch', newConto);
          },
          deep:true
       }
