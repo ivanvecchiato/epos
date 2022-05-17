@@ -6,9 +6,9 @@ import ProductConfig from './views/ProductConfig.vue'
 import Settings from './views/Settings.vue'
 import Extras from './views/Extras.vue'
 import Floor from './views/Floor.vue'
-//import Login from './views/Login.vue'
 import Home from './views/Home.vue'
 import Ordini from './views/Ordini.vue'
+import Dashboard from './views/Dashboard.vue'
 
 const routes = [
   {
@@ -28,6 +28,11 @@ const routes = [
     path: '/conti',
     name: 'conti',
     component: Conti
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard
   },
   {
     path: '/ordini',

@@ -1,93 +1,83 @@
 <template>
   <div id="app">
-    <div class="control-bar">
-      <div class="control-bar-user">
-        <el-dropdown trigger="click">
-          <img src="@/assets/icons/avatar.png" v-if="avatarLength() > 0"/>
-          <div class="avatar" v-else>{{operator()}}</div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item icon="el-icon-avatar">{{userName}}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-right" @click="logout">{{$t('login.logout')}}</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-
-      <div class="control-bar-item">
-        <img
-          class="indicator" :class="getPrinterIndicator"
-          src="@/assets/icons/printer.png"/>
-      </div>
-      <div class="control-bar-item">
-        <el-popover
-          placement="left"
-          title="Server locale"
-          :width="200"
-          trigger="hover"
-          :content="getServerPopoverContent()">
-          <template #reference>
-            <img
-              class="indicator" :class="getServerIndicator"
-              src="@/assets/icons/gear.png"/>
-          </template>
-        </el-popover>
-      </div>
-    </div>
     <div class="container">
       <div class="sidemenu" v-if="loggedIn == true">
-        <!--
-        <div class="user">
+        <div class="control-bar-user">
           <el-dropdown trigger="click">
             <img src="@/assets/icons/avatar.png" v-if="avatarLength() > 0"/>
-            <div class="avatar" v-else>{{operatorInitial()}}</div>
+            <div class="avatar" v-else>{{operator()}}</div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item icon="el-icon-avatar">{{userName()}}</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-avatar">{{operator()}}</el-dropdown-item>
                 <el-dropdown-item icon="el-icon-right" @click="logout">{{$t('login.logout')}}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
         </div>
-        -->
 
+        <div style="width: 100%;display: table;">
+          <div style="display: table-row">
+          <div class="control-bar-item">
+            <img
+              class="indicator" :class="getPrinterIndicator"
+              src="@/assets/icons/printer.png"/>
+          </div>
+          <div class="control-bar-item">
+            <el-popover
+              placement="right"
+              title="Server locale"
+              :width="200"
+              trigger="click"
+              :content="getServerPopoverContent()">
+              <template #reference>
+                <img
+                  class="indicator" :class="getServerIndicator"
+                  src="@/assets/icons/gear.png"/>
+              </template>
+            </el-popover>
+          </div>
+          </div>
+        </div>
         <el-menu
           mode="vertical"
           @select="handleSelect"
           :default-active="1"
-          background-color="#EFEBE9"
           :collapse="isCollapse"
           style="text-align:left"
           active-text-color="#E65100">
-          <el-menu-item index="1" @click="openFrontend">
+          <el-menu-item index="1" @click="openDashboard">
+            <i class="el-icon-house"></i>
+            <span>{{ $t("cashier.dashboard") }}</span>
+          </el-menu-item>
+          <el-menu-item index="2" @click="openFrontend">
             <i class="el-icon-house"></i>
             <span>{{ $t("cashier.cashier") }}</span>
           </el-menu-item>
-          <el-menu-item index="2" @click="openFloor">
+          <el-menu-item index="3" @click="openFloor">
             <i class="el-icon-map-location"></i>
             <span>{{ $t("floor.floor") }}</span>
           </el-menu-item>
-          <el-menu-item index="3" @click="openOrders">
+          <el-menu-item index="4" @click="openOrders">
             <i class="el-icon-document"></i>
             <span>{{ $t("orders.orders") }}</span>
           </el-menu-item>
-          <el-menu-item index="4" @click="openBills">
+          <el-menu-item index="5" @click="openBills">
             <i class="el-icon-data-line"></i>
             <span>{{ $t("bill.bills") }}</span>
           </el-menu-item>
-          <el-menu-item index="5" @click="openProducts">
+          <el-menu-item index="6" @click="openProducts">
             <i class="el-icon-box"></i>
             <span>{{ $t("pricelist.products") }}</span>
           </el-menu-item>
-          <el-menu-item index="6" @click="openSettings" :disabled="!admin">
+          <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
             <i class="el-icon-setting"></i>
             <span>{{ $t("config.settings") }}</span>
           </el-menu-item>
-          <el-menu-item index="7" @click="openExtra" :disabled="!admin">
+          <el-menu-item index="8" @click="openExtra" :disabled="!admin()">
             <i class="el-icon-magic-stick"></i>
             <span>{{ $t("config.extra") }}</span>
           </el-menu-item>
-          <el-menu-item index="7" @click="openActions" :disabled="!admin">
+          <el-menu-item index="9" @click="openActions" :disabled="!admin()">
             <i class="el-icon-set-up"></i>
             <span>{{ $t("config.actions") }}</span>
           </el-menu-item>      
@@ -168,14 +158,11 @@ export default {
     operatorInitial: function() {
       return operator.getName().charAt(0);
     },
-    userName: function() {
-      return operator.getName();
-    },
+  },
+  methods: {
     admin: function() {
       return operator.isAdmin();
     },
-  },
-  methods: {
     getServerPopoverContent: function() {
       if(this.localServerStatus == true) {
         return this.localServerIP
@@ -219,6 +206,9 @@ export default {
     openFloor: function() {
       this.$router.push("/floor");
     },
+    openDashboard: function() {
+      this.$router.push("/dashboard");
+    },
     openFrontend: function() {
       this.$router.push("/frontend");
     },
@@ -253,7 +243,7 @@ export default {
           operator: op
         });
         this.loggedIn = true;
-        this.$router.push("/frontend");
+        this.$router.push("/dashboard");
       }
     },
     getGeolocation() {
@@ -352,9 +342,11 @@ export default {
   display: flex;
 }
 .sidemenu {
-  text-align: left;
+  text-align: center;
   flex: 0 0 60px;
-  margin: 4px;
+  margin: 8px;
+  background: #fff;
+  border-radius: 10px;
 }
 .center {
   flex: 1;
@@ -365,26 +357,7 @@ export default {
 .user {
   margin-left: 20px;
 }
-.user .avatar {
-  text-align: center;
-  line-height: 40px;
-  width: 40px;
-  height: 40px;
-  color: #fff;
-  margin: 2px;
-  font-size: 2em;
-  background-color: purple;
-  border-radius: 50%;
-  text-transform: capitalize;
-}
-.control-bar {
-  height: 35px;
-  width: 100%;
-  background: #cbb79a;
-  overflow: hidden;
-  vertical-align: middle;
-}
-.control-bar .avatar {
+.avatar {
   color: #A78658;
   margin: 2px;
   font-size: 1.1em;
@@ -395,12 +368,11 @@ export default {
   padding: 2px 10px 2px 10px;
 }
 .control-bar-user {
-  float: left;
   margin: 4px;
 }
 .control-bar-item {
-  min-width: 60px;
-  float: right;
+  margin-left: 5px;
+  display: table-cell;
 }
 
 .indicator {

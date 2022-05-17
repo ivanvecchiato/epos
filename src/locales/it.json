@@ -1,4 +1,11 @@
 {
+  "general": {
+    "good-morning": "Buongiorno",
+    "good-afternoon": "Buon pomeriggio",
+    "good-evening": "Buonasera",
+    "notes": "Note",
+    "no-notes": "Nessuna nota"
+  },
   "config": {
     "alert": "Attenzione",
     "generic": "Generali",
@@ -21,6 +28,8 @@
     "changes-saved": "Modifiche salvate",
     "changes-fail": "Errore nel salvataggio",
     "fiscal-printer": "Stampante Fiscale",
+    "connected": "Connessa",
+    "not-connected": "Non connessa",
     "actions": "Azioni"
   },
   "settings": {
@@ -41,7 +50,8 @@
     "zreport": "Chiusura fiscale",
     "zreport-done": "Chiusura giornaliera completata",
     "zreport-confirm": "Eseguire la chiusura giornaliera?",
-    "print-error": "Si è verificato un errore durante la stampa"
+    "print-error": "Si è verificato un errore durante la stampa",
+    "dashboard": "Dashboard"
   },
   "pricelist": {
     "pricelist": "Listino",
@@ -135,7 +145,8 @@
     "value": "Valore",
     "total": "Totale",
     "docs": "Documenti",
-    "most_popular": "Più venduti"
+    "most_popular": "Più venduti",
+    "report": "Report"
   },
   "generic": {
     "floor": "Piano",
@@ -198,6 +209,14 @@
     "reassigned": "Conto riassegnato",
     "doPark": "Selezionare il conto su cui parcheggiare l'ordine",
     "noBills": "Nessun conto trovato"
+  },
+  "wharehouse": {
+    "wharehouse": "Magazzino",
+    "inventory_management": "Gestione scorte",
+    "stock": "Scorta",
+    "stocks": "Scorte",
+    "inventory_alarm": "Allarme giacenze",
+    "load": "Carico"
   },
   "orders": {
     "order": "Ordine",
