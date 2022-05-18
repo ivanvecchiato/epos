@@ -43,6 +43,11 @@ export default {
   src: local("Montserrat"),   url(./fonts/Montserrat-Bold.ttf) format("truetype");
   font-weight: bold;
 }
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"),   url(./fonts/Montserrat-SemiBold.ttf) format("truetype");
+  font-weight: 500;
+}
 
 body,
 html {
