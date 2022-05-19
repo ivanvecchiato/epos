@@ -1,63 +1,78 @@
 <template>
   <div class="dashboard">
     <span class="title">{{getWelcome()}}</span>
-  <div class="container">
-    <div class="dash-card purple">
+    <div class="container">
+      <div class="dash-card purple">
       <span class="card-head">{{$t('config.fiscal-printer')}}</span>
       <div class="settings">
         <el-dropdown trigger="click">
           <el-icon  :size="20" v-on:click.stop color="#6f788d"><more-filled /></el-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="el-icon-star-off" @click="heartProduct(item)">
-                <span class="dropdown-item">{{$t('product.favorite')}}</span>
+              <el-dropdown-item icon="el-icon-link" @click="testPrintf()">
+                <span class="dropdown-item">
+                  {{$t('general.test')}}
+                </span>
               </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-edit" @click="editProduct(item)">
-                <span class="dropdown-item">{{$t('product.edit')}}</span>
+              <el-dropdown-item icon="el-icon-setting" @click="gotoPrintfConfig()">
+                <span class="dropdown-item">
+                  {{$t('general.config')}}
+                </span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
       <div class="card-divider"></div>
-      <span class="card-info-bottom">{{printerStatus}}</span>
-    </div>
+      <span class="card-info-bottom">{{printerStatusLabel}}</span>
+      </div>
 
-    <div class="dash-card blue">
+      <div class="dash-card blue" @click="gotoBills()">
       <span class="card-head">{{$t('stats.opened_bills')}}</span>
       <div class="settings">
         <el-dropdown trigger="click">
           <el-icon  :size="20" v-on:click.stop color="#6f788d"><more-filled /></el-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="el-icon-star-off" @click="heartProduct(item)">{{$t('product.favorite')}}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-edit" @click="editProduct(item)">{{$t('product.edit')}}</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-money" @click="gotoBills()">
+                <span class="dropdown-item">
+                  {{$t('general.view')}}
+                </span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
       <div class="card-divider"></div>
       <span class="card-info-bottom">{{contiAperti + " " + $t('bill.bills')}}</span>
-    </div>
+      </div>
 
-    <div class="dash-card yellow">
-      <span class="card-head">{{$t('general.notes')}}</span>
+      <div class="dash-card yellow">
+      <span class="card-head">{{$t('notes.notes')}}</span>
       <div class="settings">
         <el-dropdown trigger="click">
           <el-icon  :size="20" v-on:click.stop color="#6f788d"><more-filled /></el-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item icon="el-icon-box">{{$t('product.favorite')}}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-edit">{{$t('product.edit')}}</el-dropdown-item>
+              <el-dropdown-item v-for="note in notes" :key="note.id" icon="el-icon-check" @click="showNote(note)">
+                <span class="dropdown-item">
+                  {{note.title}}
+                </span>
+              </el-dropdown-item>
+              <el-dropdown-item icon="el-icon-document-add" @click="newNote()">
+                <span class="dropdown-item">
+                  {{$t('notes.new-note')}}
+                </span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
       <div class="card-divider"></div>
-      <span class="card-info-bottom">{{notes}}</span>
-    </div>
+      <span class="card-info-bottom">{{notesLabel}}</span>
+      </div>
 
-    <div class="dash-card red">
+      <div class="dash-card red">
       <span class="card-head">{{$t('wharehouse.wharehouse')}}</span>
       <div class="settings">
         <el-dropdown trigger="click">
@@ -76,9 +91,17 @@
       </div>
       <div class="card-divider"></div>
       <span class="card-info-bottom">{{$t('wharehouse.inventory_alarm')}}:&nbsp;{{giacenze}}</span>
+      </div>
     </div>
-</div>
 
+    <el-dialog
+      :title="$t('notes.new-note')"
+      v-model="showNewNote"
+      :center="false"
+      width="40%"
+      destroy-on-close>
+      <note></note>
+    </el-dialog>
   </div>
 </template>
 
@@ -88,19 +111,23 @@ import printf from "../fiscalprinter/printf.js";
 import Conto from "@/data/Conto"
 import operator from "../store/user.js"
 import { MoreFilled } from '@element-plus/icons'
+import Note from './Dashboard/Note.vue'
+import { ElMessageBox } from 'element-plus'
 
 export default {
   name: 'Dashboard',
   components: {
-    MoreFilled
+    MoreFilled,
+    Note
   },
   data() {
     return {
-      printerStatus: 'connessa',
+      printerStatusLabel: 'connessa',
       note: 'nessuna',
       giacenze: 3,
       docs: [],
-      numberOfNotes: 0
+      notes: [],
+      showNewNote: false
     }
   },
   computed: {
@@ -110,22 +137,51 @@ export default {
     contiAperti: function() {
       return this.docs.length;
     },
-    notes: function() {
-      if(this.numberOfNotes == 0) {
-        return this.$t('general.no-notes');
+    notesLabel: function() {
+      if(this.notes.length == 0) {
+        return this.$t('notes.no-notes');
       } else {
-        return this.numberOfNotes + this.$t('general.notes')
+        return this.notes.length + " " + (this.notes.length>1 ?  this.$t('notes.notes') : this.$t('notes.note'))
       }
     }
   },
   methods: {
-    getPrinterStatus: function() {
-      if(printf.getConnectedStatus() == true) return this.$t("config.connected");
-      else return this.$t("config.not-connected");
+    showNote: function(note) {
+      ElMessageBox.alert(note.body, note.title, {
+        confirmButtonText: 'OK',
+        callback: () => {
+        },
+      })
     },
-    getNotes: function() {
+    newNote: function() {
+      this.showNewNote = true;
+    },
+    gotoBills: function() {
+      this.$router.push('./conti')
+    },
+    gotoPrintfConfig: function() {
 
     },
+    getPrinterStatus: function() {
+      if(printf.getConnectedStatus() == true) {
+        return this.$t('config.connected');
+      } else {
+        return this.$t('config.not-connected');
+      }
+    },
+    getNotes: function() {
+      Firebase.db
+        .collection("notes")
+        .onSnapshot((snapshotChange) => {            
+          this.notes = [];
+          snapshotChange.forEach((doc) => {
+            var item = {};
+            item.id = doc.id;
+            item.title = doc.data().title;
+            item.body = doc.data().body;
+            this.notes.push(item)
+          });
+        });    },
     getContiAperti: function() {
       Firebase.db
         .collection("park")
@@ -156,7 +212,6 @@ export default {
               }
             }
           });
-          this.handleDocs();
         });
     },
     getWelcome: function() {
@@ -165,11 +220,19 @@ export default {
       var message = hours < 13 ? this.$t('general.good-morning') : hours < 18 ? this.$t('general.good-afternoon') : this.$t('general.good-evening');
       message += " " + this.operatorName;
       return message;
+    },
+    testPrintf: function() {
+
     }
   },
   mounted() {
-    this.printerStatus = this.getPrinterStatus();
+    this.printerStatusLabel = this.getPrinterStatus();
+    this.$bus.on('changePrintf', (e) => {
+      this.printerStatusLabel = this.getPrinterStatus(e);
+    });
+
     this.getContiAperti();
+    this.getNotes();
   },
 }
 </script>
@@ -212,11 +275,11 @@ export default {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  font-weight: normal;
+  font-weight: 500;
   font-size: 1.0em;
   padding-left: 20px;
   padding-right: 20px;
-  color: var(--info-color);
+  color: var(--primary-color);
 }
 .card-divider {
   position: absolute;
@@ -276,7 +339,10 @@ export default {
   background: #F9A825;
 }
 .title {
-  font-size: 2.0em;
+  font-size: 3.0em;
+  font-family: "Montserrat";
+  font-weight: 900;
+  color: var(--success-color);
 }
 .settings {
   position: absolute;
@@ -284,6 +350,7 @@ export default {
   right: 12px;
 }
 .dropdown-item {
-  font-family: "Montserrat-Regular";
+  font-family: "Montserrat";
+  font-weight: 500;
 }
 </style>

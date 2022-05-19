@@ -3,8 +3,15 @@
     "good-morning": "Buongiorno",
     "good-afternoon": "Buon pomeriggio",
     "good-evening": "Buonasera",
+    "view": "Visualizza",
+    "test": "Test",
+    "config": "Configura"
+  },
+  "notes": {
     "notes": "Note",
-    "no-notes": "Nessuna nota"
+    "note": "Nota",
+    "no-notes": "Nessuna nota",
+    "new-note": "Nuova nota"
   },
   "config": {
     "alert": "Attenzione",
