@@ -41,7 +41,10 @@
           </el-table-column>
           <el-table-column prop="lastModified" :label="$t('bill.lastModification')" width="150">
           </el-table-column>
-          <el-table-column prop="amount" :label="$t('bill.amount')" width="185">
+          <el-table-column align="right" :label="$t('bill.amount')" width="120">
+            <template #default="scope">
+              <span class="amount">{{scope.row.amount}}</span>
+            </template>
           </el-table-column>
           <el-table-column label="" width="100">
             <template #default="scope">
@@ -349,5 +352,10 @@ export default {
   font-weight: bold;
   color: var(--primary-color);
   text-align: left;
+}
+.amount {
+  color: var(--danger-color);
+  font-weight: bold;
+  font-size: 1.1em;
 }
 </style>
