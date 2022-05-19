@@ -3,8 +3,7 @@ import xml from "./xml.js";
 import axios from 'axios';
 var parseString = require('xml2js').parseString;
 import Settings from "@/settings/Settings.js";
-
-//var cfg = require('../data/cfg.json');
+import bus from '@/event.js';
 
 const clearCmd = "=K";
 const keyCmd = "=C";
@@ -35,6 +34,7 @@ export default {
    },
    setConnectedStatus (connected) {
       this.connected = connected;
+      bus.trigger('changePrintf', this.connected);
    },
    getConnectedStatus () {
       return this.connected;
