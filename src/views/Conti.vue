@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="title">{{$t('bill.docs_bills')}}</div>
-    <el-tabs class="conti-tab" type="border-card" @tab-click="handleTabClick">
-      <el-tab-pane :label="$t('bill.closed')">
-        <conti-chiusi></conti-chiusi>
-      </el-tab-pane>
+    <el-tabs class="conti-tab" type="border-card" @tab-click="handleTabClick" v-model="page">
       <el-tab-pane :label="$t('bill.parked')">
         <conti-parcheggiati></conti-parcheggiati>
+      </el-tab-pane>
+      <el-tab-pane :label="$t('bill.closed')">
+        <conti-chiusi></conti-chiusi>
       </el-tab-pane>
     </el-tabs>
 
@@ -25,6 +25,7 @@ export default {
   components: { ContiChiusi, ContiParcheggiati },
   data() {
     return {
+      page: ''
     };
   },
   methods: {
