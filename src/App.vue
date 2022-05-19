@@ -131,6 +131,10 @@ html {
   background-color: #FAFAFC;
   color: #b8b1b1;
 }
+form-label {
+  font-size: 14px;
+  margin: 5px;
+}
 .text-area {
   font-family: "Montserrat";
   font-size: 14px;
