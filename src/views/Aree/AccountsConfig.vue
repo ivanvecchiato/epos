@@ -55,11 +55,15 @@ export default {
     return {
       park: [],
       currentPlan: null,
-      loaded: false
+      loaded: false,
+      editingNew: false,
     }
   },
   components: { AccountsConfigItem },
   methods: {
+    addArea() {
+
+    },
     loadPark() {
       Firebase.db
         .collection("park")

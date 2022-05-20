@@ -38,6 +38,9 @@ export default {
   },
   components: { ParametriArea },
   methods: {
+    deleteArea(area) {
+      console.log(area);
+    },
     isLocalArea(area) {
       var param = JSON.parse(localStorage.getItem('local_area'));
       if(param == null) return false;
