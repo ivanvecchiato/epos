@@ -7,14 +7,13 @@
             <input class="form-input" v-model="product.name"/>
           </el-form-item>
           <el-row>
-            <el-col :span="6">
-              <el-form-item :label="$t('product.code')">
-                <input class="form-input" v-model="product.code"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item :label="$t('product.category') + ':'">
-                <div class="form-input">
+            <el-form-item :label="$t('product.code')">
+              <input class="form-input" v-model="product.code"/>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item :label="$t('product.category') + ':'">
+              <div class="form-input">
                 <el-dropdown trigger="click" @command="handleCategorySelection">
                   <span class="el-dropdown-link">
                     {{product.category.name}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -30,9 +29,8 @@
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
-                </div>
-              </el-form-item>
-            </el-col>
+              </div>
+            </el-form-item>
           </el-row>
           <el-row>
             <el-col :span="6">
@@ -51,14 +49,18 @@
                 </el-select>
               </el-col>
             </el-form-item>
-              <el-col :span="6">
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+            <el-form-item :label="$t('product.color')">
                 <color-selector
                   v-if="isMounted"
                   :key="product.id"
                   :initialColor="product.properties.color"
                   @colorPicked='colorPicked'>
                 </color-selector>
-              </el-col>
+            </el-form-item>
+            </el-col>
           </el-row>
 
           <el-row>
@@ -93,11 +95,11 @@
           </el-row>
 
           <el-form-item :label="$t('product.short-description')">
-            <textarea class="text-area" rows="3" cols="60" v-model="product.properties.short_description"/>
+            <textarea class="text-area" rows="3" cols="80" v-model="product.properties.short_description"/>
           </el-form-item>
 
           <el-form-item :label="$t('product.long-description')">
-            <textarea class="text-area" rows="6"  cols="60" v-model="product.properties.long_description"/>
+            <textarea class="text-area" rows="6"  cols="80" v-model="product.properties.long_description"/>
           </el-form-item>
         </el-tab-pane>
 
