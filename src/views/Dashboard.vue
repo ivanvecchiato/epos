@@ -342,7 +342,7 @@ export default {
   font-size: 3.0em;
   font-family: "Montserrat";
   font-weight: 900;
-  color: var(--success-color);
+  color: var(--info-color);
 }
 .settings {
   position: absolute;
