@@ -143,6 +143,7 @@ form-label {
   border: none;
   border-radius: 8px;
   padding: 10px;
+  word-break: break-all;
 }
 button {
   font-family: "Montserrat";
