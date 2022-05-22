@@ -50,7 +50,7 @@
             <span>{{ $t("cashier.dashboard") }}</span>
           </el-menu-item>
           <el-menu-item index="2" @click="openFrontend">
-            <i class="el-icon-house"></i>
+            <i class="el-icon-shopping-cart-full"></i>
             <span>{{ $t("cashier.cashier") }}</span>
           </el-menu-item>
           <el-menu-item index="3" @click="openFloor">
@@ -310,7 +310,7 @@ export default {
       });
     }
   },
-  mounted() {
+  mounted() {    
     if(("geolocation" in navigator)) {
       console.log('geolocation available');
       this.getGeolocation();
@@ -321,12 +321,12 @@ export default {
     this.testPrintf();
     setInterval(function () {
       this.testPrintf();
-    }.bind(this), 5000); 
+    }.bind(this), 15000); 
 
     this.testLocalServer();
     setInterval(function () {
       this.testLocalServer();
-    }.bind(this), 9000); 
+    }.bind(this), 16000); 
 
     this.startOrderMonitor();
   },
