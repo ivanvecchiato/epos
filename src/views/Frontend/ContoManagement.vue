@@ -89,7 +89,7 @@
           </el-button>
         </div>
         <div class="buttons" style="margin-top: 10px">
-          <el-button type="danger" class="checkout" @click="pagaConto()">
+          <el-button type="danger" class="checkout" @click="checkout()">
             {{ $t("bill.cash") }}
           </el-button>
         </div>
@@ -131,6 +131,8 @@ import Document from "../../documents/Document.js";
 import operator from "../../store/user.js";
 import Settings from "@/settings/Settings.js";
 import PlaceSelector from "./PlaceSelector.vue";
+import configs from '@/store/configs';
+import counters from '@/store/counters';
 
 export default {
   name: "ContoManagement",
@@ -166,34 +168,44 @@ export default {
       var cart = this.$refs.cart;
       cart.scrollTop = cart.scrollHeight;
     },
-    preconto: function () {
-      if (this.conto.size() == 0) return;
-
-      this.stampaScontrinoNonFiscale();
-    },
     showError(text) {
         this.$message({
           type: 'error',
           message: text,
         })
     },
-    pagaConto: function () {
+    stampaScontrino: function() {
+      if(configs.fiscal == true) {
+        this.stampaScontrinoFiscale((r) => {
+          if(r.result == 'ok') {
+            var data = r.data;
+            var progressive = data.Service.Request[0].lastDocF[0];
+            var zNum = data.Service.Request[0].lastZ[0];
+            this.conto.setClosed(1, this.currentPlace, progressive, zNum);
+          } else {
+            this.showError(this.$t('cashier.print-error'));
+          }
+        });
+      } else {
+        this.stampaScontrinoNonFiscale((r) => {
+          if(r.result == 'ok') {
+            var progressive = counters.getProgressivoScontrino(true);
+            var zNum = counters.getZNum();
+            this.conto.setClosed(1, this.currentPlace, progressive, zNum);
+          } else {
+            this.showError(this.$t('cashier.print-error'));
+          }
+        });
+      }
+    },
+    checkout: function () {
       if (this.conto.size() == 0) return;
 
       var condition = this.conf.getSettingValue("allowQuickBill");
       if (condition) {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
         console.log(this.conto);
-        this.stampaScontrino((r) => {
-          if(r.result == 'ok') {
-          var data = r.data;
-          var progressive = data.Service.Request[0].lastDocF[0];
-          var zNum = data.Service.Request[0].lastZ[0];
-          this.conto.setClosed(1, this.currentPlace, progressive, zNum);
-          } else {
-            this.showError(this.$t('cashier.print-error'));
-          }
-        });
+        this.stampaScontrino();
       } else {
         this.$emit("pagaConto", this.conto);
       }
@@ -320,7 +332,7 @@ export default {
         this.$emit("contoParked");
       }
     },
-    stampaScontrino(callback) {
+    stampaScontrinoFiscale(callback) {
       console.log("stampaScontrino");
       printf.document(
         this.groupedList,
@@ -330,9 +342,20 @@ export default {
       );
     },
     stampaScontrinoNonFiscale(callback) {
+      if (this.conto.size() == 0) return;
       console.log("stampaScontrinoNonFiscale");
+
       var doc = new Document();
-      doc.preconto(this.groupedList, this.conto.getTotale(), callback);
+      doc.scontrinoNonFiscale(this.groupedList, this.conto.getTotale(), this.currentPlace);
+
+      escposprinter.scontrino(doc, callback);
+    },
+    preconto() {
+      if (this.conto.size() == 0) return;
+      console.log("preconto");
+
+      var doc = new Document();
+      doc.preconto(this.groupedList, this.conto.getTotale(), this.place);
 
       escposprinter.stampa(doc);
     },
@@ -391,8 +414,14 @@ export default {
           console.log("Error getting document:", error);
         });
     },
+    readConfig() {
+  
+      console.log("configs", configs);
+    }
   },
   mounted() {
+    this.readConfig();
+
     this.$bus.on("addItem", (e) => {
       this.conto.addItem(e);
       this.$nextTick(() => {
@@ -531,8 +560,9 @@ main {
 .checkout {
   font-weight: bold;
   height: 70px;
-  font-size: 1.5em;
+  font-size: 2.0em;
   width: 100%;
+  color: #B71C1C;
 }
 .buttons {
   display: flex;
