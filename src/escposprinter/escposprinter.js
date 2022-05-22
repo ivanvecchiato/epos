@@ -21,12 +21,12 @@ const EscposCodes = {
 export default {
    address: '127.0.0.1:8088',
 
-   sendBuffer(buffer, callback) {
+   sendBuffer(api, buffer, callback) {
       console.log('sendBuffer', buffer)
       let responseData = '';
       var self = this;
 
-      axios.post('http://' + this.address + '/print', buffer)
+      axios.post('http://' + this.address + '/' + api, buffer)
          .then(function (response) {
             responseData = response.data;
             //console.log(response);
@@ -38,7 +38,8 @@ export default {
    },
    processResponse(response, callback) {
       console.log(response)
-      if (callback) callback(response);
+      var res = JSON.parse(response)
+      if (callback) callback(res);
    },
    stampa(doc) {
       var buffer = '';
@@ -55,9 +56,31 @@ export default {
 
       buffer += EscposCodes['cut'];
 
-      this.sendBuffer({
-         "printable": buffer
-      })
+      this.sendBuffer(
+         'print',
+         {"printable": buffer}
+      )
+   },
+   scontrino(doc, callback) {
+      var buffer = '';
+      console.log(doc);
+      doc.documentRows.forEach(row => {
+         console.log(row);
+         if (row.format != undefined) {
+            for (var f = 0; f < row.format.length; f++) {
+               buffer += EscposCodes[row.format[f]];
+            }
+         }
+         buffer += row.row + "\r\n";
+      });
+
+      buffer += EscposCodes['cut'];
+
+      this.sendBuffer(
+         'bill',
+         {"printable": buffer},
+         callback
+      )
    },
    appendCmd(buffer, cmd) {
       for (var i = 0; i < cmd.length; i++) {

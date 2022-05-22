@@ -1,6 +1,9 @@
 import Settings from "@/settings/Settings.js";
 import tags from "./tags";
 import i18n from "../i18n"
+import counters from '@/store/counters';
+import utils from '@/utils';
+
 const { t } = i18n.global;
 
 export default class Document {
@@ -13,7 +16,25 @@ export default class Document {
    }
 
    // eslint-disable-next-line no-unused-vars
-   preconto(items, amount, callback) {
+   scontrinoNonFiscale(items, amount, place) {
+      this.addIntestazioneScontrino();
+      this.addBlankLine();
+      if(place != null && place != undefined) {
+         this.addLine(t('bill.bill') + " " + place.area.name + "/" + place.name, [tags.FORMAT_NORMAL]);
+      }
+      this.addSeparatorLine();
+      this.sellRows(items);
+      this.addBlankLine();
+      // totale
+      this.addAmountRow(amount);
+      this.addBlankLine();
+      var id = counters.getProgressivoScontrino() + '/' + counters.getZNum()
+      this.addLine(t('docs.document') + " " + id, [tags.FORMAT_NORMAL]);
+      this.addLine(utils.localeDateTimeString(), [tags.FORMAT_NORMAL]);
+   }
+   
+   // eslint-disable-next-line no-unused-vars
+   preconto(items, amount) {
       var printHeader = this.conf.getSettingValue('printHeaderOnPrebill');
       if (printHeader) {
          this.addIntestazioneScontrino();
@@ -126,9 +147,13 @@ export default class Document {
          formats.push(tags.FORMAT_NORMAL);
          if (item.status != -100) {
             left += item.quantity + " x " + item.name;
-            right = Number(item.price).toFixed(2);
+            right = (Number(item.price) * Number(item.quantity)).toFixed(2);
             var line = this.leftRight(left, right);
             this.addLine(line, formats);
+            if(item.quantity > 1) {
+               left = "    (" + item.quantity + " x " + Number(item.price).toFixed(2) + ")";
+               this.addLine(left, formats);
+            }
 
             // NOTA
             if (printNote && item.note != undefined && item.note != null) {

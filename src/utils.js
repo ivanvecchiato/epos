@@ -27,6 +27,18 @@ export default {
     datetime += hours + ":" + mins;
     return datetime;
   },
+  localeDateTimeString: function () {
+    var d = new Date();
+    var hours = d.getHours();
+    if(hours<10)
+      hours = '0' + hours;
+    var mins = d.getMinutes();
+    if(mins < 10)
+      mins = '0' + mins;
+    var datetime = d.toLocaleDateString() + " ";
+    datetime += hours + ":" + mins;
+    return datetime;
+  },
   toDateTime: function (timestamp) {
     var ts = timestamp.toDate();
     var hours = ts.getHours();
