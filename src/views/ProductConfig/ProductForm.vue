@@ -95,7 +95,7 @@
           </el-row>
 
           <el-form-item :label="$t('product.short-description')">
-            <textarea class="text-area" rows="3" cols="80" v-model="product.properties.short_description"/>
+            <textarea wrap="hard" class="text-area" rows="3" cols="80" v-model="product.properties.short_description"/>
           </el-form-item>
 
           <el-form-item :label="$t('product.long-description')">
