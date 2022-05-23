@@ -5,6 +5,8 @@
 
         <div class="list">
           <el-table :data="tableData" height="400" style="width: 100%">
+            <el-table-column prop="progr" :label="$t('docs.document')" width="150">
+            </el-table-column>
             <el-table-column prop="date" :label="$t('generic.date')" width="150">
             </el-table-column>
             <el-table-column prop="place" :label="$t('bill.source')" width="150">
@@ -36,17 +38,6 @@
             :series="docsPopularSeries">
           </apexchart>
         </el-card>
-
-        <div>
-          <el-dialog
-            :title="$t('bill.details')"
-            v-model="detailVisible"
-            destroy-on-close
-            width="70%">
-            <bill-detail :data="currentBill" :key="randKey" />
-          </el-dialog>
-        </div>
-
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -97,6 +88,15 @@
         </el-row>
       </el-col>
     </el-row>
+
+    <el-dialog
+      :title="$t('bill.details')"
+      v-model="detailVisible"
+      destroy-on-close
+      width="70%">
+      <bill-detail :data="currentBill" :key="randKey" />
+    </el-dialog>
+
   </div>
 </template>
 
@@ -211,6 +211,7 @@ export default {
           source = this.docs[i].place.area.name + " / " + this.docs[i].place.name;
         }
         this.tableData.push({
+          progr: this.docs[i].progressivoFiscale + "/" + this.docs[i].chiusuraFiscale,
           date: utils.toDateTime(this.docs[i].lastModified),
           place: source,
           amount: this.docs[i].totale.toFixed(2),
