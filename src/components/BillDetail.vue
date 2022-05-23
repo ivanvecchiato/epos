@@ -3,9 +3,14 @@
     <el-row :gutter="20">
       <el-col :span="16">
         <div class="bill-details">
-          <h2 class="intestazione">
+          <div class="bill-details-head">
+          <div class="intestazione" v-if="data.status == 1">
+            {{getIntestazioneDocumento()}}
+          </div>
+          <div class="intestazione">
             {{getIntestazioneConto()}}
-          </h2>
+          </div>
+          </div>
           <el-table :data="tableData" style="width: 100%">
             <el-table-column
               prop="quantity"
@@ -42,6 +47,7 @@
 <script>
 import CustomerDetail from "./CustomerDetail.vue";
 import Conto from '../data/Conto.js';
+import utils from '@/utils.js'
 
 export default {
   name: "BillDetail",
@@ -67,6 +73,15 @@ export default {
       } else {
         intest += this.data.place.area.name + " / " + this.data.place.name
       }
+      if(this.data.customer != null) {
+        intest.append 
+      }
+      return intest;
+    },
+    getIntestazioneDocumento() {
+      var intest = this.$t('docs.document') + " ";
+      intest += this.data.progressivoFiscale + "/" + this.data.chiusuraFiscale;
+      intest += " - " + utils.toDate(this.data.lastModified);
       return intest;
     },
     handleDetails: function() {
@@ -102,6 +117,11 @@ export default {
   padding: 0.5rem;
   overflow: scroll;
 }
+.bill-details-head {
+  border: 1px solid lightgray;
+  padding: 1em;
+  border-radius: 8px;
+}
 .totale {
   margin-top: 20px;
   font-weight: bold;
@@ -125,5 +145,6 @@ export default {
 }
 .intestazione {
   color: var(--primary-color);
+  font-weight: 500;
 }
 </style>
