@@ -297,6 +297,7 @@ export default {
         .catch(() => {});
     },
     selectPlace: function (selectedPlace) {
+      this.placeSelectorVisible = false;
       console.log("selectPlace", selectedPlace);
       var prevConto = new Conto();
       if(selectedPlace.conto != undefined) {
@@ -421,6 +422,7 @@ export default {
   },
   mounted() {
     this.readConfig();
+    counters.load();
 
     this.$bus.on("addItem", (e) => {
       this.conto.addItem(e);

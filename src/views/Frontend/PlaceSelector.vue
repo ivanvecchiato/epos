@@ -3,7 +3,7 @@
       <div class="search">
          <input class="search-input" :placeholder="$t('generic.search')"
             v-model="searchInput"
-            :oninput="inputChange()"/>
+            @input="inputChange()"/>
       </div>
       <div class="area-selector">
          <div v-for="area, index in areas" :key="area.id">
@@ -86,9 +86,12 @@ export default {
          else return 'info';
       },
       inputChange: function() {
+         console.log('----------------------')
          var input = this.searchInput;
-         if(input.length<2) return;
-
+         if(input.length==0) {
+            this.results = [];
+            return;
+         }
          this.results = [];
          this.resultCount = 0;
          for(var i=0; i<this.areas.length; i++) {
@@ -139,7 +142,7 @@ export default {
          }
       },
       getAmount: function(place) {
-         if(place.conto != null) {
+         if(place.conto != null && place.conto.orderList != undefined) {
             return utils.formatPriceWithCurrency(place.conto.getTotaleNetto());
          } else {
             return utils.formatPriceWithCurrency(0);

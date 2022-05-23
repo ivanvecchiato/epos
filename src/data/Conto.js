@@ -311,6 +311,8 @@ export default class Conto {
         id: user.getId(),
         name: user.getName()
       }
+
+      this.orderList.push(item);
     }
   
     var partialObj = {
@@ -323,7 +325,7 @@ export default class Conto {
         name: user.getName()
       }
     };
-    this.lastModified = now;
+    this.lastModified = new Date();
     this.getTotale();
     this.saveCache();
 
