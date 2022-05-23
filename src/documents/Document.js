@@ -17,9 +17,11 @@ export default class Document {
 
    // eslint-disable-next-line no-unused-vars
    scontrinoNonFiscale(items, amount, place) {
+      counters.load();
+
       this.addIntestazioneScontrino();
-      this.addBlankLine();
       if(place != null && place != undefined) {
+         this.addBlankLine();
          this.addLine(t('bill.bill') + " " + place.area.name + "/" + place.name, [tags.FORMAT_NORMAL]);
       }
       this.addSeparatorLine();
@@ -125,15 +127,23 @@ export default class Document {
    }
 
    addIntestazioneScontrino() {
-      var intestazione = [];
-      intestazione.push(this.center('RIGA 1'));
-      intestazione.push(this.center('RIGA 2'));
-      intestazione.push(this.center('RIGA 3'));
+      var headersString = localStorage.getItem("headers");
+      var headers = [];
+      if (headersString != null && headersString.length > 0) {
+        var rows = JSON.parse(headersString);
+        for(var i=0; i<rows.length; i++) {
+           if(rows[i].value.length > 0)
+              headers.push(rows[i].value)
+        }
+      }
 
-      for (var i = 0; i < intestazione.length; i++) {
+      for (i = 0; i < headers.length; i++) {
          let formats = [];
-         formats.push(tags.FORMAT_DOUBLE_H);
-         this.addLine(this.center(intestazione[i]), formats);
+         if(i == 0)
+            formats.push(tags.FORMAT_DOUBLE_H);
+         else
+            formats.push(tags.FORMAT_NORMAL);
+         this.addLine(this.center(headers[i]), formats);
       }
    }
 
