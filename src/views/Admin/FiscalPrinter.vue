@@ -13,6 +13,16 @@
    </el-row>
 
    <div>
+      <p>Intestazione</p>
+      <ul>
+         <li v-for="row, index in headers" :key="index" style="border-bottom: none; margin:5px">
+            <span class="index">{{index+1}}</span> <input size=60 class="form-input header" v-model="row.value"/>
+         </li>
+      </ul>
+      <el-button @click="saveHeaders()">Salva</el-button>
+   </div>
+
+   <div>
       <p>IVA</p>
       <ul>
          <li v-for="item, index in VAT" :key="index">
@@ -56,6 +66,7 @@
 
 <script>
 import printf from "../../fiscalprinter/printf.js";
+import { ElLoading } from 'element-plus'
 
 export default {
    data() {
@@ -63,12 +74,40 @@ export default {
          ipaddress: '',
          VAT: [],
          depts: [],
-         tenders: []
+         tenders: [],
+         headers: [],
+         MAX_HEADERS: 6
       }
    },
    methods: {
       showPaymentsConfig() {
          
+      },
+      getHeaders() {
+         var headersString = localStorage.getItem("headers");
+         this.headers = [];
+         if (headersString != null && headersString.length > 0) {
+           var rows = JSON.parse(headersString);
+           for(var i=0; i<rows.length; i++) {
+              this.headers.push(rows[i])
+           }
+           for(i=rows.length; i<this.MAX_HEADERS; i++) {
+              var item = {};
+              item.id = i+1;
+              item.value = '';
+              this.headers.push(item);
+           }
+         } else {
+           for(i=0; i<this.MAX_HEADERS; i++) {
+              item = {};
+              item.id = i+1;
+              item.value = '';
+              this.headers.push(item);
+           }
+         }
+      },
+      saveHeaders() {
+         localStorage.setItem('headers', JSON.stringify(this.headers));
       },
       initPrintf() {
          printf.getStatus((resp) => {
@@ -79,7 +118,7 @@ export default {
                   printf.setKey('REG');
                }
             } else {
-               this.error(resp.error)
+               //this.error(resp.error)
             }
          });
       },
@@ -97,11 +136,27 @@ export default {
       },
       getPrintfConfig() {
          var self = this;
+         var options = {
+            text: "attendere, prego...",
+            fullscreen: false
+         }
+         const loadingInstance = ElLoading.service(options);
+
          printf.getConfig((resp) => {
+            this.$nextTick(() => {
+               loadingInstance.close()
+            })
+
             if(resp.result == 'ok') {
                console.log('getPrintfConfig', resp);
-               var root = resp.data.Service
-               for(var i=0; i<root.Prg[0].VAT.length; i++) {
+               var root = resp.data.Service;
+
+               for(var i=0; i<root.Prg[0].Header.length; i++) {
+                  if(root.Prg[0].Header[i].txt != undefined && root.Prg[0].Header[i].txt[0].length > 0)
+                     self.headers.push(root.Prg[0].txt[i]);
+               }
+
+               for(i=0; i<root.Prg[0].VAT.length; i++) {
                   if(root.Prg[0].VAT[i].value != undefined && Number(root.Prg[0].VAT[i].value[0]) > 0)
                      self.VAT.push(root.Prg[0].VAT[i]);
                }
@@ -117,11 +172,12 @@ export default {
                }
             }
          });
-      }
+      },
    },
    mounted() {
       this.ipaddress = printf.getIP();
       this.initPrintf();
+      this.getHeaders();
    },
 }
 </script>
@@ -142,5 +198,11 @@ ul li {
 ul li:last-child {
 	border-bottom: 0;
 }
-
+.index {
+   margin-left: 10px;
+   margin-right: 10px;
+}
+.header {
+   text-align: center;
+}
 </style>
