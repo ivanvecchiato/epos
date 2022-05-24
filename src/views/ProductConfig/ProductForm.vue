@@ -326,7 +326,7 @@ export default {
     },
     onSubmit: function() {
       console.log("onSubmit", this.product);
-      this.product.price = this.product.price.replace(',', '.');
+      this.product.price = Number(this.product.price.toString().replace(',', '.'));
       var obj = Object.assign({}, this.product);
       if (this.documentId == "") {
         console.log("onSubmit", obj);
