@@ -266,6 +266,7 @@ export default {
         .collection("products")
         .where("category.id", "==", cat.id)
         .where("status", "==", 1)
+        .where("type", "in", [0, 1, 2, 3])
         .onSnapshot((snapshotChange) => {
           this.products = [];
           snapshotChange.forEach((doc) => {
