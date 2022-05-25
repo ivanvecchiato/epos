@@ -1,7 +1,7 @@
 <template>
    <div class="pricelist">
       <div class="title">{{$t('pricelist.products_variants')}}</div>
-      <el-tabs type="card" @tab-click="handleClick">
+      <el-tabs type="card" @tab-click="handleTabClick">
         <el-tab-pane :label="$t('pricelist.products')">
           <inventory></inventory>
         </el-tab-pane>
@@ -25,6 +25,11 @@ export default {
    data() {
      return {
      };
+   },
+   methods: {
+     handleTabClick: function() {
+       
+     }
    },
 }
 </script>

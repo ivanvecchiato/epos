@@ -83,6 +83,8 @@ export default {
     };
   },
   methods: {
+    rowClick: function() {
+    },
     newCategory() {
       this.categories.push(new Category);
       this.handleCategoryTable();
