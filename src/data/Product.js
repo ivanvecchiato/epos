@@ -28,6 +28,7 @@ export default class Product {
       alarm: 0
     },
     this.components = [];
+    this.options = [];
     this.productionAreas = [];
     this.status = 1;  // 1=active, 0=inactive; -1 deleted
   }
