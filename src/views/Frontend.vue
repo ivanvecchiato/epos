@@ -94,6 +94,17 @@
       </ECRKeypad>
     </el-dialog>
 
+    <el-dialog :title="$t('product.do_complete')"
+      v-model="wizardActivated"
+      show-close="false"
+      destroy-on-close>
+      <ProductWizard
+        :prod="currentHandledProduct"
+        @undoWizard="undoWizard"
+        @finalizeWizard="finalizeWizard">
+      </ProductWizard>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -108,6 +119,7 @@ import CheckoutDialog from "./Frontend/CheckoutDialog.vue";
 import printf from "../fiscalprinter/printf.js";
 import ContoManagement from './Frontend/ContoManagement.vue';
 import ECRKeypad from '@/components/ECRKeypad.vue'
+import ProductWizard from './Frontend/ProductWizard.vue'
 
 
 export default {
@@ -117,7 +129,8 @@ export default {
     CircleClose,
     CheckoutDialog,
     ContoManagement,
-    ECRKeypad
+    ECRKeypad,
+    ProductWizard
   },
   props: ["place", "room"],
   data() {
@@ -133,7 +146,8 @@ export default {
       priceDialogVisibile: false,
       currentHandledProduct: null,
       catalog: [],
-      searchInput: ''
+      searchInput: '',
+      wizardActivated: false
     };
   },
   computed: {
@@ -149,6 +163,22 @@ export default {
     },
   },
   methods: {
+    undoWizard: function() {
+      this.wizardActivated = false;
+    },
+    finalizeWizard: function(items, note) {
+      this.wizardActivated = false;
+      console.log(items);
+      var p = JSON.parse(JSON.stringify(this.currentHandledProduct));
+      for(var i=0; i<items.length; i++) {
+        p.price += Number(items[i].delta_price);
+        p.components.push(items[i]);
+      }
+      if(note != undefined && note.length>0) {
+        p.note = note;
+      }
+      this.addItem(p);
+    },
     inputChange: function() {
        var input = this.searchInput;
        if(input.length<2) return;
@@ -205,6 +235,10 @@ export default {
     productSelected: function(p) {
       if(p.properties.variable_price) {
         this.openPriceinput(p);
+      } else if(p.type == 3) {
+        //product to be completed
+        this.currentHandledProduct = p;
+        this.wizardActivated = true;
       } else {
         if (p.properties.add_note) {
           this.openNote(p);

@@ -28,7 +28,7 @@ export default class Product {
       alarm: 0
     },
     this.components = [];
-    this.options = [];
+    this.options = {};
     this.productionAreas = [];
     this.status = 1;  // 1=active, 0=inactive; -1 deleted
   }
@@ -36,7 +36,11 @@ export default class Product {
   fillData(data) {
     var keys = Object.keys(this);
     keys.forEach(element => {
-      if(data[element] == undefined) data[element] = '';
+      if(data[element] == undefined) {
+        if(element == 'options') data[element] = {}
+        else if(element == 'components') data[element] = []
+        else data[element] = '';
+      }
       this[element] = data[element];
     });
   }

@@ -51,7 +51,7 @@
             </el-form-item>
           </el-row>
           <el-row>
-              <el-col :span="12">
+              <el-col :span="8">
             <el-form-item :label="$t('product.color')">
                 <color-selector
                   v-if="isMounted"
@@ -90,6 +90,26 @@
                   </li>
                 </ul>
                 <el-icon :size='24' @click="editComposition()"><edit /></el-icon>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row v-if="product.type == 3">
+            <el-col :span="24">
+              <el-form-item :label="$t('product.composition')">
+                <div>
+                  step <el-input-number v-model="steps" :min="1" :max="4" @change="handleStepOptionsChange" />
+                  <el-tabs v-model="activeTab" @tab-click="handleStepOptionsTab">
+                    <el-tab-pane v-for="step in steps" :key="step" :label="'step ' + step" :name="'step'+step">
+                      <product-option
+                        :step="step"
+                        :suboptions="subOptions(step)"
+                        :catalog="catalog"
+                        @optionsUpdate="optionsUpdate">
+                      </product-option>
+                    </el-tab-pane>
+                  </el-tabs>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -258,6 +278,7 @@ import utils from "../../utils.js";
 import ColorSelector from '../../components/ColorSelector.vue'
 import ProductComposition from './ProductComposition.vue'
 import { Edit }from '@element-plus/icons-vue'
+import ProductOption from './ProductOption.vue'
 
 export default {
   name: "ProductForm",
@@ -273,16 +294,38 @@ export default {
       checkedProductions: [],
       imgUrl: '',
       currentCategory: {},
-      editBundle: false
+      editBundle: false,
+      steps: 2,
+      activeTab: 'step1',
     };
   },
-  components: { ColorSelector, ProductComposition, Edit},
+  components: { ColorSelector, ProductComposition, Edit, ProductOption},
+  computed: {
+  },
   methods: {
+    subOptions: function(step) {
+      var key = step;
+      var sub = [];
+      if(this.product.options != undefined) {
+        if(Object.prototype.hasOwnProperty.call(this.product.options, key)) {
+          sub = this.product.options[key]
+        }
+      }
+      return sub;
+    },
+    handleStepOptionsChange: function() {
+    },
+    handleStepOptionsTab: function() {
+    },
     editComposition: function() {
       this.editBundle = true
     },
     componentsUpdate: function(components) {
       this.product.components = components;
+    },
+    optionsUpdate: function(step, options) {
+      var key = /*"step" + */step;
+      this.product.options[key] = options;
     },
     handleCategorySelection(selected) {
       console.log(selected)
