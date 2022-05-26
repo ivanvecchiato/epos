@@ -130,12 +130,7 @@ ul {
   width: 200px;
   padding: 10px;
 }
-.search-input {
-  border-radius: 25px;
-  height: 30px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
+
 .search-results {
    border-radius: 8px;
    border: solid 1px var(--info-color);

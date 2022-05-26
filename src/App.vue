@@ -135,6 +135,12 @@ form-label {
   font-size: 14px;
   margin: 5px;
 }
+.search-input {
+  border-radius: 25px;
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .text-area {
   font-family: "Montserrat";
   font-size: 14px;
