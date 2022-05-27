@@ -7,9 +7,11 @@ var counters = {
 
    load() {
       var data = JSON.parse(localStorage.getItem('counters'));
-      this.progressivoScontrino = data.progressivoScontrino;
-      this.progressivoProforma = data.progressivoProforma;
-      this.numeroChiusura = data.numeroChiusura;
+      if(data != null) {
+         this.progressivoScontrino = data.progressivoScontrino;
+         this.progressivoProforma = data.progressivoProforma;
+         this.numeroChiusura = data.numeroChiusura;   
+      }
    },
 
    resetProgressivi() {
