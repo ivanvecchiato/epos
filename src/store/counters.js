@@ -10,6 +10,8 @@ var counters = {
       if(data != null) {
          this.progressivoScontrino = data.progressivoScontrino;
          this.progressivoProforma = data.progressivoProforma;
+         this.progressivoComanda = data.progressivoComanda,
+         this.progressivoTicket = data.progressivoTicket,
          this.numeroChiusura = data.numeroChiusura;   
       }
    },
