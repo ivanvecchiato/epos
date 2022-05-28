@@ -94,7 +94,7 @@
       </ECRKeypad>
     </el-dialog>
 
-    <el-dialog :title="$t('product.do_complete')"
+    <el-dialog
       v-model="wizardActivated"
       show-close="false"
       destroy-on-close>

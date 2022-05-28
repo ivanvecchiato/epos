@@ -1,9 +1,18 @@
 <template>
    <div class="wizard">
+      <span class="product">{{prod.name}}</span>
+      <span class="product-price">{{calculatedPrice}}</span>
+      <div class="summary">
+         <ul>
+            <li v-for="item in components" :key="item.id">
+               <el-tag>{{item.name}}</el-tag>
+            </li>
+         </ul>
+      </div>
       <div class="wizard-page">
          <div v-if="ending == false">
             <ul>
-               <li v-for="item in currentOptions" :key="item.id" @click="next(item)">
+               <li v-for="item in currentOptions" :key="item.id" @click="next(item)" :style="getColor(step)">
                   {{item.name}}
                </li>
             </ul>
@@ -17,10 +26,16 @@
             </div>
          </div>
       </div>
+      <el-steps :active="step" align-center style="margin-top: 20px">
+         <el-step v-for="step in steps+1" :key="step" :title="stepDescription"/>
+      </el-steps>
    </div>
 </template>
 
 <script>
+import colors from '@/colors.js'
+import utils from '@/utils.js'
+
 export default {
    name: 'ProductWizard',
    props: ['prod'],
@@ -32,6 +47,18 @@ export default {
          steps: 2,
          components: [],
          note: ''
+      }
+   },
+   computed: {
+      stepDescription: function() {
+         return "Step " + this.step;
+      },
+      calculatedPrice: function() {
+         var p = this.prod.price;
+         for(var i=0; i<this.components.length; i++) {
+            p += Number(this.components[i].delta_price);
+         }
+         return utils.formatPrice(p);
       }
    },
    methods: {
@@ -54,6 +81,9 @@ export default {
          } else {
             this.currentOptions = this.options[this.step];
          }
+      },
+      getColor(step) {
+         return "background-color: " + colors[step-1].code;
       }
    },
    mounted() {
@@ -63,6 +93,16 @@ export default {
 </script>
 
 <style scoped>
+.product {
+   font-size: 1.5em;
+   font-weight: 900;
+}
+.product-price {
+   font-size: 1.5em;
+   margin-left: 20px;
+   font-weight: 900;
+   color: var(--secondary-color);
+}
 ul {
   list-style-type: none;
   margin: 10px;
@@ -73,7 +113,6 @@ ul li {
    margin: 15px;
 	padding: .5em;
    font-size: 2em;
-   background: var(--light-main-color);
    border-radius: 10px;
    text-align: left;
    color: var(--info2-color);
@@ -81,5 +120,14 @@ ul li {
 }
 ul li:last-child {
 	border-bottom: 0;
+}
+.summary {
+}
+.summary ul {
+   margin: 0px;
+   padding: 0px;
+}
+.summary ul li {
+   float: left;
 }
 </style>

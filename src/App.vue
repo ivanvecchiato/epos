@@ -157,4 +157,22 @@ button {
 input {
   font-family: "Montserrat";
 }
+.indicator-red {
+  background-color: var(--danger-color);
+}
+.indicator-orange {
+  background-color: #F57C00;
+}
+.indicator-green {
+  background-color: #009688;
+}
+.indicator-purple {
+  background-color: #E1BEE7;
+}
+.indicator-yellow {
+  background-color: var(--warning-color);
+}
+.indicator-gray {
+  background-color: var(--info-color);
+}
 </style>
