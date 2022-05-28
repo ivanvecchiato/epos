@@ -38,6 +38,16 @@
             width="280">
           </el-table-column>
           <el-table-column
+            :label="$t('product.type')"
+            width="60">
+            <template #default="scope">
+              <img
+                class="indicator" :class="getTypeIndicator(scope.row.type)"
+                :src="getIndicator(scope.row.type)"/>
+
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="category"
             sortable
             :label="$t('product.category')"
@@ -133,6 +143,31 @@ export default {
     };
   },
   methods: {
+    getIndicator(type) {
+      console.log('getIndicator', type)
+      if(type == -2) {
+        return require('@/assets/icons/ingredient.png');
+      } else if(type == 1) {
+        return require('@/assets/icons/collection.png');
+      } else if(type == 3) {
+        return require('@/assets/icons/steps.png');
+      }
+    },
+    getTypeIndicator(type) {
+      var style = '';
+      if(type == -2) {
+        //ingrediente
+        style = 'indicator-orange';
+      } else if(type == 1) {
+        //bundle
+        style = 'indicator-purple';
+      } else if(type == 3) {
+        //to complete
+        style = 'indicator-green';
+      }
+
+      return style;
+    },
     rowClick: function() {
 
     },
@@ -250,6 +285,7 @@ export default {
           id: this.products[i].id,
           code: this.products[i].code,
           name: this.products[i].name,
+          type: this.products[i].type,
           category: this.products[i].category.name,
           price: Number(this.products[i].price).toFixed(2),
           inventory: Number(this.products[i].inventory.availability)
@@ -367,7 +403,13 @@ export default {
 .inventory-body {
   padding: 12px;
 }
-
+.indicator {
+  width: 20px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 6px;
+  padding: 3px;
+}
 .list {
   padding: 10px;
   height: 100vh;
