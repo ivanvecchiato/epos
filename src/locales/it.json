@@ -36,7 +36,7 @@
     "changes-fail": "Errore nel salvataggio",
     "fiscal-printer": "Stampante Fiscale",
     "connected": "Connessa",
-    "not_connected": "Non connessa",
+    "not-connected": "Non connessa",
     "actions": "Azioni"
   },
   "settings": {
@@ -169,6 +169,7 @@
     "percent": "percentuale",
     "cash": "contanti",
     "deletion": "Cancellazione",
+    "deletions": "Cancellazioni",
     "delete": "Cancella",
     "label": "Etichetta",
     "save_done": "Salvataggio effettuato",
