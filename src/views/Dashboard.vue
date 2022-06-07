@@ -283,7 +283,7 @@ export default {
 }
 .card-divider {
   position: absolute;
-  background: var(--info-color);
+  background: rgb(203, 203, 203);
   height: 1px;
   bottom: 35px;
   right: 0px;
