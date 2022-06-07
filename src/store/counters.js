@@ -31,12 +31,25 @@ var counters = {
       return p;
    },
 
+   getProgressivoComanda(increment) {
+      var p = this.progressivoComanda;
+      if(increment == true) {
+         this.incrementProgressivoComanda();
+      }
+      return p;
+   },
+
    getZNum() {
       return this.numeroChiusura;
    },
 
    incrementProgressivoScontrino() {
       this.progressivoScontrino++;
+      this.save();
+   },
+
+   incrementProgressivoComanda() {
+      this.progressivoComanda++;
       this.save();
    },
 
