@@ -134,7 +134,10 @@ export default {
   max-height: 60px;
   min-height: 60px;
   position: relative;
+  margin: 2px;
   vertical-align: middle;
+  background: rgb(250, 250, 250);
+  border-radius: 12px;
 }
 .cart-item-new {
   display: flex;
@@ -143,39 +146,24 @@ export default {
   max-height: 60px;
   min-height: 60px;
   position: relative;
-  border-right: solid 5px rgba(155, 201, 155);
+  margin: 2px;
+  /*border-right: solid 5px rgba(155, 201, 155);*/
   vertical-align: middle;
+  background: rgb(246, 248, 255);
+  border-radius: 12px;
 }
-.quantity {
-  display: inline-block;
-  position: absolute;
-  right: 10px;
-  font-weight: bold;
-}
-.quantity-value {
-  display: inline-block;
-  min-width: 16px;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.quantity-btn {
-  border: solid 2px var(--danger-color);
-  color: var(--danger-color);
-  border-radius: 8px;
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  margin: auto;
-}
+
 .item-quantity {
   display: inline-block;
   position: absolute;
   background: var(--light-secondary-color);
   border-radius: 6px;
   text-align: center;
+  line-height: 24px;
   width: 24px;
   height: 24px;
-  left: 2px;
+  left: 4px;
+  top: 18px;
 }
 .item-name {
   text-align: left;
