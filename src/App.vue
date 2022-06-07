@@ -175,4 +175,17 @@ input {
 .indicator-gray {
   background-color: var(--info-color);
 }
+.simple-list {
+  list-style-type: none;
+	list-style: none;
+	padding: 0;
+	width: 100%;
+
+}
+.simple-list li {
+  margin: 10px;
+  padding: 0 0;
+  text-align: left;
+}
+
 </style>
