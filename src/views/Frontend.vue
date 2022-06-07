@@ -450,7 +450,6 @@ export default {
   flex-flow: row nowrap;
   align-items: center;
   background: transparent;
-  border-radius: 12px;
   vertical-align: middle;
 }
 .categories::-webkit-scrollbar {
