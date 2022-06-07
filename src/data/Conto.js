@@ -18,7 +18,7 @@ export default class Conto {
     this.createdAt = new Date();
     this.lastModified = new Date();
     this.done = false;
-    this.id_order = Date.now();
+    this.id_order = this.generateID();
     this.payments = []; // Payment obj
     this.totale = 0;
     this.discount = {
@@ -41,6 +41,14 @@ export default class Conto {
 
     this.totale = amount;
     return amount;
+  }
+
+  generateID() {
+    var now = new Date();
+    var hours = now.getHours();
+    var pre = hours < 13 ? 'A' : hours < 18 ? 'B' : 'C';
+    var id = pre + now.getHours() + now.getMinutes();
+    return id;
   }
 
   getTotaleNetto() {
