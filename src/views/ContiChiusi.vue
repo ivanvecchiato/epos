@@ -27,7 +27,7 @@
 
         <el-card class="box-card" shadow="hover">
           <template #header>
-          <div class="card-header">
+          <div class="stat-card-header">
             <span>{{$t('stats.most_popular')}}</span>
           </div>
           </template>
@@ -59,7 +59,7 @@
 
             <el-card class="box-card" shadow="hover">
               <template #header>
-              <div class="card-header">
+              <div class="stat-card-header">
                 <span>{{$t('stats.quantity')}}</span>
               </div>
               </template>
@@ -73,7 +73,7 @@
 
             <el-card class="box-card" shadow="hover">
               <template #header>
-              <div class="card-header">
+              <div class="stat-card-header">
                 <span>{{$t('stats.value')}}</span>
               </div>
               </template>
@@ -265,14 +265,6 @@ export default {
 
 <style scoped>
 .list {
-  text-align: left;
-}
-.box-card {
-  margin: 5px;
-}
-.card-header {
-  font-weight: bold;
-  color: var(--tertiary-color);
   text-align: left;
 }
 </style>

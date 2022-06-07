@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">{{$t('bill.docs_bills')}}</div>
-    <el-tabs class="conti-tab" type="border-card" @tab-click="handleTabClick" v-model="page">
+    <el-tabs class="conti-tab" @tab-click="handleTabClick" v-model="page">
       <el-tab-pane :label="$t('bill.parked')">
         <conti-parcheggiati></conti-parcheggiati>
       </el-tab-pane>
@@ -47,15 +47,37 @@ export default {
 <style>
 .conti-tab {
   margin: 10px;
+  background: transparent;
+}
+.stat-card-title {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1.2em;
+  margin-bottom: 20px;
 }
 .stats-totale {
-  font-weight: bold;
-  color: var(--secondary-color);
-  font-size: 2.0em;
-  margin: 5px;
+  font-weight: normal;
+  font-size: 1.5em;
 }
 .stats-amount {
-  color: var(--info-color);
+  color: var(--secondary-color);
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 10px;
 }
-
+.stat-card {
+  border: 0px solid rgb(223, 223, 223);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: left;
+  margin: 5px;
+  background: white;
+  position: relative;
+}
+.stat-card-header {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: var(--primary-color);
+  text-align: left;
+}
 </style>
