@@ -21,7 +21,7 @@
           </div>
         </el-form-item>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <div class="stat-card" shadow="hover">
           <div class="stat-card-title">{{$t('stats.opened_bills')}}</div>
           <div style="position: absolute; left:20px; bottom: 15px">
@@ -34,20 +34,24 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="6">
         <div class="stat-card" shadow="hover">
-          <div class="stat-card-title">{{$t('generic.deletions')}}</div>
+          <div class="stat-card-title">{{$t('orders.orders')}}</div>
+          <div style="position: absolute; left:20px; bottom: 15px">
+            <el-icon :size="20"><Document /></el-icon>
+            <span class="stats-amount">{{stats.contiAperti.numero}}</span>
+          </div>
           <div style="position: absolute; right:20px; bottom: 15px">
-            <el-icon :size="20"><Delete /></el-icon>
+            <el-icon :size="20"><DishDot /></el-icon>
             <span class="stats-amount">{{stats.contiAperti.deleted}}</span>
           </div>
         </div>
       </el-col>
       <el-col :span="4">
         <div class="stat-card" shadow="hover">
-          <div class="stat-card-title">{{$t('orders.orders')}}</div>
+          <div class="stat-card-title">{{$t('generic.deletions')}}</div>
           <div style="position: absolute; right:20px; bottom: 15px">
-            <el-icon :size="20"><DishDot /></el-icon>
+            <el-icon :size="20"><Delete /></el-icon>
             <span class="stats-amount">{{stats.contiAperti.deleted}}</span>
           </div>
         </div>
