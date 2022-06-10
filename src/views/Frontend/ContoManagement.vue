@@ -25,74 +25,97 @@
       </div>
     </header>
 
+    <div style="text-align:center; padding:10px; border-top: dashed 1px #6f788d;">
+      <el-button size="small" class="toggle-button" color="#102A68" round @click="currentView='order'">
+        {{$t('orders.order')}}
+      </el-button>
+      <el-button size="small" class="toggle-button" color="#102A68" round @click="currentView='bill'">
+        {{$t('bill.bill')}}
+      </el-button>
+    </div>
     <main ref="cart">
-      <div>
+      <div v-if="currentView=='bill'">
         <shopping-cart
           :orderList="groupedList"
           @changeCart="changeCart"
-          @deleteItem="removeItems"
-        >
+          @deleteItem="removeItems">
         </shopping-cart>
+      </div>
+      <div v-else>
+        <order-cart
+          :orderList="conto.orderList">
+        </order-cart>
       </div>
     </main>
 
     <footer>
-      <div class="flat-card">
-        <div class="subtotale-section">
-          <span class="subtotale-label">
-            {{ $t("bill.subtotal") }}
-          </span>
-          <span class="subtotale-amount">
-            {{ subtotale }}
-          </span>
-        </div>
-
-        <div class="sconto-section" @click="openDiscount">
-          <div class="sconto-label">
-            <span>
-              <el-icon style="vertical-align: middle">
-                <edit />
-              </el-icon>
-              {{ $t("bill.discount") }}
+      <div v-if="currentView=='bill'">
+        <div class="flat-card">
+          <div class="subtotale-section">
+            <span class="subtotale-label">
+              {{ $t("bill.subtotal") }}
             </span>
-            <span v-if="conto.discount.value > 0" style="margin-left: 10px">
-              {{ conto.discount.rate }}%
+            <span class="subtotale-amount">
+              {{ subtotale }}
             </span>
           </div>
-          <span class="sconto-amount">
-            {{ formatAmount(conto.discount.value) }}
-          </span>
-        </div>
 
-        <div class="totale-section">
-          <span class="totale-label">
-            {{ $t("bill.total") }}
-          </span>
-          <span class="totale-amount">
-            {{ totale }}
-          </span>
+          <div class="sconto-section" @click="openDiscount">
+            <div class="sconto-label">
+              <span>
+                <el-icon style="vertical-align: middle">
+                  <edit />
+                </el-icon>
+                {{ $t("bill.discount") }}
+              </span>
+              <span v-if="conto.discount.value > 0" style="margin-left: 10px">
+                {{ conto.discount.rate }}%
+              </span>
+            </div>
+            <span class="sconto-amount">
+              {{ formatAmount(conto.discount.value) }}
+            </span>
+          </div>
+
+          <div class="totale-section">
+            <span class="totale-label">
+              {{ $t("bill.total") }}
+            </span>
+            <span class="totale-amount">
+              {{ totale }}
+            </span>
+          </div>
+        </div>
+        <div class="flat-card">
+          <div class="buttons">
+            <el-button type="danger" plain style="width: 100%" @click="annullaConto">
+              {{ $t("bill.clear") }}
+            </el-button>
+          </div>
+          <div class="buttons" style="margin-top: 10px">
+            <el-button type="danger" class="checkout" @click="checkout()">
+              {{ $t("bill.cash") }}
+            </el-button>
+          </div>
         </div>
       </div>
+      <div v-else>
+        <div class="flat-card">
+          <div class="buttons">
+            <el-button type="success" plain style="width: 50%" @click="inviaOrdine">
+              {{ $t("bill.send") }}
+            </el-button>
+            <el-button type="success" plain style="width: 50%" @click="ristampaOrdine">
+              {{ $t("bill.reprint") }}
+            </el-button>
+          </div>
+          <div class="buttons" style="margin-top: 10px">
+            <el-button type="primary" class="block" plain @click="parcheggiaConto">
+              {{ $t("bill.save") }}
+            </el-button>
+          </div>
+        </div>
 
-      <div class="flat-card">
-        <div class="buttons">
-          <el-button type="danger" plain class="annulla" @click="annullaConto">
-            {{ $t("bill.clear") }}
-          </el-button>
-          <el-button
-            type="primary"
-            class="block"
-            plain
-            @click="parcheggiaConto"
-          >
-            {{ $t("bill.save") }}
-          </el-button>
-        </div>
-        <div class="buttons" style="margin-top: 10px">
-          <el-button type="danger" class="checkout" @click="checkout()">
-            {{ $t("bill.cash") }}
-          </el-button>
-        </div>
       </div>
     </footer>
 
@@ -120,6 +143,7 @@
 <script>
 import Firebase from "../../firebase.js";
 import ShoppingCart from "../../components/ShoppingCart.vue";
+import OrderCart from "../../components/OrderCart.vue";
 import DiscountWidget from "../../components/DiscountWidget.vue";
 import { Edit } from "@element-plus/icons";
 import utils from "../../utils.js";
@@ -138,6 +162,7 @@ export default {
   name: "ContoManagement",
   components: {
     ShoppingCart,
+    OrderCart,
     DiscountWidget,
     Edit,
     PlaceSelector
@@ -149,7 +174,8 @@ export default {
       discountVisible: false,
       conto: new Conto(),
       conf: new Settings(),
-      placeSelectorVisible: false
+      placeSelectorVisible: false,
+      currentView: 'bill'
     };
   },
   computed: {
@@ -475,8 +501,7 @@ export default {
   margin: 5px;
 }
 header {
-  min-height: 90px;
-  border-bottom: solid 1px lightblue;
+  min-height: 80px;
 }
 main {
   overflow-y: scroll;
@@ -570,6 +595,7 @@ main {
   display: flex;
   flex-direction: row;
 }
-.annulla {
+.toggle-button {
+  width: 40%;
 }
 </style>

@@ -1,48 +1,35 @@
 <template>
   <div class="cart">
-    <div v-for="item, index in orderList" :key="item.id" :class="getItemClass(item)" @click="showItemDetails(index, item)">
+      <span class="summary">{{getNumRows}}&nbsp;{{$t('orders.items')}}</span>
+    <div v-for="phase, index in phasesList" :key="index" class="phase-section">
+      <span class="phase-datetime">{{formatDatetime(phase.timestamp)}}</span>
+    <div v-for="item in phase.sublist" :key="item.id" class="cart-item">
       <span class="item-quantity">{{item.quantity}}</span>
       <span :class="getItemNameClass(item.status)">{{item.name}}</span>
       <div class="item-details">
-        <span class="item-unitary-price" v-if="item.quantity>1">
-          {{item.quantity}} x {{formatPrice(item.price)}}
-        </span>
         <span v-if="hasDetails(item)" class="item-specs">{{getItemDetails(item)}}</span>
         <span class="item-note">{{item.note}}</span>
       </div>
       <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
     </div>
+    </div>
 
-    <el-dialog
-      :title="currentItem.name"
-      v-model="showModifications"
-      :center="false"
-      width="40%"
-      destroy-on-close>
-      <cart-item-details
-        :data="currentItem"
-        @onChange="onChange"
-        @onDelete="onDelete">
-      </cart-item-details>
-      
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import CartItemDetails from "./CartItemDetails.vue"
+import utils from '../utils';
+import Conto from '@/data/Conto.js';
 
 export default {
-  name: 'ShoppingCart',
+  name: 'OrderCart',
   components: {
-    CartItemDetails
   },
   props: ['orderList'],
   data() {
     return {
-      showModifications: false,
       currentItem: {},
-      currentIndex: -1
+      currentIndex: -1,
     }
   },
   watch: {
@@ -54,7 +41,26 @@ export default {
       deep: true
     }
   },
+  computed: {
+    getNumRows: function() {
+      var q = 0;
+      for (var i = 0; i < this.orderList.length; i++) {
+        if (this.orderList[i].status != -100) q++;
+    }
+    return q;
+
+    },
+    phasesList: function() {
+      var list = this.separateByTimestamp(this.orderList);
+      console.log('***', list);
+      return list;
+    }
+  },
   methods: {
+    formatDatetime: function(dt) {
+      if(dt == undefined) return 'now...';
+      return utils.toLocaleDateTimeString(dt);
+    },
     getItemDetails: function(item) {
       if(item.components == undefined) return '';
       if(item.components.length == 0) return '';
@@ -68,17 +74,6 @@ export default {
     },
     hasDetails: function(item) {
       return (item.type == 1 || item.type == 3);
-    },
-    getItemClass: function(item) {
-      if(item.status == -100) {
-        return 'cart-item';
-      } else {
-        if(item.insertTime == undefined) {
-          return 'cart-item-new';
-        } else {
-          return 'cart-item';
-        }
-      }
     },
     getItemNameClass: function(item_status) {
       if(item_status == -100) {
@@ -98,13 +93,6 @@ export default {
       this.$emit('changeCart', item, delta);
       this.showModifications = false;
     },
-    showItemDetails: function(index, item) {
-      if(item.status == -100) return;
-      
-      this.currentItem = item;
-      this.currentIndex = index;
-      this.showModifications = true;
-    },
     formatPrice: function(price) {
       return Number(price).toFixed(2)
     },
@@ -116,40 +104,70 @@ export default {
     },
     removeItem: function(index) {
       this.$emit('removeItem', index);
+    },
+    separateByTimestamp: function(list) {
+      var pList = [];
+      var prevT = 0;
+      for(var i=0; i<list.length; i++) {
+        if(list[i].insertTime != prevT) {
+          prevT = list[i].insertTime;
+          var phase = {
+            timestamp: prevT,
+            sublist: []
+          }
+          pList.push(phase);
+        }
+        pList[pList.length-1].sublist.push(list[i]);
+      }
+
+      // adjust/group
+      for(var j=0; j<pList.length; j++) {
+        var tmpBill = new Conto;
+        tmpBill.orderList = pList[j].sublist;
+        pList[j].sublist = tmpBill.groupByItems();
+      }
+
+      return pList;
     }
   },
   mounted() {
+    console.log('---', this.orderList);
   },
 }
 </script>
 
 <style scoped>
 .cart {
-  margin-right: 15px;
+  text-align: center;
+}
+.summary {
+  font-weight: bold;
+  color: var(--info-color);
+}
+.phase-section {
+  border-radius: 12px;
+  border: solid 1px rgb(225, 232, 235);
+  /*background: rgb(232, 245, 249);*/
+  padding: 4px;
+  margin: 4px;
+  text-align: center;
+}
+.phase-datetime {
+  font-size: 0.8em;
+  color: var(--info-color);
+  border-radius: 4px;
+  border: solid 1px var(--info-color);
+  padding: 1px 4px 1px 4px;
 }
 .cart-item {
   display: flex;
   width: 100%;
-  padding: 4px;
-  max-height: 55px;
-  min-height: 55px;
+  padding: 2px;
+  max-height: 45px;
+  min-height: 40px;
   position: relative;
-  margin: 4px;
+  margin: 2px;
   vertical-align: middle;
-  background: rgb(250, 250, 250);
-  border-radius: 12px;
-}
-.cart-item-new {
-  display: flex;
-  width: 100%;
-  padding: 4px;
-  max-height: 55px;
-  min-height: 55px;
-  position: relative;
-  margin: 4px;
-  /*border-right: solid 5px rgba(155, 201, 155);*/
-  vertical-align: middle;
-  background: rgb(246, 248, 255);
   border-radius: 12px;
 }
 
@@ -163,7 +181,6 @@ export default {
   width: 24px;
   height: 24px;
   left: 4px;
-  top: 18px;
 }
 .item-name {
   text-align: left;
@@ -204,11 +221,12 @@ export default {
   font-weight: bold;
 }
 .item-price {
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
   position: absolute;
   right: 5px;
   font-size: 1.0em;
-  color: var(--info2-color);
+  color: var(--info-color);
   font-weight: bold;
 }
 </style>

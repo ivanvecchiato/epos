@@ -207,6 +207,8 @@
     "parked": "Sospesi",
     "search_by_range": "Ricerca per data/ora",
     "save": "Salva",
+    "send": "Invia",
+    "reprint": "Ristampa",
     "clear": "Clear",
     "cash": "Incassa",
     "docs_bills": "Documenti/Conti",
@@ -231,6 +233,7 @@
   "orders": {
     "order": "Ordine",
     "orders": "Ordini",
+    "items": "Elementi",
     "pending-orders": "{quantity} ordini sospesi"
   },
   "booking": {
