@@ -48,7 +48,7 @@
                 plain
                 icon="el-icon-delete"
                 size="mini"
-                @click="handleDelete(scope.$index, scope.row)">
+                @click="handleDelete(scope.row.docId)">
               </el-button>
             </template>
           </el-table-column>
@@ -89,9 +89,20 @@ export default {
       this.categories.push(new Category);
       this.handleCategoryTable();
     },
-    handleDelete: function (index) {
-      this.categories.splice(index, 1);
-      this.handleCategoryTable();
+    handleDelete: function (docId) {
+      var self = this;
+      Firebase.db.collection('categories')
+        .doc(docId)
+        .delete()
+        .then(()=>{
+          this.$message({
+            message: self.$t('config.delete_ok'),
+            type: 'warning'
+           });
+        })
+        .catch();
+      //this.categories.splice(index, 1);
+      //this.handleCategoryTable();
     },
     loadCategories: function () {
       Firebase.db
