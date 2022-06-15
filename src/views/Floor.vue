@@ -22,7 +22,10 @@
       <div class="area-indicator" :style="setColor(currentArea.color)"></div>
     </div>
     <div class="grid">
-      <div v-for="t in currentArea.places" :key="t.name" class="table">
+      <div v-if="getPlaces(currentArea) == 0">
+        <img src="@/assets/icons/not_found.png"/>
+      </div>
+      <div v-else v-for="t in currentArea.places" :key="t.name" class="table">
         <div class="inner-table" @click="selectTable(t)">
           <Popper
             offsetSkid="100"
@@ -130,6 +133,14 @@ export default {
     };
   },
   methods: {
+    getPlaces: function(area) {
+      var count = 0;
+      for(var key in area.places) {
+      if(Object.prototype.hasOwnProperty.call(area.places, key))
+        count++;
+      }
+      return count;
+    },
     showOrder: function(t) {
       this.showContoDetail = true;
       this.currentConto = t.conto;
@@ -293,7 +304,7 @@ export default {
   grid-column-gap: 15px;
   margin: 10px;
   padding-right: 10px;
-  text-align: left;
+  text-align: center;
 }
 .table {
   min-height: 110px;
@@ -301,7 +312,7 @@ export default {
   top: 1px;
   left: 1px;
   background: #fff;
-  border: 1px solid rgb(150, 155, 162);
+  border: 0px solid rgb(150, 155, 162);
   border-radius: 8px;
   padding: 0px;
 }
