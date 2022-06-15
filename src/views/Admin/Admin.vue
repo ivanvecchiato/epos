@@ -104,8 +104,8 @@ export default {
          return `#${f(0)}${f(8)}${f(4)}`;
       },
       generate: function() {
-        var tablesNum = [50, 20, 15, 10];
-        for(var j=0; j<4; j++) {
+        var tablesNum = [50, 20, 15, 0];
+        for(var j=0; j<3; j++) {
           var roomObj = {
             id: Number(j+1),
             name: "Area " + (j+1),
@@ -131,6 +131,22 @@ export default {
             console.error("Error adding document: ", error)
           })
         }
+
+        // self remote order
+         roomObj = {
+           id: Number(4),
+           name: "Self",
+           order: 100,
+           color: this.randomColor(),
+           places: {}
+         };
+         Firebase.db.collection('park').add(roomObj)
+         .then((docRef) => {
+           console.log("Document written with ID: ", docRef.id)
+         })
+         .catch((error) => {
+           console.error("Error adding document: ", error)
+         })
       }
    },
 }
