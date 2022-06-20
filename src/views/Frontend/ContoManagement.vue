@@ -553,7 +553,7 @@ main {
 }
 .totale-section {
   position: relative;
-  color: var(--secondary-color);
+  color: var(--primary-color);
   padding: 4px;
   margin-bottom: 20px;
   font-size: 1.4em;
