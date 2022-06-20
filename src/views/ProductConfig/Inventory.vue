@@ -144,7 +144,6 @@ export default {
   },
   methods: {
     getIndicator(type) {
-      console.log('getIndicator', type)
       if(type == -2) {
         return require('@/assets/icons/ingredient.png');
       } else if(type == 1) {
