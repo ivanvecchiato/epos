@@ -417,14 +417,13 @@ export default {
   max-height: 100vh;
 }
 .fixed{
-  width: 400px;
+  width: 450px;
 }
 .flex-item{
-  flex-grow: 1;
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
-  max-width: 75%;
+  max-width: 70%;
   /*background: #81655427;*/
   border-radius: 16px;
 }
