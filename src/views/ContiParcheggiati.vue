@@ -63,7 +63,12 @@
         <el-table :data="tableData" style="width: 100%">
           <el-table-column prop="id_order" label="#" width="150">
           </el-table-column>
-          <el-table-column prop="place" :label="$t('bill.place')" width="150">
+          <el-table-column :label="$t('bill.place')" width="150">
+            <template #default="scope">
+              <span class="place1">{{scope.row.place.area}}</span>
+              &nbsp;
+              <span class="place2">{{scope.row.place.place}}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="createdAt" :label="$t('bill.createdAt')" width="150">
           </el-table-column>
@@ -372,7 +377,10 @@ export default {
           id_order: this.docs[i].id_order,
           createdAt: utils.toDateTime(this.docs[i].createdAt),
           lastModified: utils.toDateTime(this.docs[i].lastModified),
-          place: this.docs[i].place.area.name + " / " + this.docs[i].place.name,
+          place: {
+            area: this.docs[i].place.area.name,
+            place: this.docs[i].place.name
+          },
           amount: this.docs[i].totale.toFixed(2),
           deleted: cancellations
         });
@@ -383,7 +391,7 @@ export default {
       console.log('collectData', this.stats.collection)
       var sortedKeys = this.getSortedKeys(this.stats.popular);
       var tmp = [];
-      for(i=0; i<Math.min(20, sortedKeys.length); i++) {
+      for(i=0; i<Math.min(5, sortedKeys.length); i++) {
         this.barchartOptions.xaxis.categories[i] = sortedKeys[i];
         //this.popularSeries[0].data[i] = this.stats.collection[sortedKeys[i]];
         tmp[i] = this.stats.popular[sortedKeys[i]];
@@ -436,6 +444,19 @@ export default {
   font-weight: bold;
   font-size: 1.1em;
 }
+.place1 {
+  color: var(--warning-color);
+  font-weight: bold;
+  font-size: 1.0em;
+}
+.place2 {
+  color: var(--success-color);
+  font-weight: bold;
+  font-size: 1.0em;  border: solid 1px var(--success-color);
+  border-radius: 4px;
+  padding: 0px 8px 0px 8px;
+
+}
 .stat-line {
   margin: 10px;
   position: relative;
@@ -444,14 +465,15 @@ export default {
 .thumbnail-bgnd {
   background: rgb(248, 239, 227);
   border-radius: 12px;
+  box-shadow: 3px 8px 8px -4px rgb(151, 114, 114, 0.4);
   width: 60px;
   height: 60px;
   text-align: center;
-  vertical-align: middle;
   position: absolute;
   left: 20px;
 }
 .thumbnail {
+  margin-top: 5px;
   height: 50px;
 }
 .popular-name {
