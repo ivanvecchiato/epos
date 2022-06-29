@@ -22,7 +22,7 @@
               :label="$t('bill.product')"
               width="300">
               <template #default="scope">
-                <div class="product">{{scope.row.product}}</div>
+                <div class="product" :class="getItemStatus(scope.row.status)">{{scope.row.product}}</div>
                 <div class="note">{{scope.row.note}}</div>
               </template>
             </el-table-column>
@@ -91,16 +91,24 @@ export default {
       var items = this.bill.groupByItems();
 
       for (var i = 0; i < items.length; i++) {
-        if(items[i].status != -100) {
+        //if(items[i].status != -100) {
           this.tableData.push({
             quantity: items[i].quantity,
             product: items[i].name,
             note: items[i].note,
             amount: (items[i].quantity * items[i].price).toFixed(2),
+            status: items[i].status
           });
-        }
+        //}
       }
     },
+    getItemStatus: function(st) {
+      if(st == -100) {
+        return 'item-deleted'
+      } else {
+        return null
+      }
+    }
   },
   mounted() {
     this.handleDetails();
@@ -131,11 +139,6 @@ export default {
   color: var(--primary-color);
   font-weight: bold;
 }
-.product-null {
-  color: var(--info-color);
-  text-decoration: line-through;
-  font-weight: bold;
-}
 .note {
   font-size: 0.8em;
 }
@@ -146,5 +149,9 @@ export default {
 .intestazione {
   color: var(--primary-color);
   font-weight: 500;
+}
+.item-deleted {
+  text-decoration: line-through;
+  color: var(--danger-color);
 }
 </style>
