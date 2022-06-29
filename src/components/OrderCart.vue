@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     formatDatetime: function(dt) {
-      if(dt == undefined) return 'now...';
+      if(dt == undefined) return '. . .';
       return utils.toLocaleDateTimeString(dt);
     },
     getItemDetails: function(item) {
@@ -196,7 +196,7 @@ export default {
   position: absolute;
   max-width: 300px;
   left: 40px;
-  color: lightcoral;
+  color: var(--danger-color);
   font-weight: normal;
   text-decoration: line-through;
 }

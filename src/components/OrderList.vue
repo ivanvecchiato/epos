@@ -99,7 +99,7 @@ ul {
   position: absolute;
   max-width: 300px;
   left: 40px;
-  color: lightcoral;
+  color: var(--danger-color);
   font-weight: normal;
   text-decoration: line-through;
 }
