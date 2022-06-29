@@ -127,7 +127,9 @@ export default {
       giacenze: 3,
       docs: [],
       notes: [],
-      showNewNote: false
+      showNewNote: false,
+      connected_label: this.$t('config.connected'),
+      not_connected_label: this.$t('config.not-connected')
     }
   },
   computed: {
@@ -164,9 +166,9 @@ export default {
     },
     getPrinterStatus: function() {
       if(printf.getConnectedStatus() == true) {
-        return this.$t('config.connected');
+        return this.connected_label;
       } else {
-        return this.$t('config.not-connected');
+        return this.not_connected_label;
       }
     },
     getNotes: function() {
