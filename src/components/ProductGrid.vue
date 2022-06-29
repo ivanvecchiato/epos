@@ -18,9 +18,15 @@
           <el-icon  :size="20" v-on:click.stop color="#FF8A65"><more-filled /></el-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-if="!isFavorite(item)" icon="el-icon-star-off" @click="heartProduct(item)">{{$t('product.favorite')}}</el-dropdown-item>
-              <el-dropdown-item v-else icon="el-icon-star-on" @click="deheartProduct(item)">{{$t('product.unfavorite')}}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-edit" @click="editProduct(item)">{{$t('product.edit')}}</el-dropdown-item>
+              <el-dropdown-item v-if="!isFavorite(item)" icon="el-icon-star-off" @click="heartProduct(item)">
+                <span class="dropdown-item">{{$t('product.favorite')}}</span>
+              </el-dropdown-item>
+              <el-dropdown-item v-else icon="el-icon-star-on" @click="deheartProduct(item)">
+                <span class="dropdown-item">{{$t('product.unfavorite')}}</span>
+              </el-dropdown-item>
+              <el-dropdown-item icon="el-icon-edit" @click="editProduct(item)">
+                <span class="dropdown-item">{{$t('product.edit')}}</span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -266,4 +272,10 @@ export default {
   top: -10px;
   left: 20px;
 }
+.dropdown-item {
+  font-size: 1.0em;
+  font-family: "Montserrat", sans-serif;
+  color: var(--danger-color);
+}
+
 </style>
