@@ -26,10 +26,14 @@
     </header>
 
     <div style="text-align:center; padding:10px; border-top: dashed 1px #6f788d;">
-      <el-button size="small" class="toggle-button" color="#102A68" round @click="currentView='order'">
+      <el-button size="small" class="toggle-button"
+        :type="currentView == 'order' ? 'info' : 'default'"
+        color="#102A68" round @click="currentView='order'">
         {{$t('orders.order')}}
       </el-button>
-      <el-button size="small" class="toggle-button" color="#102A68" round @click="currentView='bill'">
+      <el-button size="small" class="toggle-button"
+        :type="currentView == 'order' ? 'default' : 'info'"
+        color="#102A68" round @click="currentView='bill'">
         {{$t('bill.bill')}}
       </el-button>
     </div>
@@ -482,6 +486,12 @@ export default {
       id: operator.getId(),
       name: operator.getName(),
     };
+
+    if(this.currentPlace == null || this.currentPlace == undefined) {
+      this.currentView='bill';
+    } else {
+      this.currentView='order';
+    }
   },
 };
 </script>
@@ -598,4 +608,5 @@ main {
 .toggle-button {
   width: 40%;
 }
+
 </style>
