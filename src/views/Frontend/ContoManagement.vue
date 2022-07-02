@@ -40,13 +40,13 @@
     <main ref="cart">
       <div v-if="currentView=='bill'">
         <shopping-cart
-          :orderList="groupedList"
-          @changeCart="changeCart"
-          @deleteItem="removeItems">
+          @showItem="showItemDetails"
+          :orderList="groupedList">
         </shopping-cart>
       </div>
       <div v-else>
         <order-cart
+          @showItem="showItemDetails"
           :orderList="conto.orderList">
         </order-cart>
       </div>
@@ -141,6 +141,19 @@
       <place-selector @selectPlace="selectPlace"> </place-selector>
     </el-dialog>
 
+    <el-dialog
+      :title="currentItem.name"
+      v-model="showModifications"
+      :center="false"
+      width="40%"
+      destroy-on-close>
+      <cart-item-details
+        :data="currentItem"
+        @onChange="onChange"
+        @onDelete="onDelete">
+      </cart-item-details>
+      
+    </el-dialog>
   </div>
 </template>
 
@@ -161,6 +174,7 @@ import Settings from "@/settings/Settings.js";
 import PlaceSelector from "./PlaceSelector.vue";
 import configs from '@/store/configs';
 import counters from '@/store/counters';
+import CartItemDetails from "@/components/CartItemDetails.vue"
 
 export default {
   name: "ContoManagement",
@@ -169,7 +183,8 @@ export default {
     OrderCart,
     DiscountWidget,
     Edit,
-    PlaceSelector
+    PlaceSelector,
+    CartItemDetails
   },
   props: ["currentPlace"],
   data() {
@@ -179,8 +194,20 @@ export default {
       conto: new Conto(),
       conf: new Settings(),
       placeSelectorVisible: false,
-      currentView: 'bill'
+      currentView: 'bill',
+      currentItem: {},
+      showModifications: false
     };
+  },
+  watch: {
+    currentPlace: {
+     // eslint-disable-next-line no-unused-vars
+      handler(newPlace, oldPlace) {
+        if(newPlace != null) {
+          this.currentView = 'order';
+        }
+      }
+    }
   },
   computed: {
     subtotale: function () {
@@ -194,6 +221,25 @@ export default {
     },
   },
   methods: {
+    showItemDetails: function(item) {
+      if(item.status == -100) return;
+      this.currentItem = item;
+      this.showModifications = true;
+
+    },
+    onDelete: function(ids) {
+      this.showModifications = false;
+      this.removeItems(ids);
+    },
+    onChange: function(item) {
+      var delta = item.quantity - this.currentItem.quantity;
+      this.currentItem.quantity = item.quantity;
+      this.currentItem.note = item.note;
+      this.currentItem.price = item.price;
+
+      this.showModifications = false;
+      this.changeCart(item, delta);
+    },
     scroll: function () {
       var cart = this.$refs.cart;
       cart.scrollTop = cart.scrollHeight;
@@ -261,14 +307,6 @@ export default {
         }
       }
     },
-    /*
-    incrementItem: function(index) {
-      this.conto.incrementItem(index);
-    },
-    decrementItem: function(index) {
-      this.conto.decrementItem(index);
-    },
-    */
     changeCart: function (item, delta) {
       console.log("changeCart", item, delta);
 

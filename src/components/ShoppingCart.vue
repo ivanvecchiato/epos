@@ -12,30 +12,16 @@
       </div>
       <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
     </div>
-
-    <el-dialog
-      :title="currentItem.name"
-      v-model="showModifications"
-      :center="false"
-      width="40%"
-      destroy-on-close>
-      <cart-item-details
-        :data="currentItem"
-        @onChange="onChange"
-        @onDelete="onDelete">
-      </cart-item-details>
-      
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import CartItemDetails from "./CartItemDetails.vue"
+//import CartItemDetails from "./CartItemDetails.vue"
 
 export default {
   name: 'ShoppingCart',
   components: {
-    CartItemDetails
+    //CartItemDetails
   },
   props: ['orderList'],
   data() {
@@ -85,25 +71,10 @@ export default {
         return "item-name-crossed";
       } else return "item-name";
     },
-    onDelete: function(ids) {
-      this.$emit('deleteItem', ids);
-      this.showModifications = false;
-    },
-    onChange: function(item) {
-      var delta = item.quantity - this.currentItem.quantity;
-      this.currentItem.quantity = item.quantity;
-      this.currentItem.note = item.note;
-      this.currentItem.price = item.price;
-
-      this.$emit('changeCart', item, delta);
-      this.showModifications = false;
-    },
     showItemDetails: function(index, item) {
       if(item.status == -100) return;
-      
-      this.currentItem = item;
-      this.currentIndex = index;
-      this.showModifications = true;
+
+      this.$emit('showItem', item);
     },
     formatPrice: function(price) {
       return Number(price).toFixed(2)
@@ -195,7 +166,7 @@ export default {
   font-size: 0.9em;
 }
 .item-specs {
-  color: var(--info-color);
+  color: var(--info2-color);
   font-size: 0.8em;
 }
 .item-unitary-price {

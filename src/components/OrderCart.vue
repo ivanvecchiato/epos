@@ -1,9 +1,9 @@
 <template>
   <div class="cart">
-      <span class="summary">{{getNumRows}}&nbsp;{{$t('orders.items')}}</span>
+    <span class="summary">{{getNumRows}}&nbsp;{{$t('orders.items')}}</span>
     <div v-for="phase, index in phasesList" :key="index" class="phase-section">
       <span class="phase-datetime">{{formatDatetime(phase.timestamp)}}</span>
-      <div v-for="item in phase.sublist" :key="item.id" class="cart-item">
+      <div v-for="item in phase.sublist" :key="item.id" class="cart-item" @click="showItemDetails(item)">
         <span class="item-quantity">{{item.quantity}}</span>
         <span :class="getItemNameClass(item.status)">{{item.name}}</span>
         <div class="item-details">
@@ -57,6 +57,11 @@ export default {
     }
   },
   methods: {
+    showItemDetails: function(item) {
+      if(item.status == -100) return;
+
+      this.$emit('showItem', item);
+    },
     formatDatetime: function(dt) {
       if(dt == undefined) return '. . .';
       return utils.toLocaleDateTimeString(dt);
@@ -146,7 +151,7 @@ export default {
 }
 .phase-section {
   border-radius: 12px;
-  border: solid 1px rgb(225, 232, 235);
+  border: solid 1px rgb(225, 228, 235);
   /*background: rgb(232, 245, 249);*/
   padding: 4px;
   margin: 4px;
@@ -163,12 +168,10 @@ export default {
   display: flex;
   width: 100%;
   padding: 2px;
-  max-height: 45px;
   min-height: 40px;
   position: relative;
   margin: 2px;
   vertical-align: middle;
-  border-radius: 12px;
 }
 
 .item-quantity {
@@ -212,7 +215,7 @@ export default {
   font-size: 0.9em;
 }
 .item-specs {
-  color: var(--info-color);
+  color: var(--info2-color);
   font-size: 0.8em;
 }
 .item-unitary-price {
