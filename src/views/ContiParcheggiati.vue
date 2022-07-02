@@ -116,14 +116,6 @@
             </div>
           </li>
         </ul>
-        <!--
-        <apexchart
-          width="500"
-          type="bar"
-          :options="barchartOptions"
-          :series="popularSeries">
-        </apexchart>
-        -->
       </div>
 
       <div>

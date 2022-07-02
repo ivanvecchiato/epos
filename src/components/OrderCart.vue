@@ -3,15 +3,15 @@
       <span class="summary">{{getNumRows}}&nbsp;{{$t('orders.items')}}</span>
     <div v-for="phase, index in phasesList" :key="index" class="phase-section">
       <span class="phase-datetime">{{formatDatetime(phase.timestamp)}}</span>
-    <div v-for="item in phase.sublist" :key="item.id" class="cart-item">
-      <span class="item-quantity">{{item.quantity}}</span>
-      <span :class="getItemNameClass(item.status)">{{item.name}}</span>
-      <div class="item-details">
-        <span v-if="hasDetails(item)" class="item-specs">{{getItemDetails(item)}}</span>
-        <span class="item-note">{{item.note}}</span>
+      <div v-for="item in phase.sublist" :key="item.id" class="cart-item">
+        <span class="item-quantity">{{item.quantity}}</span>
+        <span :class="getItemNameClass(item.status)">{{item.name}}</span>
+        <div class="item-details">
+          <span v-if="hasDetails(item)" class="item-specs">{{getItemDetails(item)}}</span>
+          <span class="item-note">{{item.note}}</span>
+        </div>
+        <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
       </div>
-      <span class="item-price">{{formatPrice(item.quantity * item.price)}}</span>
-    </div>
     </div>
 
   </div>
