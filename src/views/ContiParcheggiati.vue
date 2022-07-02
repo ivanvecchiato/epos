@@ -61,7 +61,10 @@
       <el-col :span="24">
         <div class="stat-card">
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="id_order" label="#" width="150">
+          <el-table-column label="#" width="150">
+            <template #default="scope">
+              <span class="order-code">{{scope.row.id_order}}</span>
+            </template>
           </el-table-column>
           <el-table-column :label="$t('bill.place')" width="150">
             <template #default="scope">
@@ -499,5 +502,8 @@ export default {
   font-weight: bold;
   font-size: 1.2em;
   color: var(--primary-color);
+}
+.order-code {
+  font-weight: bold;
 }
 </style>
