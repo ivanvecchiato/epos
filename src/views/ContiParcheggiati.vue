@@ -122,6 +122,7 @@
         <el-dialog
           :title="$t('bill.details')"
           v-model="detailVisible"
+          lock-scroll=false
           destroy-on-close
           width="70%">
           <bill-detail :data="currentBill" :key="randKey" />
@@ -250,6 +251,13 @@ export default {
         popular: {}
       }
     };
+  },
+  computed: {
+    phasesList: function() {
+      var list = this.separateByTimestamp(this.orderList);
+      console.log('***', list);
+      return list;
+    }
   },
   methods: {
     selectRange: function(dates) {
