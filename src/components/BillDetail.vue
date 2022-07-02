@@ -4,36 +4,45 @@
       <el-col :span="16">
         <div class="bill-details">
           <div class="bill-details-head">
-          <div class="intestazione" v-if="data.status == 1">
-            {{getIntestazioneDocumento()}}
-          </div>
-          <div class="intestazione">
+            <div class="intestazione" v-if="data.status == 1">
+              {{getIntestazioneDocumento()}}
+            </div>
+            <div class="intestazione">
             {{getIntestazioneConto()}}
+            </div>
           </div>
-          </div>
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column
-              prop="quantity"
-              :label="$t('bill.quantity')"
-              width="100">
-            </el-table-column>
-            <el-table-column
-              prop="product"
-              :label="$t('bill.product')"
-              width="300">
-              <template #default="scope">
-                <div class="product" :class="getItemStatus(scope.row.status)">{{scope.row.product}}</div>
-                <div class="note">{{scope.row.note}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :label="$t('bill.amount')"
-              width="150">
-              <template #default="scope">
-                <div class="amount">{{scope.row.amount}}</div>
-              </template>
-            </el-table-column>
-          </el-table>
+          
+          <el-tabs class="conti-tab" @tab-click="handleTabClick" v-model="page">
+            <el-tab-pane :label="$t('bill.total')">
+              <el-table :data="tableData" style="width: 100%">
+                <el-table-column
+                  prop="quantity"
+                  :label="$t('bill.quantity')"
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="product"
+                  :label="$t('bill.product')"
+                  width="300">
+                  <template #default="scope">
+                    <div class="product" :class="getItemStatus(scope.row.status)">{{scope.row.product}}</div>
+                    <div class="note">{{scope.row.note}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :label="$t('bill.amount')"
+                  width="150">
+                  <template #default="scope">
+                    <div class="amount">{{scope.row.amount}}</div>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+            <el-tab-pane :label="$t('bill.history')">
+              <order-cart :orderList="data.orderList"></order-cart>
+            </el-tab-pane>
+          </el-tabs>
+
         </div>
         <div class="totale">{{ getTotale }}</div>
       </el-col>
@@ -45,6 +54,7 @@
 </template>
 
 <script>
+import OrderCart from './OrderCart.vue'
 import CustomerDetail from "./CustomerDetail.vue";
 import Conto from '../data/Conto.js';
 import utils from '@/utils.js'
@@ -58,7 +68,7 @@ export default {
       tableData: [],
     };
   },
-  components: { CustomerDetail },
+  components: { CustomerDetail, OrderCart },
   computed: {
     getTotale() {
       return this.$t("bill.total") + ": " + Number(this.data.totale).toFixed(2);
