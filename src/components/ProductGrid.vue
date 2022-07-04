@@ -147,10 +147,21 @@ export default {
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
+  /*grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));*/
   grid-auto-rows: auto;
   grid-gap: 10px;
   padding: 10px;
+}
+@media screen and (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media screen and (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 .card {
   border: 0px solid lightgray;
