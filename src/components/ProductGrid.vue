@@ -153,12 +153,12 @@ export default {
   grid-gap: 10px;
   padding: 10px;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1400px) {
   .grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
