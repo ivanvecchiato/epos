@@ -1,7 +1,13 @@
 <template>
   <div class="floor">
     <div class="areas-toolbar">
+
       <div class="area-buttons">
+        <div class="search">
+           <input class="search-input" :placeholder="$t('generic.search')"
+              v-model="searchInput"
+              @input="inputChange()"/>
+        </div>
         <el-button
           type="info"
           round
@@ -129,10 +135,31 @@ export default {
       areas: [],
       currentArea: {},
       showContoDetail: false,
-      currentConto: {}
+      currentConto: {},
+      searchInput: '',
     };
   },
   methods: {
+    inputChange: function() {
+      var input = this.searchInput;
+      if(input.length==0) {
+         this.results = [];
+         return;
+      }
+      this.results = [];
+      this.resultCount = 0;
+      for(var i=0; i<this.areas.length; i++) {
+         var area = this.areas[i];
+         this.results[i] = [];
+         for(var p in area.places) {
+            var name = "" + area.places[p].name;
+            if((name.toLowerCase()).startsWith(input.toLowerCase())) {
+               this.resultCount++;
+               this.results[i].push(area.places[p])
+            }
+         }
+      }
+    },
     getPlaces: function(area) {
       var count = 0;
       for(var key in area.places) {
@@ -442,5 +469,21 @@ export default {
 }
 .dialog {
   background: red;
+}
+.search {
+  text-align: left;
+  padding: 10px;
+}
+.search-input {
+   border-radius: 30px;
+   width: 150px;
+   height: 35px;
+   border: solid 1px var(--secondary-color);
+   color: var(--secondary-color);
+   font-weight: bold;
+   font-size: 1.2em;
+   background: transparent;
+   padding-left: 10px;
+   padding-right: 10px;
 }
 </style>

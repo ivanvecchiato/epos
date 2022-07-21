@@ -1,26 +1,10 @@
 <template>
    <div>
-      <div>
-         <el-dropdown>
-           <span class="el-dropdown-link">
-            <div class="search">
-               <input class="search-input" :placeholder="$t('generic.search')"
-                  v-model="searchInput"
-                  @input="inputChange()"/>
-            </div>
-           </span>
-           <template #dropdown>
-             <el-dropdown-menu>
-               <el-dropdown-item v-for="result in results"
-                  :key="result.id"
-                  @click="handlePlaceSelection(result)">
-                  <span>{{result.area + "/" + result.place.name}}</span>
-               </el-dropdown-item>
-             </el-dropdown-menu>
-           </template>
-         </el-dropdown>
+      <div class="search">
+         <input class="search-input" :placeholder="$t('generic.search')"
+            v-model="searchInput"
+            @input="inputChange()"/>
       </div>
-      <!--
       <div class="area-selector">
          <div v-for="area, index in areas" :key="area.id">
             <el-badge :value="openBills[index]" class="item" :type="getBadgeType(index)">
@@ -59,7 +43,6 @@
             </ul>
          </div>
       </div>
-      -->
       <div v-if="notFound" class="not-found">
          {{$t('bill.noBills')}}
       </div>
@@ -71,7 +54,7 @@
 import Conto from "@/data/Conto.js";
 import utils from "@/utils.js";
 import Firebase from "../../firebase.js";
-//import { Location, ShoppingCartFull, Clock, Coin } from "@element-plus/icons";
+import { Location, ShoppingCartFull, Clock, Coin } from "@element-plus/icons";
 
 export default {
    name: "PlaceSelector",
@@ -86,7 +69,7 @@ export default {
          openBills: []
       }
    },
-//   components: {Location, ShoppingCartFull, Clock, Coin},
+   components: {Location, ShoppingCartFull, Clock, Coin},
    computed: {
       notFound: function() {
          if(this.searchInput.length == 0) {
@@ -113,15 +96,12 @@ export default {
          this.resultCount = 0;
          for(var i=0; i<this.areas.length; i++) {
             var area = this.areas[i];
+            this.results[i] = [];
             for(var p in area.places) {
                var name = "" + area.places[p].name;
                if((name.toLowerCase()).startsWith(input.toLowerCase())) {
                   this.resultCount++;
-                  var obj = {
-                     area: area.name,
-                     place: area.places[p]
-                  }
-                  this.results.push(obj)
+                  this.results[i].push(area.places[p])
                }
             }
          }
