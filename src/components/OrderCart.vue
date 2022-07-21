@@ -2,7 +2,7 @@
   <div class="cart">
     <span class="summary">{{getNumRows}}&nbsp;{{$t('orders.items')}}</span>
     <div v-for="phase, index in phasesList" :key="index" class="phase-section">
-      <span class="phase-datetime">{{formatDatetime(phase.timestamp)}}</span>
+      <span v-if="phase.timestamp != undefined" class="phase-datetime">{{formatDatetime(phase.timestamp)}}</span>
       <div v-for="item in phase.sublist" :key="item.id" class="cart-item" @click="showItemDetails(item)">
         <span class="item-quantity">{{item.quantity}}</span>
         <span :class="getItemNameClass(item.status)">{{item.name}}</span>
