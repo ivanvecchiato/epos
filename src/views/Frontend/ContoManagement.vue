@@ -175,6 +175,7 @@ import PlaceSelector from "./PlaceSelector.vue";
 import configs from '@/store/configs';
 import counters from '@/store/counters';
 import CartItemDetails from "@/components/CartItemDetails.vue"
+import axios from 'axios'
 
 export default {
   name: "ContoManagement",
@@ -196,7 +197,8 @@ export default {
       placeSelectorVisible: false,
       currentView: 'bill',
       currentItem: {},
-      showModifications: false
+      showModifications: false,
+      serverAddress: '127.0.0.1:8088',
     };
   },
   watch: {
@@ -276,7 +278,10 @@ export default {
     },
     checkout: function () {
       if (this.conto.size() == 0) return;
-
+        this.conto.addPayment(0, "contanti", this.conto.getTotale());
+        console.log(this.conto);
+        this.stampaScontrino();
+/*
       var condition = this.conf.getSettingValue("allowQuickBill");
       if (condition) {
         this.conto.addPayment(0, "contanti", this.conto.getTotale());
@@ -285,6 +290,7 @@ export default {
       } else {
         this.$emit("pagaConto", this.conto);
       }
+      */
     },
     annullaConto: function () {
       this.conto.clear();
@@ -413,11 +419,20 @@ export default {
     stampaScontrinoNonFiscale(callback) {
       if (this.conto.size() == 0) return;
       console.log("stampaScontrinoNonFiscale");
+      const clone = Object.assign({}, this.conto);
+      clone.groupedList = this.groupedList;
+      clone.place = this.currentPlace;
+      clone.headersString = localStorage.getItem("headers");
 
-      var doc = new Document();
-      doc.scontrinoNonFiscale(this.groupedList, this.conto.getTotale(), this.currentPlace);
+      axios.post('http://' + this.serverAddress + '/scontrino', JSON.stringify(clone))
+        .then(function (response) {
+          console.log('***', response.data);
 
-      escposprinter.scontrino(doc, callback);
+          if (callback) callback(response.data);
+        })
+        .catch(function (error) {
+           console.log(error);
+        });
     },
     preconto() {
       if (this.conto.size() == 0) return;
