@@ -7,7 +7,6 @@
 
 <script>
 import Home from './views/Home.vue'
-//const electron = window.require("electron")
 
 export default {
   name: "App",
@@ -15,14 +14,6 @@ export default {
     Home
   },
   mounted() {
-    /*
-    electron.ipcRenderer.on('goToHome', ()=>{
-      this.$router.push('/');
-    });
-    electron.ipcRenderer.on('goToAbout', ()=>{
-      this.$router.push('/about');
-    });
-    */
   },
 };
 </script>
