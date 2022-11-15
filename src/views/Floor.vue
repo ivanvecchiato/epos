@@ -381,6 +381,7 @@ export default {
   bottom: 5px;
   left: 10px;
   min-width: 90px;
+  text-align: left;
   color: var(--primary-color);
   text-transform: lowercase;
   border: solid 1px var(--primary-color);
@@ -394,6 +395,7 @@ export default {
   font-size: 0.9em;
   bottom: 30px;
   left: 10px;
+  text-align: left;
   min-width: 90px;
   color: var(--success-color);
   text-transform: lowercase;
