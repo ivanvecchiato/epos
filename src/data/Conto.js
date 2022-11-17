@@ -3,6 +3,7 @@ import Payment from "./Payment";
 import Table from "./Table";
 import utils from "../utils.js";
 import user from "../store/user.js";
+import repo from '@/db/repo.js'
 
 export default class Conto {
   constructor() {
@@ -364,13 +365,9 @@ export default class Conto {
     this.getTotale();
     this.saveCache();
 
-    Firebase.db.collection('ordini').add(Object.assign({}, partialObj))
-      .then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error) => {
-        console.error("Error adding document: ", error)
-      })
+    repo.setOrder(
+      Object.assign({}, partialObj)
+    )
   }
 
   writeDoc(place) {
