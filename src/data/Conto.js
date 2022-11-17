@@ -347,7 +347,7 @@ export default class Conto {
       })
   }
 
-  update(place) {
+  setOrder(place) {
     var partial = this.setOperatorAndTimestamp();
     var now = new Date();
 

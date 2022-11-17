@@ -401,7 +401,7 @@ export default {
         */
         this.placeSelectorVisible = true;
       } else {
-        this.conto.update(this.currentPlace);
+        this.conto.setOrder(this.currentPlace);
         var t = new Table();
         t.updateConto(this.currentPlace, this.conto);
         this.$emit("contoParked");
