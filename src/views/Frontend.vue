@@ -472,7 +472,7 @@ export default {
 }
 .button-idle {
   /*background-color: var(--lightest-main-color);*/
-  background-color: #ffffff;
+  background-color: var(--light-main-color);
   color: var(--primary-color);
   font-weight: bold;
   font-family: 'Montserrat';
