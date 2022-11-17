@@ -10,11 +10,14 @@
 import Conto from "../../data/Conto.js"
 import Firebase from "../../firebase.js"
 //import utils from "../../utils.js"
+import PouchDB from 'pouchdb'
+import repo from '@/db/repo.js'
 
 export default {
    name: 'Admin',
    data() {
       return {
+         db: null,
          fullscreenLoading: false
       }
    },
@@ -107,7 +110,7 @@ export default {
         var tablesNum = [50, 20, 15, 0];
         for(var j=0; j<3; j++) {
           var roomObj = {
-            id: Number(j+1),
+            _id: "area_" + Number(j+1),
             name: "Area " + (j+1),
             order: Number(j+1),
             color: this.randomColor(),
@@ -118,11 +121,21 @@ export default {
               name: (i+1).toString(),
               seats: 2,
 //              conto: Object.assign({},new Conto)
-              conto: null
+              contoId: ''
             };
             var key = Number(i+1);
             roomObj.places[key] = (obj);
           }
+          repo.addDoc(
+            'park',
+            roomObj,
+            function(response) {
+               console.log('addDoc', response.id);
+            }
+          )
+          /*
+          this.db.put(roomObj);
+          ----
           Firebase.db.collection('park').add(roomObj)
           .then((docRef) => {
             console.log("Document written with ID: ", docRef.id)
@@ -130,9 +143,10 @@ export default {
           .catch((error) => {
             console.error("Error adding document: ", error)
           })
+          */
         }
 
-        // self remote order
+        /* self remote order
          roomObj = {
            id: Number(4),
            name: "Self",
@@ -147,7 +161,15 @@ export default {
          .catch((error) => {
            console.error("Error adding document: ", error)
          })
+         */
       }
+   },
+   mounted() {
+      this.db = new PouchDB('http://localhost:5984/tables');
+      this.db.info().then(function (info) {
+  console.log(info);
+})
+
    },
 }
 </script>

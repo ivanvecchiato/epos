@@ -31,47 +31,11 @@
       <div v-if="getPlaces(currentArea) == 0">
         <img src="@/assets/icons/not_found.png"/>
       </div>
-      <div v-else v-for="t in currentArea.places" :key="t.name" class="table">
-        <div class="inner-table" @click="selectTable(t)">
-          <Popper
-            offsetSkid="100"
-            offsetDistance="-20"
-            :show="t.showMenu">
-              <span :class="getStatusClass(t)" @click.stop="t.showMenu=true">{{t.name}}</span>
-              <template #content>
-                <span class="menu-header">{{$t('bill.place', {description: t.name})}}</span>
-                <el-divider></el-divider>
-                <span class="menu-item" @click="selectTable(t)">
-                  <el-icon :size="24" style="vertical-align: middle;">
-                    <shopping-cart-full />
-                  </el-icon>
-                  {{$t('orders.order')}}</span>
-                <el-divider></el-divider>
-                <span class="menu-item">
-                  <el-icon :size="24" style="vertical-align: middle;">
-                    <calendar />
-                  </el-icon>
-                  {{$t('booking.booking')}}</span>
-                <el-divider></el-divider>
-                <span class="menu-item">
-                  <el-icon :size="24" style="vertical-align: middle;">
-                    <delete />
-                  </el-icon>
-                  {{$t('generic.deletion')}}</span>
-                <el-divider></el-divider>
-                <span class="menu-item" @click.stop="move">
-                  <el-icon :size="24" style="vertical-align: middle;">
-                    <location />
-                  </el-icon>
-                  {{$t('modification.move')}}</span>
-                <el-divider></el-divider>
-                <span class="menu-item" @click.stop="t.showMenu=false">
-                  <el-icon :size="24" style="vertical-align: middle;">
-                    <circle-close />
-                  </el-icon>
-                  {{$t('generic.close')}}</span>
-              </template>
-          </Popper>
+      <div v-else v-for="t in currentArea.places" :key="t.name" class="table" @click="selectTable(t)">
+        <div class="color-indicator" :style="getBgc(t)"/>
+        <div class="inner-table">
+
+          <span class="table-name">{{t.name}}</span>
           <div v-if="tableBusy(t)">
             <div class="table-last-modification">
               <el-icon style="vertical-align: middle;" color="#F9A825" :size="18"><clock/></el-icon>
@@ -120,15 +84,14 @@
 <script>
 import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
-import Popper from "vue3-popper";
-import '../popper-theme.css'
-import { Calendar, Delete, ShoppingCartFull, Location, Clock, CircleClose, Coin, Tickets } from '@element-plus/icons'
+import { ShoppingCartFull, Clock, Coin, Tickets } from '@element-plus/icons'
 import OrderList from "../components/OrderList.vue";
 import utils from "../utils.js";
+import repo from '@/db/repo.js'
 
 export default {
   name: "Floor",
-  components: { Popper, Calendar, Delete, ShoppingCartFull, Location, Clock, OrderList, CircleClose, Coin, Tickets },
+  components: { ShoppingCartFull, Clock, OrderList, Coin, Tickets },
   props: ['order'],
   data() {
     return {
@@ -137,9 +100,13 @@ export default {
       showContoDetail: false,
       currentConto: {},
       searchInput: '',
+      contiAperti: []
     };
   },
   methods: {
+    getBgc: function() {
+      return 'background: rgb(232, 232, 232)';
+    },
     inputChange: function() {
       var input = this.searchInput;
       if(input.length==0) {
@@ -199,18 +166,6 @@ export default {
           })
         }
       })
-    },
-    getStatusClass: function(t) {
-      if(t.conto == null) {
-        return 'table-name-free';
-      } else {
-        if(t.conto.size()>0) {
-          return 'table-name-busy';
-        }
-        else {
-          return 'table-name-free';
-        }
-      }
     },
     setColor: function(color) {
       return "background-color: " + color;
@@ -289,6 +244,18 @@ export default {
         return 'button-active'
       }
     },
+    getConto(id) {
+      var selected = null;
+      var conto = new Conto;
+      for(var i=0; i<this.contiAperti.length; i++) {
+        if(this.contiAperti[i].id == id) {
+          selected = this.contiAperti[i];
+          break;
+        }
+      }
+      conto.fillData(selected);
+      return conto;
+    },
     getParks: function() {
       var self = this;
       Firebase.db
@@ -301,11 +268,8 @@ export default {
             area.docId = doc.id;
             var places = area.places;
             for(var n in places) {
-              if(places[n].conto != null) {
-                var conto = new Conto;
-                conto.fillData(places[n].conto);
-                places[n].conto = conto;
-                places[n].showMenu = false;
+              if(places[n].contoId != '') {
+                places[n].conto = this.getConto(places[n].contoId);
               }
               places[n].key = n;
             }
@@ -317,7 +281,19 @@ export default {
     }
   },
   mounted() {
-    this.getParks();
+    var self = this;
+    repo.getOpenTabs(
+      function(docs) {
+        self.contiAperti = docs;
+        //self.getParks();
+        repo.getParks(
+          function(data) {
+            self.areas = data;
+            self.currentArea = self.areas[0];
+          }
+        );
+      }
+    )
   },
 };
 </script>
@@ -334,7 +310,7 @@ export default {
   text-align: center;
 }
 .table {
-  min-height: 110px;
+  min-height: 120px;
   position: relative;
   top: 1px;
   left: 1px;
@@ -344,74 +320,62 @@ export default {
   padding: 0px;
 }
 .inner-table {
-  min-height: 90px;
+  margin-left: 12px;
+  padding: 10px;
 }
-.table-name-free {
+
+.table-name {
   font-weight: bold;
-  font-size: 2.0em;
+  font-size: 2.4em;
   position: absolute;
-  top:-5px;
-  right: -5px;
+  top:0px;
+  right: 0px;
   border-radius: 8px;
   background: rgb(255, 255, 255);
   width: 50px;
   height: 40px;
   padding: 4px;
   text-align: center;
-  box-shadow: 3px 3px 3px rgb(151, 114, 114, 0.4);
+  color: var(--primary-color);
 }
-.table-name-busy {
-  font-weight: bold;
-  font-size: 2.0em;
-  position: absolute;
-  top:-5px;
-  right: -5px;
-  background: var(--secondary-color);
-  color: white;
-  border-radius: 8px;
-  width: 50px;
-  height: 40px;
-  padding: 4px;
-  text-align: center;
-  box-shadow: 3px 3px 3px rgb(151, 114, 114, 0.4);
-}
+
 .table-order-quantity {
   position: absolute;
   font-size: 0.9em;
   bottom: 5px;
-  left: 10px;
+  left: 14px;
   min-width: 90px;
   text-align: left;
   color: var(--primary-color);
   text-transform: lowercase;
-  border: solid 1px var(--primary-color);
+  border: solid 0px var(--primary-color);
   border-radius: 4px;
-  background: #667acc20;
+  background: #667acc30;
   padding: 1px 4px;
-  font-weight: bold;
+  font-weight: 500;
 }
 .table-order-amount {
   position: absolute;
   font-size: 0.9em;
   bottom: 30px;
-  left: 10px;
+  left: 14px;
   text-align: left;
   min-width: 90px;
   color: var(--success-color);
   text-transform: lowercase;
-  border: solid 1px var(--success-color);
+  border: solid 0px var(--success-color);
   border-radius: 4px;
-  background: #fc6a8220;
+  background: #fc6a8230;
   padding: 1px 4px;
-  font-weight: bold;
+  font-weight: 500;
 }
 .table-last-modification {
   position: absolute;
   font-size: 0.9em;
   top: 5px;
-  left: 10px;
+  left: 14px;
   color: #000;
-  font-weight: bold;
+  font-weight: normal;
 }
 .table-show-details {
   position: absolute;
@@ -487,5 +451,17 @@ export default {
    background: transparent;
    padding-left: 10px;
    padding-right: 10px;
+}
+
+.color-indicator {
+  width: 12px;
+  height: 100%;
+  background: rgb(232, 232, 232);
+  margin-right:10px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 </style>
