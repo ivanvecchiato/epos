@@ -279,7 +279,7 @@ export default {
     testPrintf() {
       printf.init();
       printf.getStatus((resp) => {
-        console.log('testPrintf', resp)
+        //console.log('testPrintf', resp)
         if(resp.result == 'ok') {
           var data = resp.data;
           if(data.Service.ECRStatus[0].mode != 'REG') {
