@@ -7,6 +7,7 @@
 
 <script>
 import Home from './views/Home.vue'
+import SocketioService from './services/socketio.service.js';
 
 export default {
   name: "App",
@@ -14,6 +15,7 @@ export default {
     Home
   },
   mounted() {
+    SocketioService.setupSocketConnection();
   },
 };
 </script>
@@ -22,21 +24,30 @@ export default {
 
 @font-face {
   font-family: "Montserrat";
-  src: local("Montserrat"),   url(./fonts/Montserrat-Regular.ttf) format("truetype");
+  src: url(./fonts/Montserrat-Regular.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
+  font-weight: normal;
 }
 @font-face {
   font-family: "Montserrat";
-  src: local("Montserrat"),   url(./fonts/Montserrat-Black.ttf) format("truetype");
-  font-weight: 900;
-}
-@font-face {
-  font-family: "Montserrat";
-  src: local("Montserrat"),   url(./fonts/Montserrat-Bold.ttf) format("truetype");
+  src: url(./fonts/Montserrat-Bold.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
   font-weight: bold;
 }
 @font-face {
   font-family: "Montserrat";
-  src: local("Montserrat"),   url(./fonts/Montserrat-SemiBold.ttf) format("truetype");
+  src: url(./fonts/Montserrat-Black.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url(./fonts/Montserrat-SemiBold.ttf) format("truetype");
+  font-display: fallback;
+  font-style: normal;
   font-weight: 500;
 }
 
