@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="12">
 
-        <div class="list">
+        <div class="stat-card">
           <el-table :data="tableData" height="400" style="width: 100%">
             <el-table-column prop="progr" :label="$t('docs.document')" width="150">
             </el-table-column>
@@ -25,65 +25,59 @@
           </el-table>
         </div>
 
-        <el-card class="box-card" shadow="hover">
-          <template #header>
-          <div class="stat-card-header">
+        <div class="stat-card">
+          <div class="stat-card-title">
             <span>{{$t('stats.most_popular')}}</span>
           </div>
-          </template>
           <apexchart
             width="500"
             type="bar"
             :options="barchartOptions"
             :series="docsPopularSeries">
           </apexchart>
-        </el-card>
+        </div>
       </el-col>
       <el-col :span="12">
         <el-row>
           <el-col :span="12">
-            <el-card class="box-card" shadow="hover">
+            <div class="stat-card">
               <span class="stats-totale">{{$t('stats.docs')}}</span>
               <span class="stats-totale stats-amount">{{docsStats.docEmessi.numero}}</span>
-            </el-card>
+            </div>
           </el-col>
           <el-col :span="12">
-            <el-card class="box-card" shadow="hover">
+            <div class="stat-card">
               <span class="stats-totale">{{$t('stats.total')}}</span>
               <span class="stats-totale stats-amount">{{formatAmount(docsStats.docEmessi.totale)}}</span>
-            </el-card>
+            </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
 
-            <el-card class="box-card" shadow="hover">
-              <template #header>
-              <div class="stat-card-header">
+            <div class="stat-card">
+              <div class="stat-card-title">
                 <span>{{$t('stats.quantity')}}</span>
               </div>
-              </template>
               <apexchart
                 width="500"
                 type="line"
                 :options="docsChartOptions"
                 :series="docsVendutoSeries">
               </apexchart>
-            </el-card>
+            </div>
 
-            <el-card class="box-card" shadow="hover">
-              <template #header>
-              <div class="stat-card-header">
+            <div class="stat-card">
+              <div class="stat-card-title">
                 <span>{{$t('stats.value')}}</span>
               </div>
-              </template>
               <apexchart
                 width="500"
                 type="line"
                 :options="docsChartOptions"
                 :series="docsIncassatoSeries">
               </apexchart>
-            </el-card>
+            </div>
           </el-col>
         </el-row>
       </el-col>
@@ -168,7 +162,8 @@ export default {
           numero: 0,
           totale: 0
         },
-        collection: {}
+        collection: {},
+        popular: {}
       }
     };
   },
@@ -236,6 +231,12 @@ export default {
           this.docsStats.collection[list[i].name] += list[i].quantity;
         } else {
           this.docsStats.collection[list[i].name] = list[i].quantity;
+        }
+        if(list[i].id in this.docsStats.popular) {
+          this.docsStats.popular[list[i].id].quantity += list[i].quantity;
+        } else {
+          this.docsStats.popular[list[i].id] = list[i];
+          this.docsStats.popular[list[i].id].quantity = 1;
         }
       }
     },

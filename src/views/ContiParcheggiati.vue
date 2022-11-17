@@ -22,7 +22,7 @@
         </el-form-item>
       </el-col>
       <el-col :span="6">
-        <div class="stat-card" shadow="hover">
+        <div class="stat-card">
           <div class="stat-card-title">{{$t('stats.opened_bills')}}</div>
           <div style="position: absolute; left:20px; bottom: 15px">
             <el-icon :size="20"><Document /></el-icon>
@@ -35,7 +35,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="stat-card" shadow="hover">
+        <div class="stat-card">
           <div class="stat-card-title">{{$t('orders.orders')}}</div>
           <div style="position: absolute; left:20px; bottom: 15px">
             <el-icon :size="20"><Document /></el-icon>
@@ -94,30 +94,6 @@
         </el-table>
         </div>
       </el-col>
-    </el-row>
-
-    <el-row>
-
-      <el-col :span="12">
-
-      <div class="stat-card" shadow="hover">
-        <div class="stat-card-header">
-          <span>{{$t('stats.most_popular')}}</span>
-        </div>
-        <ul class="simple-list">
-          <li v-for="item in stats.popular" :key="item.id">
-            <div class="stat-line">
-              <div class="thumbnail-bgnd">
-                <img :src="item.properties.imgUrl" class="thumbnail"/>
-              </div>
-              <span class="popular-name">{{item.name}}</span>
-              <span class="popular-category">{{item.category.name}}</span>
-              <span class="popular-quantity">{{item.quantity}}</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-
       <div>
         <el-dialog
           :title="$t('bill.details')"
@@ -128,39 +104,58 @@
           <bill-detail :data="currentBill" :key="randKey" />
         </el-dialog>
       </div>
+    </el-row>
+
+    <el-row>
+
+      <el-col :span="12">
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span>{{$t('stats.most_popular')}}</span>
+          </div>
+          <ul class="simple-list">
+            <li v-for="item in stats.popular" :key="item.id">
+              <div class="stat-line">
+                <div class="thumbnail-bgnd">
+                  <img :src="item.properties.imgUrl" class="thumbnail"/>
+                </div>
+                <span class="popular-name">{{item.name}}</span>
+                <span class="popular-category">{{item.category.name}}</span>
+                <span class="popular-quantity">{{item.quantity}}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
 
       </el-col>
       <el-col :span="12">
         <el-row>
           <el-col :span="24">
 
-            <el-card class="box-card" shadow="hover">
-              <template #header>
+            <div class="stat-card">
               <div class="stat-card-header">
                 <span>{{$t('stats.quantity')}}</span>
               </div>
-              </template>
               <apexchart
                 width="500"
                 type="line"
                 :options="chartOptions"
                 :series="vendutoSeries">
               </apexchart>
-            </el-card>
+            </div>
 
-            <el-card class="box-card" shadow="hover">
-              <template #header>
+            <div class="stat-card">
               <div class="stat-card-header">
                 <span>{{$t('stats.value')}}</span>
               </div>
-              </template>
               <apexchart
                 width="500"
                 type="line"
                 :options="chartOptions"
                 :series="incassatoSeries">
               </apexchart>
-            </el-card>
+            </div>
           </el-col>
         </el-row>        
       </el-col>
@@ -451,6 +446,8 @@ export default {
   color: var(--warning-color);
   font-weight: bold;
   font-size: 1.0em;
+  display: inline-block;
+  min-width: 70px;
 }
 .place2 {
   color: var(--success-color);
@@ -458,7 +455,6 @@ export default {
   font-size: 1.0em;  border: solid 1px var(--success-color);
   border-radius: 4px;
   padding: 0px 8px 0px 8px;
-
 }
 .stat-line {
   margin: 10px;

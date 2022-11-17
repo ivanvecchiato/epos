@@ -74,6 +74,9 @@ export default {
   background: white;
   position: relative;
 }
+.stat-card:hover {
+  box-shadow: 3px 3px 16px 0 rgba(59, 59, 59, 0.1);
+}
 .stat-card-header {
   font-weight: bold;
   font-size: 1.5em;
