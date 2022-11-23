@@ -262,6 +262,7 @@
   "modification": {
     "new_action": "Nuova operazione ",
     "move": "Spostamento ",
+    "delete": "Cancella",
     "move_explain": "Selezionare la nuova posizione del conto",
     "modification": "Modifica ",
     "length_modification": "Modifica durata ",
