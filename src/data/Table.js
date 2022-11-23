@@ -1,4 +1,3 @@
-import Conto from "./Conto.js";
 import Firebase from "../firebase.js";
 import repo from "../db/repo.js";
 
@@ -17,11 +16,10 @@ export default class Table {
   clearConto(place) {
     console.log('updateConto', place)
 
-    // TODO prelevare il doc corrispondente a contoId
     var docRef = Firebase.db.collection('park').doc(place.area.docId);
-    var key = "places." + place.id + ".conto";
+    var key = "places." + place.id + ".contoId";
     docRef.update({
-        [key]: Object.assign({}, new Conto)
+        [key]: ''
       })
     .then(() => {
       console.log("Document successfully written!");

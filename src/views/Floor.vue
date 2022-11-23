@@ -1,12 +1,14 @@
 <template>
   <div class="floor">
     <div class="areas-toolbar">
-
       <div class="area-buttons">
         <div class="search">
-           <input class="search-input" :placeholder="$t('generic.search')"
-              v-model="searchInput"
-              @input="inputChange()"/>
+          <input
+            class="search-input"
+            :placeholder="$t('generic.search')"
+            v-model="searchInput"
+            @input="inputChange()"
+          />
         </div>
         <el-button
           type="info"
@@ -14,69 +16,80 @@
           v-for="area in areas"
           :key="area.id"
           :class="getButtonClass(area.id)"
-          @click="selectArea(area)">
+          @click="selectArea(area)"
+        >
           {{ area.name }}
         </el-button>
 
-        <el-button
-          round
-          class="button-new"
-          @click="addArea">
-          {{$t('floor.new_area')}}
+        <el-button round class="button-new" @click="addArea">
+          {{ $t("floor.new_area") }}
         </el-button>
       </div>
       <div class="area-indicator" :style="setColor(currentArea.color)"></div>
     </div>
     <div class="grid">
       <div v-if="getPlaces(currentArea) == 0">
-        <img src="@/assets/icons/not_found.png"/>
+        <img src="@/assets/icons/not_found.png" />
       </div>
-      <div v-else v-for="t in currentArea.places" :key="t.name" class="table" @click="selectTable(t)">
-        <div class="color-indicator" :style="getBgc(t)"/>
-        <div class="inner-table">
-
-          <span class="table-name">{{t.name}}</span>
+      <div
+        v-else
+        v-for="t in currentArea.places"
+        :key="t.name"
+        class="table"
+        @click="selectTable(t)"
+      >
+        <div class="color-indicator" :style="getBgc(t)" />
+        <span class="table-name">{{ t.name }}</span>
+        <div class="moving-warning" v-if="isMoving(t)">
+          <div>
+            <Right style="width: 2em; height: 2em" />
+          </div>
+          <div>
+            {{ $t("modification.move_explain") }}
+          </div>
+          <button class="danger" @click.stop="undoMove">
+            {{ $t("generic.cancel") }}
+          </button>
+        </div>
+        <div v-else class="inner-table">
           <div v-if="tableBusy(t)">
             <div class="table-last-modification">
-              <el-icon style="vertical-align: middle;" color="#F9A825" :size="18"><clock/></el-icon>
-              {{getLastMod(t)}}
+              <el-icon style="vertical-align: middle" color="#F9A825" :size="18"
+                ><clock
+              /></el-icon>
+              {{ getLastMod(t) }}
             </div>
             <div class="table-order-amount">
-              <el-icon style="vertical-align: middle;" color="#FB8C00" :size="18">
-                <coin/>
+              <el-icon style="vertical-align: middle" color="#FB8C00" :size="18">
+                <coin />
               </el-icon>
-              {{getAmount(t)}}
+              {{ getAmount(t) }}
             </div>
             <div class="table-order-quantity">
-              <el-icon style="vertical-align: middle;" color="#667BCC" :size="18">
-                <shopping-cart-full/>
+              <el-icon style="vertical-align: middle" color="#667BCC" :size="18">
+                <shopping-cart-full />
               </el-icon>
-              {{getQuantity(t)}} {{$t('product.products')}}
+              {{ getQuantity(t) }} {{ $t("product.products") }}
             </div>
             <div class="table-show-details">
               <el-icon @click.stop="showOrder(t)" color="#667BCC" :size="24">
-                <tickets/>
+                <tickets />
               </el-icon>
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
     <el-dialog
-      :title="currentConto.place"
       v-model="showContoDetail"
       :center="false"
       custom-class="dialog"
       width="40%"
-      destroy-on-close>
-      <order-list
-        :order="currentConto"
-        @onChange="onChange"
-        @onDelete="onDelete">
+      destroy-on-close
+    >
+      <order-list :conto="currentConto" @moveConto="moveConto" @onDelete="onDelete">
       </order-list>
-      
     </el-dialog>
   </div>
 </template>
@@ -84,171 +97,235 @@
 <script>
 import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
-import { ShoppingCartFull, Clock, Coin, Tickets } from '@element-plus/icons'
+import { ShoppingCartFull, Clock, Coin, Tickets, Right } from "@element-plus/icons";
 import OrderList from "../components/OrderList.vue";
 import utils from "../utils.js";
-import repo from '@/db/repo.js'
+import repo from "@/db/repo.js";
 
 export default {
   name: "Floor",
-  components: { ShoppingCartFull, Clock, OrderList, Coin, Tickets },
-  props: ['order'],
+  components: { ShoppingCartFull, Clock, OrderList, Coin, Tickets, Right },
+  props: ["order"],
   data() {
     return {
       areas: [],
       currentArea: {},
       showContoDetail: false,
       currentConto: {},
-      searchInput: '',
-      contiAperti: []
+      searchInput: "",
+      contiAperti: [],
+      movingTab: null,
     };
   },
   methods: {
-    getBgc: function() {
-      return 'background: rgb(232, 232, 232)';
+    undoMove: function () {
+      this.movingTab = null;
     },
-    inputChange: function() {
+    moveConto: function () {
+      this.showContoDetail = false;
+      this.move(this.currentConto);
+    },
+    getBgc: function () {
+      return "background: rgb(232, 232, 232)";
+    },
+    isMoving: function (t) {
+      if (this.movingTab == null) return false;
+
+      if (
+        this.movingTab.place.areaId == this.currentArea.docId &&
+        this.movingTab.place.placeId == t.key
+      ) {
+        return true;
+      } else return false;
+    },
+    inputChange: function () {
       var input = this.searchInput;
-      if(input.length==0) {
-         this.results = [];
-         return;
+      if (input.length == 0) {
+        this.results = [];
+        return;
       }
       this.results = [];
       this.resultCount = 0;
-      for(var i=0; i<this.areas.length; i++) {
-         var area = this.areas[i];
-         this.results[i] = [];
-         for(var p in area.places) {
-            var name = "" + area.places[p].name;
-            if((name.toLowerCase()).startsWith(input.toLowerCase())) {
-               this.resultCount++;
-               this.results[i].push(area.places[p])
-            }
-         }
+      for (var i = 0; i < this.areas.length; i++) {
+        var area = this.areas[i];
+        this.results[i] = [];
+        for (var p in area.places) {
+          var name = "" + area.places[p].name;
+          if (name.toLowerCase().startsWith(input.toLowerCase())) {
+            this.resultCount++;
+            this.results[i].push(area.places[p]);
+          }
+        }
       }
     },
-    getPlaces: function(area) {
+    getPlaces: function (area) {
       var count = 0;
-      for(var key in area.places) {
-      if(Object.prototype.hasOwnProperty.call(area.places, key))
-        count++;
+      for (var key in area.places) {
+        if (Object.prototype.hasOwnProperty.call(area.places, key)) count++;
       }
       return count;
     },
-    showOrder: function(t) {
+    showOrder: function (t) {
       this.showContoDetail = true;
       this.currentConto = t.conto;
     },
-    tableBusy: function(t) {
-      if(t.conto == null) return false;
-      else return t.conto.size()>0;
+    tableBusy: function (t) {
+      if (t.conto == null) return false;
+      else return t.conto.size() > 0;
     },
-    move: function() {
-      this.$message({
-          message: this.$t('modification.move_explain'),
-          type: 'error',
-          showClose: false,
-          duration: 0
+    move: function (tab) {
+      this.movingTab = tab;
+    },
+    moveTab: function (tab, destination) {
+      console.log("moveTab", tab, destination);
+      this.movingTab = null;
+
+      var source = {
+        areaId: tab.place.areaId,
+        areaName: tab.place.areaName,
+        placeId: tab.place.placeId,
+      };
+
+      var docRef = Firebase.db.collection("park").doc(destination.areaId);
+      var key = "places." + destination.placeId + ".contoId";
+      docRef
+        .update({
+          [key]: this.currentConto.id,
         })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+
+      docRef = Firebase.db.collection("park").doc(source.areaId);
+      key = "places." + source.placeId + ".contoId";
+      docRef
+        .update({
+          [key]: "",
+        })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+
+      var ref = Firebase.db.collection("conti").doc(tab.id);
+      ref.update({
+        place: destination,
+      });
     },
-    selectTable: function(table) {
-      this.$router.push({
-        name: 'frontend',
-        params: {
-          place: JSON.stringify({
-            id: table.key,
-            name: table.name,
-            area: {
-              docId: this.currentArea.docId,
-              id: this.currentArea.id,
-              name: this.currentArea.name
-            }
-          })
-        }
-      })
+    selectTable: function (table) {
+      var destination = {
+        areaId: this.currentArea.docId,
+        areaName: this.currentArea.name,
+        placeId: table.name,
+      };
+      if (this.movingTab != null) {
+        this.moveTab(this.movingTab, destination);
+      } else {
+        this.$router.push({
+          name: "frontend",
+          params: {
+            place: JSON.stringify({
+              id: table.key,
+              name: table.name,
+              area: {
+                docId: this.currentArea.docId,
+                //id: this.currentArea.id,
+                name: this.currentArea.name,
+              },
+            }),
+          },
+        });
+      }
     },
-    setColor: function(color) {
+    setColor: function (color) {
       return "background-color: " + color;
     },
-    getLastMod: function(t) {
-      if(t.conto.size() > 0) {
+    getLastMod: function (t) {
+      if (t.conto.size() > 0) {
         var now = new Date();
         var h = 0;
         var d = 0;
-        var min = Math.floor((now.getTime()/1000 - t.conto.lastModified.toDate().getTime()/1000)/60);
-        h = Math.floor(min/60);
-        if(h > 0) {
+        var min = Math.floor(
+          (now.getTime() / 1000 - t.conto.lastModified.toDate().getTime() / 1000) / 60
+        );
+        h = Math.floor(min / 60);
+        if (h > 0) {
           min = min % 60;
         }
-        d = Math.floor(h/24);
-        if(d > 0) {
+        d = Math.floor(h / 24);
+        if (d > 0) {
           h = h % 24;
         }
-        var time = '';
-        if(d>0) {
+        var time = "";
+        if (d > 0) {
           time = d + " day\u2022";
         }
-        if(h>0) {
+        if (h > 0) {
           time += h + " h\u2022";
         }
         time += min + " min";
         return time;
       } else {
-        return '';
+        return "";
       }
     },
-    getQuantity: function(t) {
+    getQuantity: function (t) {
       return t.conto.getQuantity();
     },
-    getAmount: function(t) {
+    getAmount: function (t) {
       return utils.formatPriceWithCurrency(t.conto.getTotaleNetto());
     },
-    selectArea: function(c) {
+    selectArea: function (c) {
       this.currentArea = c;
     },
-    getNextAreaId: function() {
-      var max=0;
-      for(var i=0; i<this.areas.length; i++) {
-        if(this.areas[i].id > max) {
+    getNextAreaId: function () {
+      var max = 0;
+      for (var i = 0; i < this.areas.length; i++) {
+        if (this.areas[i].id > max) {
           max = this.areas[i].id;
         }
       }
-      return Number(max+1);
+      return Number(max + 1);
     },
-    addArea: function() {
-      this.$prompt('', this.$t('floor.new_area'), {
-          confirmButtonText: this.$t('generic.ok'),
-          cancelButtonText: this.$t('generic.cancel')
-        })
+    addArea: function () {
+      this.$prompt("", this.$t("floor.new_area"), {
+        confirmButtonText: this.$t("generic.ok"),
+        cancelButtonText: this.$t("generic.cancel"),
+      })
         .then(({ value }) => {
-          Firebase.db.collection('park')
+          Firebase.db
+            .collection("park")
             .add({
               id: this.getNextAreaId(),
               name: value,
-              places: {}
+              places: {},
             })
-            .then(function(docRef) {
+            .then(function (docRef) {
               console.log("Document written with ID: ", docRef.id);
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.error("Error adding document: ", error);
             });
         })
-        .catch(() => {
-        })
+        .catch(() => {});
     },
-    getButtonClass: function(areaId) {
-      if(this.currentArea == null || areaId != this.currentArea.id) {
-        return 'button-idle';
+    getButtonClass: function (areaId) {
+      if (this.currentArea == null || areaId != this.currentArea.id) {
+        return "button-idle";
       } else {
-        return 'button-active'
+        return "button-active";
       }
     },
     getConto(id) {
       var selected = null;
-      var conto = new Conto;
-      for(var i=0; i<this.contiAperti.length; i++) {
-        if(this.contiAperti[i].id == id) {
+      var conto = new Conto();
+      for (var i = 0; i < this.contiAperti.length; i++) {
+        if (this.contiAperti[i].id == id) {
           selected = this.contiAperti[i];
           break;
         }
@@ -256,7 +333,7 @@ export default {
       conto.fillData(selected);
       return conto;
     },
-    getParks: function() {
+    getParks: function () {
       var self = this;
       Firebase.db
         .collection("park")
@@ -267,8 +344,8 @@ export default {
             var area = doc.data();
             area.docId = doc.id;
             var places = area.places;
-            for(var n in places) {
-              if(places[n].contoId != '') {
+            for (var n in places) {
+              if (places[n].contoId != "") {
                 places[n].conto = this.getConto(places[n].contoId);
               }
               places[n].key = n;
@@ -276,24 +353,20 @@ export default {
             self.areas.push(area);
           });
           self.currentArea = self.areas[0];
-          console.log(self.currentArea.places)
+          console.log(self.currentArea.places);
         });
-    }
+    },
   },
   mounted() {
     var self = this;
-    repo.getOpenTabs(
-      function(docs) {
-        self.contiAperti = docs;
-        //self.getParks();
-        repo.getParks(
-          function(data) {
-            self.areas = data;
-            self.currentArea = self.areas[0];
-          }
-        );
-      }
-    )
+    repo.getOpenTabs(function (docs) {
+      self.contiAperti = docs;
+      //self.getParks();
+      repo.getParks(function (data) {
+        self.areas = data;
+        self.currentArea = self.areas[0];
+      });
+    });
   },
 };
 </script>
@@ -328,7 +401,7 @@ export default {
   font-weight: bold;
   font-size: 2.4em;
   position: absolute;
-  top:0px;
+  top: 0px;
   right: 0px;
   border-radius: 8px;
   background: rgb(255, 255, 255);
@@ -336,7 +409,7 @@ export default {
   height: 40px;
   padding: 4px;
   text-align: center;
-  color: var(--primary-color);
+  color: var(--info2-color);
 }
 
 .table-order-quantity {
@@ -441,27 +514,34 @@ export default {
   padding: 10px;
 }
 .search-input {
-   border-radius: 30px;
-   width: 150px;
-   height: 35px;
-   border: solid 1px var(--secondary-color);
-   color: var(--secondary-color);
-   font-weight: bold;
-   font-size: 1.2em;
-   background: transparent;
-   padding-left: 10px;
-   padding-right: 10px;
+  border-radius: 30px;
+  width: 150px;
+  height: 35px;
+  border: solid 1px var(--secondary-color);
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 1.2em;
+  background: transparent;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .color-indicator {
   width: 12px;
   height: 100%;
   background: rgb(232, 232, 232);
-  margin-right:10px;
+  margin-right: 10px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   position: absolute;
   top: 0px;
   left: 0px;
+}
+.moving-warning {
+  position: absolute;
+  text-align: left;
+  bottom: 0px;
+  margin-left: 12px;
+  padding: 10px;
 }
 </style>

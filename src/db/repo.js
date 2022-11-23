@@ -109,7 +109,9 @@ var repo = {
           break;
         }
       }
-      conto.fillData(selected);
+      if(selected != null) {
+         conto.fillData(selected);         
+      }
       return conto;
    },
 
@@ -148,24 +150,25 @@ var repo = {
         .onSnapshot((snapshotChange) => {
           var docs = [];
 
-          if(snapshotChange.size == 0) {
+          var size = snapshotChange.size;
+          if(size == 0) {
             if(callback != undefined) {
                callback(docs)
-             }   
+             }
           } else {
             var count = 0;
             snapshotChange.forEach((doc) => {
                var record = doc.data();
                record.id = doc.id;
                docs.push(record);
-               count++;
-               if(count == snapshotChange.size -1) {
+               if(count == size -1) {
                   if(callback != undefined) {
                      callback(docs)
                   }
                   this.contiAperti = docs;
                }
-             });   
+               count++;
+             });
           }
         });
     }

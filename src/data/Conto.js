@@ -31,6 +31,7 @@ export default class Conto {
     this.chiusuraFiscale = 0;
     this.source = 0; //0=frontend, 1000 = takeaway, 2000 = ecommerce, {obj}=tavolo
     this.customer = null; // class Customer TBD
+    this.place = null;
   }
 
   getTotale() {
