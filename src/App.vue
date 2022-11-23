@@ -191,4 +191,22 @@ input {
   text-align: left;
 }
 
+button {
+  background:none;
+  outline: none;
+  border:none;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  min-height: 40px;
+}
+
+button.action {
+  color: var(--secondary-color);
+}
+
+button.danger {
+  color: var(--danger-color);
+}
+
 </style>
