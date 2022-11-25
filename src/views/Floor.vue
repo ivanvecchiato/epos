@@ -88,7 +88,7 @@
       width="40%"
       destroy-on-close
     >
-      <order-list :conto="currentConto" @moveConto="moveConto" @onDelete="onDelete">
+      <order-list :conto="currentConto" @moveConto="moveConto" @deleteConto="deleteConto">
       </order-list>
     </el-dialog>
   </div>
@@ -124,6 +124,10 @@ export default {
     moveConto: function () {
       this.showContoDetail = false;
       this.move(this.currentConto);
+    },
+    deleteConto: function() {
+      this.showContoDetail = false;
+      this.deleteTab(this.currentConto);
     },
     getBgc: function () {
       return "background: rgb(232, 232, 232)";
@@ -175,6 +179,16 @@ export default {
     },
     move: function (tab) {
       this.movingTab = tab;
+    },
+    deleteTab: function(tab) {
+      console.log("deleteTab", tab);
+      repo.deleteConto(
+        tab.id,
+        tab.place,
+        function() {
+          console.log("Tab Deleted")
+        }
+      );
     },
     moveTab: function (tab, destination) {
       console.log("moveTab", tab, destination);

@@ -127,6 +127,7 @@ var repo = {
       Firebase.db
          .collection("conti")
          .where("chiusuraFiscale", "==", 0)
+         .where("status", ">=", 0)
          .onSnapshot((snapshotChange) => {
             var docs = [];
 
@@ -211,6 +212,36 @@ var repo = {
       .catch((error) => {
           console.log("Error getting documents: ", error);
       });
+   },
+
+   deleteConto(contoId, place, callback) {
+      console.log(contoId, place);
+
+      Firebase.db.collection('conti').doc(contoId).update(
+         {
+            status: -100
+         }
+      ).then(() => {
+            console.log("Document updated");
+
+            // rimozione del riferimento al conto
+            var ref = Firebase.db.collection('park').doc(place.areaDocId);
+            var key = "places." + place.placeId + ".contoId";
+            ref.update({
+               [key]: ''
+            }).then(() => {
+               console.log("Document successfully written!");
+            }).catch((error) => {
+               console.error("Error writing document: ", error);
+            });
+            
+            if (callback != undefined) {
+               callback()
+            }
+         })
+         .catch((error) => {
+            console.error("Error updating document: ", error)
+         })
    }
 
 }

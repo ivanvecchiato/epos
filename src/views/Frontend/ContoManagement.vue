@@ -458,6 +458,7 @@ export default {
       };
     },
     reassignPark: function () {
+      var size = this.conto.size();
       if (this.conto.hasUnsavedChanges()) {
         this.$confirm(
           this.$t("bill.ignore-changes"),
@@ -470,12 +471,12 @@ export default {
         )
           .then(() => {
             this.conto.clear();
-            this.$emit("reassignedConto");
+            this.$emit("reassignedConto", size);
           })
           .catch(() => {});
       } else {
         this.conto.clear();
-        this.$emit("reassignedConto");
+        this.$emit("reassignedConto", size);
       }
     },
     loadConto: function (place) {

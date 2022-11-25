@@ -43,7 +43,7 @@
         <Guide style="width: 1em; height: 1em; margin-right: 2px" />
         {{ $t("modification.move") }}
       </button>
-      <button class="danger">
+      <button class="danger" @click="$emit('deleteConto')">
         <Delete style="width: 1em; height: 1em; margin-right: 2px" />
         {{ $t("modification.delete") }}
       </button>

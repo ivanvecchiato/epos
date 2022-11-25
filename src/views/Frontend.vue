@@ -201,13 +201,15 @@ export default {
         message: msg,
       })
     },
-    reassignedConto: function() {
+    reassignedConto: function(size) {
       this.currentPlace = null;
-      var msg = "Conto riassegnato";//this.$t('bill.reassigned');
-      this.$message({
-        type: 'success',
-        message: msg,
-      })
+      if(size > 0) {
+        var msg = this.$t('bill.reassigned');
+        this.$message({
+          type: 'success',
+          message: msg,
+        })        
+      }
     },
     reassignPark: function() {
       this.$bus.trigger('reassignPark');
