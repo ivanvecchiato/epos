@@ -1,13 +1,12 @@
 <template>
    <div>
       <el-button @click="generate">genera</el-button>
-      <el-button @click="resetOrders" v-loading.fullscreen.lock="fullscreenLoading">reset conti</el-button>
+      <el-button @click="resetConti" v-loading.fullscreen.lock="fullscreenLoading">reset conti</el-button>
       <el-button @click="resetStats" v-loading.fullscreen.lock="fullscreenLoading">reset dati</el-button>
    </div>
 </template>
 
 <script>
-import Conto from "../../data/Conto.js"
 import Firebase from "../../firebase.js"
 //import utils from "../../utils.js"
 import PouchDB from 'pouchdb'
@@ -22,39 +21,16 @@ export default {
       }
    },
    methods: {
-      resetOrders: function() {
+      resetConti: function() {
+         var self = this;
          this.fullscreenLoading = true;
 
-         Firebase.db.collection("park")
-         .get()
-         .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-               var docId = doc.id;
-               var floor = doc.data().places;
-               for(var key in floor) {
-                  if(floor[key].conto != null && floor[key].conto != {}) {
-                     if(floor[key].conto.orderList.length > 0) {
-                        var docRef = Firebase.db.collection('park').doc(docId);
-                        var place = "places." + key + ".conto";
-                        docRef.update({
-                           [place]: Object.assign({}, new Conto)
-                        })
-                        .then(() => {
-                          console.log("Document successfully written!");
-                        })
-                        .catch((error) => {
-                          console.error("Error writing document: ", error);
-                        });
-                     }
-                  }
-               }
-               this.resetPendingOrders();
-            });
-            this.fullscreenLoading = false;
-         })
-         .catch((error) => {
-             console.log("Error getting documents: ", error);
-         });
+         repo.resetConti(
+            function() {
+               repo.resetParkReferences();
+               self.fullscreenLoading = false;
+            }
+         );
       },
       resetPendingOrders: function() {
          this.fullscreenLoading = true;

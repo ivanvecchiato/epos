@@ -15,9 +15,9 @@
         </el-col>
         <el-col :span="8" class="text-align: right">
           <div v-if="currentPlace != null" class="title-2 info-conto">
-            <span>{{currentPlace.area.name}}</span>            
+            <span>{{currentPlace.areaName}}</span>            
             -
-            <span>{{$t('bill.place', {description: currentPlace.name})}}</span>
+            <span>{{$t('bill.place', {description: currentPlace.placeName})}}</span>
             &nbsp;
             <el-icon :size="24" color="#000" @click="reassignPark">
               <circle-close />

@@ -479,16 +479,16 @@ export default {
       }
     },
     loadConto: function (place) {
-      var docRef = Firebase.db.collection("park").doc(place.area.docId);
+      if(place.contoId == '') return;
+      
+      var docRef = Firebase.db.collection("conti").doc(place.contoId);
       docRef
         .get()
         .then((doc) => {
           if (doc.exists) {
-            if (doc.data().places[place.id].conto != null) {
-              if (doc.data().places[place.id].conto.orderList.length > 0) {
-                this.conto.fillData(doc.data().places[place.id].conto);
+              if (doc.data().orderList.length > 0) {
+                this.conto.fillData(doc.data());
                 this.billLoaded = true;
-              }
             }
           } else {
             console.log("No such document!");

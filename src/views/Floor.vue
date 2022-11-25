@@ -132,7 +132,7 @@ export default {
       if (this.movingTab == null) return false;
 
       if (
-        this.movingTab.place.areaId == this.currentArea.docId &&
+        this.movingTab.place.areaDocId == this.currentArea.docId &&
         this.movingTab.place.placeId == t.key
       ) {
         return true;
@@ -181,7 +181,7 @@ export default {
       this.movingTab = null;
 
       var source = {
-        areaId: tab.place.areaId,
+        areaId: tab.place.areaDocId,
         areaName: tab.place.areaName,
         placeId: tab.place.placeId,
       };
@@ -230,13 +230,11 @@ export default {
           name: "frontend",
           params: {
             place: JSON.stringify({
-              id: table.key,
-              name: table.name,
-              area: {
-                docId: this.currentArea.docId,
-                //id: this.currentArea.id,
-                name: this.currentArea.name,
-              },
+              placeId: table.key,
+              placeName: table.name,
+              areaDocId: this.currentArea.docId,
+              areaName: this.currentArea.name,
+              contoId: table.contoId
             }),
           },
         });
