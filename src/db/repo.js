@@ -42,34 +42,14 @@ var repo = {
          })
    },
 
-   getContoID(place, callback) {
-      var docRef = Firebase.db.collection("park").doc(place.area.docId);
-      var key = "places." + place.id + ".contoId"
-
-      docRef.get().then((doc) => {
-         if (doc.exists) {
-            console.log("getContoId:", doc.data()[key]);
-
-            if (callback != undefined) {
-               callback(doc.data()[key])
-            }
-         } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-         }
-      }).catch((error) => {
-         console.log("Error getting document:", error);
-      });
-   },
-
    createConto(place, obj, callback) {
       Firebase.db.collection('conti').add(obj)
          .then((docRef) => {
             console.log("Document written with ID: ", docRef.id);
 
             // update del park con il riferimento del conto
-            var ref = Firebase.db.collection('park').doc(place.area.docId);
-            var key = "places." + place.id + ".contoId";
+            var ref = Firebase.db.collection('park').doc(place.areaDocId);
+            var key = "places." + place.placeId + ".contoId";
             ref.update({
                [key]: docRef.id
             }).then(() => {
@@ -103,75 +83,136 @@ var repo = {
    getConto(id) {
       var selected = null;
       var conto = new Conto;
-      for(var i=0; i<this.contiAperti.length; i++) {
-        if(this.contiAperti[i].id == id) {
-          selected = this.contiAperti[i];
-          break;
-        }
+      for (var i = 0; i < this.contiAperti.length; i++) {
+         if (this.contiAperti[i].id == id) {
+            selected = this.contiAperti[i];
+            break;
+         }
       }
-      if(selected != null) {
-         conto.fillData(selected);         
+      if (selected != null) {
+         conto.fillData(selected);
       }
       return conto;
    },
 
    getParks(callback) {
       Firebase.db
-        .collection("park")
-        .orderBy("order")
-        .onSnapshot((snapshotChange) => {
-          var areas = [];
-          snapshotChange.forEach((doc) => {
-            var area = doc.data();
-            area.docId = doc.id;
-            var places = area.places;
-            for(var n in places) {
-              if(places[n].contoId != '') {
-               places[n].conto = this.getConto(places[n].contoId);
-               places[n].showMenu = false;
-              }
-              places[n].key = n;
-            }
-            areas.push(area);
-          });
-          var currentArea = areas[0];
-          console.log(currentArea.places);
-
-          if(callback != undefined) {
-            callback(areas);
-          }
-        });
-    },
-
-    getOpenTabs(callback) {
-      Firebase.db
-        .collection("conti")
-        .where("chiusuraFiscale", "==", 0)
-        .onSnapshot((snapshotChange) => {
-          var docs = [];
-
-          var size = snapshotChange.size;
-          if(size == 0) {
-            if(callback != undefined) {
-               callback(docs)
-             }
-          } else {
-            var count = 0;
+         .collection("park")
+         .orderBy("order")
+         .onSnapshot((snapshotChange) => {
+            var areas = [];
             snapshotChange.forEach((doc) => {
-               var record = doc.data();
-               record.id = doc.id;
-               docs.push(record);
-               if(count == size -1) {
-                  if(callback != undefined) {
-                     callback(docs)
+               var area = doc.data();
+               area.docId = doc.id;
+               var places = area.places;
+               for (var n in places) {
+                  if (places[n].contoId != '') {
+                     places[n].conto = this.getConto(places[n].contoId);
+                     places[n].showMenu = false;
                   }
-                  this.contiAperti = docs;
+                  places[n].key = n;
                }
-               count++;
-             });
-          }
-        });
-    }
+               areas.push(area);
+            });
+            var currentArea = areas[0];
+            console.log(currentArea.places);
+
+            if (callback != undefined) {
+               callback(areas);
+            }
+         });
+   },
+
+   getOpenTabs(callback) {
+      Firebase.db
+         .collection("conti")
+         .where("chiusuraFiscale", "==", 0)
+         .onSnapshot((snapshotChange) => {
+            var docs = [];
+
+            var size = snapshotChange.size;
+            if (size == 0) {
+               if (callback != undefined) {
+                  callback(docs)
+               }
+            } else {
+               var count = 0;
+               snapshotChange.forEach((doc) => {
+                  var record = doc.data();
+                  record.id = doc.id;
+                  docs.push(record);
+                  if (count == size - 1) {
+                     if (callback != undefined) {
+                        callback(docs)
+                     }
+                     this.contiAperti = docs;
+                  }
+                  count++;
+               });
+            }
+         });
+   },
+
+   resetConti(callback) {
+      Firebase.db.collection("conti")
+         .get()
+         .then((querySnapshot) => {
+            var size = querySnapshot.size;
+            if (size == 0) {
+               if (callback != undefined) {
+                  callback()
+               }
+            } else {
+               var count = 0;
+               querySnapshot.forEach((doc) => {
+                  var docId = doc.id;
+                  Firebase.db.collection('conti')
+                     .doc(docId)
+                     .delete()
+                     .then()
+                     .catch();
+                  if (count == size - 1) {
+                     if (callback != undefined) {
+                        callback()
+                     }
+                  }
+                  count++;
+               });
+            }
+         })
+         .catch((error) => {
+            console.log("Error getting documents: ", error);
+         });
+   },
+
+   resetParkReferences() {
+      Firebase.db.collection("park")
+      .get()
+      .then((querySnapshot) => {
+         querySnapshot.forEach((doc) => {
+            var docId = doc.id;
+            var floor = doc.data().places;
+            for(var key in floor) {
+               var docRef = Firebase.db.collection('park').doc(docId);
+               var place = "places." + key + ".contoId";
+               docRef.update({
+                  [place]: ''
+               })
+               .then(() => {
+                 console.log("Document successfully written!");
+               })
+               .catch((error) => {
+                 console.error("Error writing document: ", error);
+               });
+            }
+            this.resetPendingOrders();
+         });
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+   }
+
 }
 
 export default repo;
