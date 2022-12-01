@@ -131,9 +131,19 @@ ul {
   font-weight: normal;
   text-decoration: line-through;
 }
+.order-time {
+  color: var(--info-color);
+}
+.item-time {
+  font-size: 0.9em;
+  font-weight: normal;
+  color: var(--info-color);
+}
 .list-item {
-  margin: 15px;
+  font-size: 1.3em;
+  margin: 10px;
   padding: 0.5em 0;
+  font-weight: 500;
   border-bottom: 1px solid #ccc;
   text-align: left;
 }
