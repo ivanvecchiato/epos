@@ -67,7 +67,6 @@ html {
   height: 100vh;
   overflow: hidden;
   color: var(--primary-color);
-  /*background: #EFEBE9;*/
   background: #fff5e3;
 }
 :root{
