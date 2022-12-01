@@ -27,6 +27,7 @@ export default {
 
          repo.resetConti(
             function() {
+               repo.resetOrdini();
                repo.resetParkReferences();
                self.fullscreenLoading = false;
             }
@@ -143,9 +144,8 @@ export default {
    mounted() {
       this.db = new PouchDB('http://localhost:5984/tables');
       this.db.info().then(function (info) {
-  console.log(info);
-})
-
+         console.log(info);
+      })
    },
 }
 </script>

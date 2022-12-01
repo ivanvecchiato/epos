@@ -186,6 +186,38 @@ var repo = {
          });
    },
 
+   resetOrdini(callback) {
+      Firebase.db.collection("ordini")
+         .get()
+         .then((querySnapshot) => {
+            var size = querySnapshot.size;
+            if (size == 0) {
+               if (callback != undefined) {
+                  callback()
+               }
+            } else {
+               var count = 0;
+               querySnapshot.forEach((doc) => {
+                  var docId = doc.id;
+                  Firebase.db.collection('ordini')
+                     .doc(docId)
+                     .delete()
+                     .then()
+                     .catch();
+                  if (count == size - 1) {
+                     if (callback != undefined) {
+                        callback()
+                     }
+                  }
+                  count++;
+               });
+            }
+         })
+         .catch((error) => {
+            console.log("Error getting documents: ", error);
+         });
+   },
+
    resetParkReferences() {
       Firebase.db.collection("park")
       .get()
