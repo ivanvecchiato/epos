@@ -81,7 +81,7 @@ export default {
       if(this.data.place == undefined) {
         intest += "Cassa";
       } else {
-        intest += this.data.place.area.name + " / " + this.data.place.name
+        intest += this.data.place.areaName + " / " + this.data.place.placeName
       }
       if(this.data.customer != null) {
         intest.append 

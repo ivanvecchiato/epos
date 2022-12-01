@@ -60,20 +60,20 @@
               {{ getLastMod(t) }}
             </div>
             <div class="table-order-amount">
-              <el-icon style="vertical-align: middle" color="#FB8C00" :size="18">
+              <el-icon style="vertical-align: middle" color="#FF5621" :size="18">
                 <coin />
               </el-icon>
               {{ getAmount(t) }}
             </div>
             <div class="table-order-quantity">
-              <el-icon style="vertical-align: middle" color="#667BCC" :size="18">
+              <el-icon style="vertical-align: middle" color="#102A68" :size="18">
                 <shopping-cart-full />
               </el-icon>
               {{ getQuantity(t) }} {{ $t("product.products") }}
             </div>
-            <div class="table-show-details">
-              <el-icon @click.stop="showOrder(t)" color="#667BCC" :size="24">
-                <tickets />
+            <div class="table-show-details" @click.stop="showOrder(t)">
+              <el-icon class="button-icon" color="#ffffff" :size="16">
+                <MoreFilled />
               </el-icon>
             </div>
           </div>
@@ -97,14 +97,14 @@
 <script>
 import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
-import { ShoppingCartFull, Clock, Coin, Tickets, Right } from "@element-plus/icons";
+import { ShoppingCartFull, Clock, Coin, MoreFilled, Right } from "@element-plus/icons";
 import OrderList from "../components/OrderList.vue";
 import utils from "../utils.js";
 import repo from "@/db/repo.js";
 
 export default {
   name: "Floor",
-  components: { ShoppingCartFull, Clock, OrderList, Coin, Tickets, Right },
+  components: { ShoppingCartFull, Clock, OrderList, Coin, MoreFilled, Right },
   props: ["order"],
   data() {
     return {
@@ -198,6 +198,7 @@ export default {
         areaId: tab.place.areaDocId,
         areaName: tab.place.areaName,
         placeId: tab.place.placeId,
+        placeName: tab.place.placeName,
       };
 
       var docRef = Firebase.db.collection("park").doc(destination.areaId);
@@ -235,7 +236,8 @@ export default {
       var destination = {
         areaId: this.currentArea.docId,
         areaName: this.currentArea.name,
-        placeId: table.name,
+        placeId: table.key,
+        placeName: table.name,
       };
       if (this.movingTab != null) {
         this.moveTab(this.movingTab, destination);
@@ -421,7 +423,7 @@ export default {
   height: 40px;
   padding: 4px;
   text-align: center;
-  color: var(--info2-color);
+  color: var(--primary-color);
 }
 
 .table-order-quantity {
@@ -464,9 +466,17 @@ export default {
 }
 .table-show-details {
   position: absolute;
-  display: block;
   bottom: 5px;
   right: 15px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: rgba(220, 151, 213, 0.473);
+}
+.button-icon {
+  position:relative;
+  top: calc(50% - 8px); /* 50% - 3/4 of icon height */
 }
 .menu-item:hover {
   font-weight: bold;

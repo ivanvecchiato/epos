@@ -187,7 +187,7 @@ export default {
     PlaceSelector,
     CartItemDetails
   },
-  props: ["currentPlace"],
+  props: ["data"],
   data() {
     return {
       billLoaded: false,
@@ -199,14 +199,21 @@ export default {
       currentItem: {},
       showModifications: false,
       serverAddress: '127.0.0.1:8088',
+      currentPlace: null
     };
   },
   watch: {
-    currentPlace: {
+    data: {
      // eslint-disable-next-line no-unused-vars
       handler(newPlace, oldPlace) {
         if(newPlace != null) {
           this.currentView = 'order';
+          this.currentPlace = {
+            areaDocId: this.data.areaDocId,
+            areaName: this.data.areaName,
+            placeId: this.data.placeId,
+            placeName: this.data.placeName,
+          }
         }
       }
     }
@@ -479,10 +486,10 @@ export default {
         this.$emit("reassignedConto", size);
       }
     },
-    loadConto: function (place) {
-      if(place.contoId == '') return;
+    loadConto: function (eventData) {
+      if(eventData.billId == '') return;
       
-      var docRef = Firebase.db.collection("conti").doc(place.contoId);
+      var docRef = Firebase.db.collection("conti").doc(eventData.billId);
       docRef
         .get()
         .then((doc) => {

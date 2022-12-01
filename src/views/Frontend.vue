@@ -66,7 +66,7 @@
       <div class="side">
         <conto-management
           ref="contoMgmt"
-          :currentPlace="currentPlace"
+          :data="currentPlace"
           @annullaConto="annullaConto"
           @reassignedConto="reassignedConto"
           @contoParked="contoParked"
@@ -147,7 +147,8 @@ export default {
       currentHandledProduct: null,
       catalog: [],
       searchInput: '',
-      wizardActivated: false
+      wizardActivated: false,
+      contoId: ''
     };
   },
   computed: {
@@ -399,8 +400,14 @@ export default {
   mounted() {
     if (this.place != undefined) {
       this.currentPlace = JSON.parse(this.place);
+      this.contoId = this.currentPlace.contoId;
+      delete this.currentPlace.contoId;
+
       console.log("Frontend", this.currentPlace);
-      this.$bus.trigger('loadConto', this.currentPlace)
+      this.$bus.trigger('loadConto', {
+        place: this.currentPlace,
+        billId: this.contoId
+      })
     } else {
       this.$bus.trigger('checkPending', operator)
     }
