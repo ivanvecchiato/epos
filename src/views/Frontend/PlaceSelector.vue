@@ -179,7 +179,7 @@ export default {
          var self = this;
          Firebase.db
             .collection("park")
-            .orderBy("id")
+            .orderBy("order")
             .onSnapshot((snapshotChange) => {
                self.areas = [];
                self.openBills = [];
