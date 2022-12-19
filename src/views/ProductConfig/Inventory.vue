@@ -63,7 +63,7 @@
             :label="$t('inventory.availability')"
             width="120">
           </el-table-column>
-          <el-table-column label="" width="100">
+          <el-table-column label="" width="110">
             <template #default="scope">
               <el-button
                 type="primary"
