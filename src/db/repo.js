@@ -274,6 +274,74 @@ var repo = {
          .catch((error) => {
             console.error("Error updating document: ", error)
          })
+   },
+
+   // eslint-disable-next-line no-unused-vars
+   collectSospesi(dateRange, callback) {
+      var docs = [];
+//        var start = firebase.firestore.Timestamp.fromDate(this.dateRange[0]);
+//        var end = firebase.firestore.Timestamp.fromDate(this.dateRange[1]);
+
+      Firebase.db
+      .collection("conti")
+      .where('status', "==", 0)
+      .onSnapshot((querySnapshot) => {            
+         var size = querySnapshot.size;
+         if (size == 0) {
+            if (callback != undefined) {
+               callback()
+            }
+         } else {
+            var count = 0;
+            querySnapshot.forEach((doc) => {
+               var bill = doc.data();
+               var conto = new Conto;
+               conto.fillData(bill);
+               conto.id = doc.id;
+               docs.push(conto);
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(docs)
+                  }
+               }
+               count++;
+            });
+         }
+      });   
+   },
+
+   collectConti(dateRange, callback) {
+      var docs = [];
+//        var start = firebase.firestore.Timestamp.fromDate(this.dateRange[0]);
+//        var end = firebase.firestore.Timestamp.fromDate(this.dateRange[1]);
+
+      Firebase.db
+      .collection("conti")
+      .where('status', "==", -1)
+      .orderBy("lastModified", "desc")
+      .onSnapshot((querySnapshot) => {            
+         var size = querySnapshot.size;
+         if (size == 0) {
+            if (callback != undefined) {
+               callback()
+            }
+         } else {
+            var count = 0;
+            querySnapshot.forEach((doc) => {
+               var bill = doc.data();
+               var conto = new Conto;
+               conto.fillData(bill);
+               conto.id = doc.id;
+               docs.push(conto);
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(docs)
+                  }
+               }
+               count++;
+            });
+         }
+      });   
    }
 
 }
