@@ -425,11 +425,11 @@ export default {
     },
     stampaScontrinoNonFiscale(callback) {
       if (this.conto.size() == 0) return;
-      console.log("stampaScontrinoNonFiscale");
       const clone = Object.assign({}, this.conto);
       clone.groupedList = this.groupedList;
       clone.place = this.currentPlace;
       clone.headersString = localStorage.getItem("headers");
+      //console.log("stampaScontrinoNonFiscale", JSON.stringify(clone));
 
       axios.post('http://' + this.serverAddress + '/scontrino', JSON.stringify(clone))
         .then(function (response) {
