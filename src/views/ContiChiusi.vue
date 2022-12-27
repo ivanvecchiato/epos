@@ -9,7 +9,10 @@
             </el-table-column>
             <el-table-column prop="date" :label="$t('generic.date')" width="150">
             </el-table-column>
-            <el-table-column prop="place" :label="$t('bill.source')" width="150">
+            <el-table-column :label="$t('bill.source')" width="150">
+            <template #default="scope">
+              <span class="place">{{scope.row.place}}</span>
+            </template>
             </el-table-column>
             <el-table-column prop="amount" :label="$t('bill.amount')" width="150">
             </el-table-column>
@@ -95,11 +98,10 @@
 </template>
 
 <script>
-//import Conto from '../data/Conto.js';
-import Firebase from "../firebase.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
 import VueApexCharts from "vue3-apexcharts";
+import repo from "@/db/repo.js";
 
 export default {
   name: "ContiChiusi",
@@ -172,19 +174,14 @@ export default {
       return amount.toFixed(2);
     },
     loadDefaultData: function() {
-      Firebase.db
-        .collection("conti")
-        //.where("chiusura", "==", 0)
-        .orderBy("lastModified", "desc")
-        .onSnapshot((snapshotChange) => {
-          this.docs = [];
-          snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            record.id = doc.id;
-            this.docs.push(record);
-          });
-          this.handleDocs();
-        });
+      var self = this;
+      repo.collectConti(
+        null,
+        function(data) {
+          self.docs = data;
+          self.handleDocs();
+        }
+      );
     },
     handleDocs: function() {
       this.tableData = [];
@@ -203,7 +200,7 @@ export default {
       for (var i = 0; i < this.docs.length; i++) {
         var source = "cassa";
         if(this.docs[i].place != undefined) {
-          source = this.docs[i].place.area.name + " / " + this.docs[i].place.name;
+          source = this.docs[i].place.areaName + " / " + this.docs[i].place.placeName;
         }
         this.tableData.push({
           progr: this.docs[i].progressivoFiscale + "/" + this.docs[i].chiusuraFiscale,
@@ -267,5 +264,12 @@ export default {
 <style scoped>
 .list {
   text-align: left;
+}
+.place {
+  color: var(--warning-color);
+  font-weight: bold;
+  font-size: 1.0em;
+  display: inline-block;
+  min-width: 70px;
 }
 </style>
