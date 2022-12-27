@@ -165,11 +165,11 @@
 </template>
 
 <script>
-import firebase from '@firebase/app';
-import Firebase from "../firebase.js";
+//import firebase from '@firebase/app';
+//import Firebase from "../firebase.js";
+import repo from "@/db/repo.js";
 import utils from "../utils.js";
 import BillDetail from "../components/BillDetail.vue";
-import Conto from "../data/Conto"
 import VueApexCharts from "vue3-apexcharts";
 import { Document, Money, Delete, DishDot } from '@element-plus/icons'
 
@@ -257,91 +257,29 @@ export default {
   methods: {
     selectRange: function(dates) {
       this.daterange = dates;
-      this.loadData(true);
+      this.loadData();
     },
     rangeChecked: function(value) {
       if(value==false) {
-        this.loadData(false);
+        this.loadData();
       }
     },
     loadDefaultData: function() {
-      this.loadData(false);
+      this.loadData();
     },
     formatAmount: function(amount) {
       return Number(amount).toFixed(2) + ' €';
     },
-    loadData: function(range) {
+    loadData: function() {
+      var self = this;
       this.tableData = [];
-      if (range) {
-        var start = firebase.firestore.Timestamp.fromDate(this.daterange[0]);
-        var end = firebase.firestore.Timestamp.fromDate(this.daterange[1]);
-        Firebase.db
-          .collection("park")
-          .onSnapshot((snapshotChange) => {
-            this.docs = [];
-            snapshotChange.forEach((doc) => {
-              var area = doc.data();
-              var places = area.places;
-              for(var n in places) {
-                if(places[n].conto != null) {
-                  var record = places[n].conto;
-                  if(record.lastModified >= start && record.lastModified <= end) {
-                    if(record.orderList != undefined) {
-                      if(record.orderList.length > 0) {
-                        var conto = new Conto;
-                        conto.fillData(places[n].conto);
-                        places[n].conto = conto;
-                        record.place = {
-                          area: {
-                            id: area.id,
-                            name: area.name
-                          },
-                          name: places[n].name
-                        }
-                        record.id = doc.id;
-                        this.docs.push(record);
-                      }
-                    }
-                  }
-                }
-              }
-            });
-            this.handleDocs();
-          });
-      } else {
-        Firebase.db
-          .collection("park")
-          //.orderBy("id")
-          .onSnapshot((snapshotChange) => {            
-            this.docs = [];
-            snapshotChange.forEach((doc) => {
-              var area = doc.data();
-              var places = area.places;
-              for(var n in places) {
-                if(places[n].conto != null) {
-                  var record = places[n].conto;
-                  if(record.orderList != undefined) {
-                    if(record.orderList.length > 0) {
-                      var conto = new Conto;
-                      conto.fillData(places[n].conto);
-                      places[n].conto = conto;
-                      record.place = {
-                        area: {
-                          id: area.id,
-                          name: area.name
-                        },
-                        name: places[n].name
-                      }
-                      record.id = doc.id;
-                      this.docs.push(record);
-                    }
-                  }
-                }
-              }
-            });
-            this.handleDocs();
-          });
-      }
+        repo.collectSospesi(
+          this.daterange,
+          function(data) {
+            self.docs = data
+            self.handleDocs();
+          }
+        );
     },
     getCancellations: function(list) {
       var d=0;
@@ -376,8 +314,8 @@ export default {
           createdAt: utils.toDateTime(this.docs[i].createdAt),
           lastModified: utils.toDateTime(this.docs[i].lastModified),
           place: {
-            area: this.docs[i].place.area.name,
-            place: this.docs[i].place.name
+            area: this.docs[i].place.areaName,
+            place: this.docs[i].place.placeName
           },
           amount: this.docs[i].totale.toFixed(2),
           deleted: cancellations
@@ -487,8 +425,9 @@ export default {
   top: 30px;
   font-weight: light;
   font-size: 0.9em;
-  border: solid 1px var(--secondary-color);
-  color: var(--secondary-color);
+  border: solid 0px var(--secondary-color);
+  background-color: #fe9c342c;
+  color: orangered;
   border-radius: 4px;
   padding: 0px 4px 0px 4px;
 }
