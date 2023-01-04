@@ -1,4 +1,4 @@
-import Firebase from "../firebase.js";
+//import Firebase from "../firebase.js";
 import utils from "../utils.js";
 
 export default class Variant {
@@ -20,6 +20,7 @@ export default class Variant {
     }
   }
 
+  /*
   writeDoc() {
     var ret = 0;
     if(this.id == '') {
@@ -43,6 +44,7 @@ export default class Variant {
     }
     return ret;
   }
+  */
 
   fillData(data) {
     var keys = Object.keys(this);
@@ -50,7 +52,7 @@ export default class Variant {
         this[element] = data[element];
     });
   }
-
+  /*
   mockdata() {
     this.code = '101';
     this.name = 'gusto';
@@ -69,4 +71,5 @@ export default class Variant {
     this.values.push({'attribute':'aggiunta 2', price: 2.0});
     this.writeDoc();
   }
+  */
 }

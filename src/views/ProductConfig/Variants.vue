@@ -108,10 +108,6 @@ export default {
   methods: {
     rowClick: function() {
     },
-    mockVariants: function() {
-      var variant = new Variant;
-      variant.mockdata();
-    },
     variantCreated: function (event) {
       console.log("variantCreated", event);
       this.resetDialog();
