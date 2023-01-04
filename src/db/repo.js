@@ -7,6 +7,7 @@ import Conto from "@/data/Conto.js";
 
 var repo = {
    contiAperti: [],
+   catalog: [],
 
    addDoc(collection, obj, callback) {
       if (dbtype == 'couch') {
@@ -342,6 +343,129 @@ var repo = {
             });
          }
       });   
+   },
+   getCategories(callback) {
+      var categorie = [];
+
+      Firebase.db.collection("categories")
+         .orderBy("code")
+         .onSnapshot((querySnapshot) => {
+            var size = querySnapshot.size;
+            if (size == 0) {
+               if (callback != undefined) {
+                  callback(categorie)
+               }
+            } else {
+               var count = 0;
+               querySnapshot.forEach((doc) => {
+               var record = doc.data();
+               categorie.push(record);
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(categorie)
+                  }
+               }
+               count++;
+             });
+            }
+        });
+   },
+   getProducts(catId, callback) {
+      var prodotti = [];
+
+      var query = Firebase.db.collection("products");
+      if(catId == 'favorites') {
+         query = query.where("properties.favorite", "==", true);
+      } else if(catId != '') {
+         query = query.where("category.id", "==", catId);
+      }
+      query = query.where("status", "==", 1)
+      .where("type", "in", [0, 1, 2, 3]);
+
+      query.onSnapshot((querySnapshot) => {
+         var size = querySnapshot.size;
+         if (size == 0) {
+            if (callback != undefined) {
+               callback(prodotti)
+            }
+         } else {
+            var count = 0;
+            querySnapshot.forEach((doc) => {
+               var record = doc.data();
+               record.id = doc.id;
+               prodotti.push(record);
+               // rimosso in quanto asincrono
+               //this.loadImageUrl(this.prodotti[this.prodotti.length - 1]);
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(prodotti)
+                     // se la richiesta è per tutti i prodotti ne tengo una copia
+                     if(catId == '') this.products = prodotti;
+                  }
+               }
+               count++;
+            });
+         }
+      });
+   },
+   loadImageUrl: function (index, imgUrl, callback) {
+      if (imgUrl.length == 0) return;
+
+      const storage = Firebase.storage.ref();
+      var storageRef = storage.child(imgUrl);
+      storageRef
+        .getDownloadURL()
+        .then((url) => {
+         if (callback != undefined) {
+            callback(url, index)
+         }
+        })
+        .catch((error) => {
+         console.log(error)
+         if (callback != undefined) {
+            callback('', index)
+         }
+        });
+    },
+    getAllProducts(callback) {
+      var self = this;
+      this.catalog = [];
+
+      Firebase.db.collection("products")
+      .where("status", "==", 1)
+      .where("type", "in", [0, 1, 2, 3])
+      .onSnapshot((querySnapshot) => {
+         var size = querySnapshot.size;
+         if (size == 0) {
+            if (callback != undefined) {
+               callback(this.catalog)
+            }
+         } else {
+            var count = 0;
+            querySnapshot.forEach((doc) => {
+               var record = doc.data();
+               record.id = doc.id;
+               //if(record.imgUrl == undefined) record.imgUrl = '';
+               self.catalog.push(record);
+               
+               var index = self.catalog.length - 1
+               self.loadImageUrl(
+                 index,
+                 this.catalog[index].properties.imgUrl,
+                 function(url, ind) {
+                   self.catalog[ind].properties.imgUrl = url;                
+                 }
+               )
+
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(this.catalog);
+                  }
+               }
+               count++;
+            });
+         }
+      });
    }
 
 }

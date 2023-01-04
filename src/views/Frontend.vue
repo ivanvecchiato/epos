@@ -2,36 +2,39 @@
   <div class="frontend">
     <div class="flex-item">
       <div class="toolbar">
-      <el-row align="middle" :gutter="20">
-        <el-col :span="3">
-          <img style="height: 60px;" src="@/assets/logo.png"/>
-        </el-col>
-        <el-col :span="6">
-          <div class="search">
-            <input class="search-input" :placeholder="$t('generic.search')"
-              v-model="searchInput" :oninput="inputChange()"/>
-            <i class="el-input__icon el-icon-search" @click="searchItem"></i>
-          </div>
-        </el-col>
-        <el-col :span="8" class="text-align: right">
-          <div v-if="currentPlace != null" class="title-2 info-conto">
-            <span>{{currentPlace.areaName}}</span>            
-            -
-            <span>{{$t('bill.place', {description: currentPlace.placeName})}}</span>
-            &nbsp;
-            <el-icon :size="24" color="#000" @click="reassignPark">
-              <circle-close />
-            </el-icon>
-      
-          </div>
-        </el-col>
-        <el-col :span="6" class="text-align: right">
-          <div class="customer" @click="selectCustomer">
-            <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-            <span class="customer-name" @click="addCustomer">{{customerName}}</span>
-          </div>
-        </el-col>
-      </el-row>
+        <el-row align="middle" :gutter="20">
+          <el-col :span="3">
+            <img style="height: 60px" src="@/assets/logo.png" />
+          </el-col>
+          <el-col :span="6">
+            <div class="search">
+              <input
+                class="search-input"
+                :placeholder="$t('generic.search')"
+                v-model="searchInput"
+                :oninput="inputChange()"
+              />
+              <i class="el-input__icon el-icon-search" @click="searchItem"></i>
+            </div>
+          </el-col>
+          <el-col :span="8" class="text-align: right">
+            <div v-if="currentPlace != null" class="title-2 info-conto">
+              <span>{{ currentPlace.areaName }}</span>
+              -
+              <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
+              &nbsp;
+              <el-icon :size="24" color="#000" @click="reassignPark">
+                <circle-close />
+              </el-icon>
+            </div>
+          </el-col>
+          <el-col :span="6" class="text-align: right">
+            <div class="customer" @click="selectCustomer">
+              <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
+              <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
+            </div>
+          </el-col>
+        </el-row>
       </div>
 
       <div class="categories">
@@ -41,7 +44,8 @@
           plain
           size="medium"
           icon="el-icon-star-on"
-          @click="selectFavorites()">
+          @click="selectFavorites()"
+        >
         </el-button>
 
         <el-button
@@ -50,16 +54,16 @@
           v-for="cat in categories"
           :key="cat.id"
           :class="getButtonClass(cat.id)"
-          @click="selectCategory(cat)">
+          @click="selectCategory(cat)"
+        >
           {{ cat.name }}
         </el-button>
       </div>
       <div class="center">
-        <span v-if="products.length==0" class="none-found">{{$t('product.no_product_found')}}</span>
-        <product-grid
-          :data="products"
-          @productSelected="productSelected">
-        </product-grid>
+        <span v-if="products.length == 0" class="none-found">{{
+          $t("product.no_product_found")
+        }}</span>
+        <product-grid :data="products" @productSelected="productSelected"> </product-grid>
       </div>
     </div>
     <div class="fixed">
@@ -70,57 +74,48 @@
           @annullaConto="annullaConto"
           @reassignedConto="reassignedConto"
           @contoParked="contoParked"
-          @pagaConto="pagaConto">
+          @pagaConto="pagaConto"
+        >
         </conto-management>
       </div>
     </div>
 
-    <el-dialog
-      v-model="checkoutDialogVisibile"
-      width="80%"
-      destroy-on-close>
-      <checkout-dialog>
-      </checkout-dialog>
+    <el-dialog v-model="checkoutDialogVisibile" width="80%" destroy-on-close>
+      <checkout-dialog> </checkout-dialog>
     </el-dialog>
 
-    <el-dialog :title="$t('product.specify_price')"
+    <el-dialog
+      :title="$t('product.specify_price')"
       v-model="priceDialogVisibile"
       show-close="false"
-      destroy-on-close>
-      <ECRKeypad
-        :extended="true"
-        @cancel="cancelSelection"
-        @selectPrice="selectPrice">
+      destroy-on-close
+    >
+      <ECRKeypad :extended="true" @cancel="cancelSelection" @selectPrice="selectPrice">
       </ECRKeypad>
     </el-dialog>
 
-    <el-dialog
-      v-model="wizardActivated"
-      show-close="false"
-      destroy-on-close>
+    <el-dialog v-model="wizardActivated" show-close="false" destroy-on-close>
       <ProductWizard
         :prod="currentHandledProduct"
         @undoWizard="undoWizard"
-        @finalizeWizard="finalizeWizard">
+        @finalizeWizard="finalizeWizard"
+      >
       </ProductWizard>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
 import ProductGrid from "../components/ProductGrid.vue";
 import Customer from "../data/Customer.js";
-//import Product from "../data/Product.js";
-import Firebase from "../firebase.js";
 import operator from "../store/user.js";
-import { CircleClose } from '@element-plus/icons';
+import { CircleClose } from "@element-plus/icons";
 import CheckoutDialog from "./Frontend/CheckoutDialog.vue";
 import printf from "../fiscalprinter/printf.js";
-import ContoManagement from './Frontend/ContoManagement.vue';
-import ECRKeypad from '@/components/ECRKeypad.vue'
-import ProductWizard from './Frontend/ProductWizard.vue'
-
+import ContoManagement from "./Frontend/ContoManagement.vue";
+import ECRKeypad from "@/components/ECRKeypad.vue";
+import ProductWizard from "./Frontend/ProductWizard.vue";
+import repo from '@/db/repo.js'
 
 export default {
   name: "Frontend",
@@ -130,7 +125,7 @@ export default {
     CheckoutDialog,
     ContoManagement,
     ECRKeypad,
-    ProductWizard
+    ProductWizard,
   },
   props: ["place", "room"],
   data() {
@@ -141,104 +136,99 @@ export default {
       //conto: new Conto,
       customer: null,
       currentPlace: null,
-      search_pattern: '',
+      search_pattern: "",
       checkoutDialogVisibile: false,
       priceDialogVisibile: false,
       currentHandledProduct: null,
       catalog: [],
-      searchInput: '',
+      searchInput: "",
       wizardActivated: false,
-      contoId: ''
+      contoId: "",
     };
   },
   computed: {
-    customerName: function() {
-      if(this.customer != null) {
+    customerName: function () {
+      if (this.customer != null) {
         return this.customer.firstName + " " + this.customer.lastName;
       } else {
-        return this.$t('customer.add_new');
+        return this.$t("customer.add_new");
       }
     },
-    userIconUrl: function() {
-      return require('@/assets/user.png');
+    userIconUrl: function () {
+      return require("@/assets/user.png");
     },
   },
   methods: {
-    undoWizard: function() {
+    undoWizard: function () {
       this.wizardActivated = false;
     },
-    finalizeWizard: function(items, note) {
+    finalizeWizard: function (items, note) {
       this.wizardActivated = false;
       console.log(items);
       var p = JSON.parse(JSON.stringify(this.currentHandledProduct));
-      for(var i=0; i<items.length; i++) {
+      for (var i = 0; i < items.length; i++) {
         p.price += Number(items[i].delta_price);
         p.components.push(items[i]);
       }
-      if(note != undefined && note.length>0) {
+      if (note != undefined && note.length > 0) {
         p.note = note;
       }
       this.addItem(p);
     },
-    inputChange: function() {
-       var input = this.searchInput;
-       if(input.length<2) return;
+    inputChange: function () {
+      var input = this.searchInput;
+      if (input.length < 2) return;
 
       this.products = [];
       this.resultCount = 0;
-      for(var p in this.catalog) {
-        var name = this.catalog[p].name;
-        if((name.toLowerCase()).startsWith(input.toLowerCase())) {
-          this.products.push(this.catalog[p]);
-          this.loadImage(this.products[this.products.length-1]);
+      for (var p in repo.catalog) {
+        var name = repo.catalog[p].name;
+        if (name.toLowerCase().startsWith(input.toLowerCase())) {
+          this.products.push(repo.catalog[p]);
         }
       }
     },
-    contoParked: function() {
+    contoParked: function () {
       this.currentPlace = null;
-      var msg = "Conto parcheggiato";//this.$t('bill.parked');
+      var msg = "Conto parcheggiato"; //this.$t('bill.parked');
       this.$message({
-        type: 'success',
+        type: "success",
         message: msg,
-      })
+      });
     },
-    reassignedConto: function(size) {
+    reassignedConto: function (size) {
       this.currentPlace = null;
-      if(size > 0) {
-        var msg = this.$t('bill.reassigned');
+      if (size > 0) {
+        var msg = this.$t("bill.reassigned");
         this.$message({
-          type: 'success',
+          type: "success",
           message: msg,
-        })        
+        });
       }
     },
-    reassignPark: function() {
-      this.$bus.trigger('reassignPark');
+    reassignPark: function () {
+      this.$bus.trigger("reassignPark");
     },
-    searchItem: function() {
-
-    },
-    selectCustomer: function() {
-
-    },
-    getButtonClass: function(catId) {
-      if(this.currentCategory == null || catId != this.currentCategory.id) {
-        return 'button-idle';
+    searchItem: function () {},
+    selectCustomer: function () {},
+    getButtonClass: function (catId) {
+      if (this.currentCategory == null || catId != this.currentCategory.id) {
+        return "button-idle";
       } else {
-        return 'button-active'
+        return "button-active";
       }
     },
-    selectFavorites: function() {
+    selectFavorites: function () {
       this.loadPreferiti();
     },
-    selectCategory: function(c) {
+    selectCategory: function (c) {
       this.currentCategory = c;
       this.products = this.getProducts(c);
     },
-    productSelected: function(p) {
-      if(p.properties.variable_price) {
+    productSelected: function (p) {
+      if (p.properties.variable_price) {
         this.openPriceinput(p);
-      } else if(p.type == 3) {
+      } else if (p.type == 3) {
         //product to be completed
         this.currentHandledProduct = p;
         this.wizardActivated = true;
@@ -250,29 +240,29 @@ export default {
         }
       }
     },
-    openPriceinput: function(p) {
+    openPriceinput: function (p) {
       this.priceDialogVisibile = true;
       this.currentHandledProduct = p;
     },
-    cancelSelection: function() {
+    cancelSelection: function () {
       this.priceDialogVisibile = false;
       this.currentHandledProduct = null;
     },
-    selectPrice: function(price, note) {
+    selectPrice: function (price, note) {
       this.priceDialogVisibile = false;
       this.currentHandledProduct.price = price;
       this.currentHandledProduct.note = note;
-      console.log('selectPrice', price)
+      console.log("selectPrice", price);
       this.addItem(this.currentHandledProduct);
     },
     subset(prod) {
       let tmp = JSON.stringify(prod, prod.replacer);
       return JSON.parse(tmp);
     },
-    addItem: function(p) {
-      this.$bus.trigger('addItem', this.subset(p));
+    addItem: function (p) {
+      this.$bus.trigger("addItem", this.subset(p));
     },
-    openNote: function(p) {
+    openNote: function (p) {
       this.$prompt(this.$t("product.note"), p.name, {
         confirmButtonText: this.$t("generic.ok"),
         cancelButtonText: this.$t("generic.cancel"),
@@ -286,113 +276,92 @@ export default {
         });
     },
     getAllProducts() {
-      Firebase.db
-        .collection("products")
-        .where("status", "==", 1)
-        .onSnapshot((snapshotChange) => {
-          this.catalog = [];
-          snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            record.id = doc.id;
-            this.catalog.push(record);
-          });
+      var self = this;
+      this.catalog = [];
+      repo.getAllProducts(
+        function(data) {
+          self.catalog = data;
         });
     },
-    getProducts: function(cat) {
-      Firebase.db
-        .collection("products")
-        .where("category.id", "==", cat.id)
-        .where("status", "==", 1)
-        .where("type", "in", [0, 1, 2, 3])
-        .onSnapshot((snapshotChange) => {
-          this.products = [];
-          snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            record.id = doc.id;
-            this.products.push(record);
-            this.loadImage(this.products[this.products.length-1]);
-          });
+    getProducts: function (cat) {
+      var self = this;
+      repo.getProducts(
+        cat.id,
+        function(data) {
+          self.products = data;
+          for(var i=0; i<self.products.length; i++) {
+            repo.loadImageUrl(
+              i,
+              self.products[i].properties.imgUrl,
+              function(url, index) {
+                self.products[index].properties.imgUrl = url;                
+              }
+            )
+          }
         });
     },
-    loadImage: function(item) {
-      if(item.properties.imgUrl.length == 0) return;
-
-      const storage = Firebase.storage.ref();
-      var storageRef = storage.child(item.properties.imgUrl);
-//      var pathReference = storage.ref(this.product.properties.imgUrl);
-
-      storageRef.getDownloadURL()
-        .then((url) => {
-          //console.log("URL", url)
-          item.properties.imgUrl = url;
-        })
-        .catch(() => {
-          //console.log(error)
-        });
-    },
-    annullaConto: function() {
+    annullaConto: function () {
       //this.conto.clear();
     },
     addCustomer() {
-        this.customer = new Customer();
-        this.customer.randomize();
-        this.$bus.trigger('addCustomer', this.customer);
-        //this.conto.addCustomer(c);
-        //console.log('addCustomer', c);
+      this.customer = new Customer();
+      this.customer.randomize();
+      this.$bus.trigger("addCustomer", this.customer);
+      //this.conto.addCustomer(c);
+      //console.log('addCustomer', c);
     },
-    showCheckoutDialog: function(conto) {
+    showCheckoutDialog: function (conto) {
       this.checkoutDialogVisibile = true;
       this.$nextTick(() => {
-        this.$bus.trigger('setConto', conto);
-      })
+        this.$bus.trigger("setConto", conto);
+      });
     },
-    pagaConto: function(conto) {
+    pagaConto: function (conto) {
       this.showCheckoutDialog(conto);
     },
-    loadCategories: function() {
-      Firebase.db
-        .collection("categories")
-        .orderBy("id")
-        .onSnapshot((snapshotChange) => {
-          snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            this.categories.push(record);
-            //this.selectCategory(this.categories[0]);
-            this.loadPreferiti();
-          });
-        });
+    loadCategories: function () {
+      var self = this;
+      repo.getCategories(
+        function(data) {
+          self.categories = data;
+        }
+      )
     },
-    loadPreferiti: function() {
-      Firebase.db
-        .collection("products")
-        .where("properties.favorite", "==", true)
-        .where("status", "==", 1)
-        .onSnapshot((snapshotChange) => {
-          this.products = [];
-          snapshotChange.forEach((doc) => {
-            var record = doc.data();
-            record.id = doc.id;
-            this.products.push(record);
-            this.loadImage(this.products[this.products.length-1]);
-          });
+    loadPreferiti: function () {
+      var self = this;
+      this.products = [];
+      repo.getProducts(
+        'favorites',
+        function(data) {
+          self.products = data;
+          for(var i=0; i<self.products.length; i++) {
+            //self.loadImage(self.products[i]);
+            repo.loadImageUrl(
+              i,
+              self.products[i].properties.imgUrl,
+              function(url, index) {
+                self.products[index].properties.imgUrl = url;                
+              }
+            )
+          }
         });
     },
     testPrintf() {
       printf.init();
       printf.getStatus((resp) => {
-        console.log('testPrintf', resp)
-        if(resp.result == 'ok') {
+        console.log("testPrintf", resp);
+        if (resp.result == "ok") {
           var data = resp.data;
-          if(data.Service.ECRStatus[0].mode != 'REG') {
-            printf.setKey('REG');
+          if (data.Service.ECRStatus[0].mode != "REG") {
+            printf.setKey("REG");
           } else {
             printf.clear();
           }
         } else {
-          alert('errore printf')
+          alert("errore printf");
         }
       });
-    }
+    },
   },
   beforeCreate() {
     this.$bus.reset();
@@ -404,14 +373,15 @@ export default {
       delete this.currentPlace.contoId;
 
       console.log("Frontend", this.currentPlace);
-      this.$bus.trigger('loadConto', {
+      this.$bus.trigger("loadConto", {
         place: this.currentPlace,
-        billId: this.contoId
-      })
+        billId: this.contoId,
+      });
     } else {
-      this.$bus.trigger('checkPending', operator)
+      this.$bus.trigger("checkPending", operator);
     }
     this.loadCategories();
+    this.loadPreferiti();
     this.getAllProducts();
     //this.testPrintf();
   },
@@ -425,10 +395,10 @@ export default {
   min-height: 100vh;
   max-height: 100vh;
 }
-.fixed{
+.fixed {
   width: 450px;
 }
-.flex-item{
+.flex-item {
   margin-right: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -444,7 +414,7 @@ export default {
   display: flex;
   padding: 5px;
   flex-direction: column;
-  background: #FFF;
+  background: #fff;
 }
 .categories {
   display: flex;
@@ -475,7 +445,7 @@ export default {
 .button-active {
   background-color: var(--secondary-color);
   font-weight: bold;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-size: 1.1em;
   border: 0px;
 }
@@ -484,7 +454,7 @@ export default {
   background-color: var(--light-main-color);
   color: var(--primary-color);
   font-weight: bold;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   font-size: 1.1em;
   border: 0px solid var(--primary-color);
 }
