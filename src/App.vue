@@ -23,29 +23,29 @@ export default {
 <style>
 
 @font-face {
-  font-family: "Montserrat";
-  src: url(./fonts/Montserrat-Regular.ttf) format("truetype");
+  font-family: "Gilroy";
+  src: url(./fonts/Gilroy-Regular.ttf) format("truetype");
   font-display: fallback;
   font-style: normal;
   font-weight: normal;
 }
 @font-face {
-  font-family: "Montserrat";
-  src: url(./fonts/Montserrat-Bold.ttf) format("truetype");
+  font-family: "Gilroy";
+  src: url(./fonts/Gilroy-Bold.ttf) format("truetype");
   font-display: fallback;
   font-style: normal;
   font-weight: bold;
 }
 @font-face {
-  font-family: "Montserrat";
-  src: url(./fonts/Montserrat-Black.ttf) format("truetype");
+  font-family: "Gilroy";
+  src: url(./fonts/Gilroy-Black.ttf) format("truetype");
   font-display: fallback;
   font-style: normal;
   font-weight: 900;
 }
 @font-face {
-  font-family: "Montserrat";
-  src: url(./fonts/Montserrat-SemiBold.ttf) format("truetype");
+  font-family: "Gilroy";
+  src: url(./fonts/Gilroy-SemiBold.ttf) format("truetype");
   font-display: fallback;
   font-style: normal;
   font-weight: 500;
@@ -59,7 +59,7 @@ html {
 
 #app {
   font-size: 15px;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Gilroy", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -121,7 +121,7 @@ html {
   background: var(--primary-color);
 }
 .form-input {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   font-size: 14px;
   background-color: #F9F7F3;
   color: #616161;
@@ -145,7 +145,7 @@ form-label {
   padding-right: 10px;
 }
 .text-area {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
   font-size: 14px;
   background-color: #F9F7F3;
   color: #616161;
@@ -155,10 +155,10 @@ form-label {
   word-break: break-all;
 }
 button {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
 }
 input {
-  font-family: "Montserrat";
+  font-family: "Gilroy";
 }
 .indicator-red {
   background-color: var(--danger-color);

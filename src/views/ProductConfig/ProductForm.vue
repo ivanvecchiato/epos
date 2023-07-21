@@ -474,7 +474,6 @@ export default {
 }
 .dropdown-category {
   font-size: 1.2em;
-  font-family: "Montserrat", sans-serif;
   color: var(--primary-color);
 }
 ul {

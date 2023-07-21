@@ -468,7 +468,6 @@ export default {
 .button-active {
   background-color: var(--secondary-color);
   font-weight: bold;
-  font-family: 'Montserrat';
   font-size: 1.1em;
   border: 0px;
 }
@@ -477,7 +476,6 @@ export default {
   background-color: var(--light-main-color);
   color: var(--primary-color);
   font-weight: bold;
-  font-family: 'Montserrat';
   font-size: 1.1em;
   border: 0px solid var(--primary-color);
 }

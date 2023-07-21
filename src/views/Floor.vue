@@ -497,7 +497,6 @@ export default {
   background-color: var(--secondary-color);
   border: 0px;
   font-size: 1.2em;
-  font-family: "Montserrat";
   font-weight: bold;
   min-width: 150px;
 }
@@ -505,7 +504,6 @@ export default {
   min-width: 150px;
   background-color: #fff;
   color: var(--primary-color);
-  font-family: "Montserrat";
   font-weight: bold;
   font-size: 1.2em;
   border: 0px solid var(--primary-color);
@@ -513,7 +511,6 @@ export default {
 .button-new {
   min-width: 150px;
   font-weight: bold;
-  font-family: "Montserrat";
   font-size: 1.2em;
   border: 1px solid var(--secondary-color);
   color: var(--secondary-color);
