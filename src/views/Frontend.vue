@@ -3,9 +3,6 @@
     <div class="flex-item">
       <div class="toolbar">
       <el-row align="middle" :gutter="20">
-        <el-col :span="3">
-          <img style="height: 60px;" src="@/assets/logo.png"/>
-        </el-col>
         <el-col :span="6">
           <div class="search">
             <input class="search-input" :placeholder="$t('generic.search')"

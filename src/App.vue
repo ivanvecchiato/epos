@@ -87,7 +87,7 @@ html {
 .title {
   font-size: 3.0em;
   margin-left: 20px;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   font-weight: bold;
   color: var(--primary-color);
   text-align: left;
