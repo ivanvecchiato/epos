@@ -57,39 +57,39 @@
         >
           <el-menu-item index="1" @click="openDashboard">
             <i class="el-icon-house"></i>
-            <span>{{ $t("cashier.dashboard") }}</span>
+            <span class="sidebar">{{ $t("cashier.dashboard") }}</span>
           </el-menu-item>
           <el-menu-item index="2" @click="openFrontend">
             <i class="el-icon-shopping-cart-full"></i>
-            <span>{{ $t("cashier.cashier") }}</span>
+            <span class="sidebar">{{ $t("cashier.cashier") }}</span>
           </el-menu-item>
           <el-menu-item index="3" @click="openFloor">
             <i class="el-icon-map-location"></i>
-            <span>{{ $t("floor.floor") }}</span>
+            <span class="sidebar">{{ $t("floor.floor") }}</span>
           </el-menu-item>
           <el-menu-item index="4" @click="openOrders">
             <i class="el-icon-document"></i>
-            <span>{{ $t("orders.orders") }}</span>
+            <span class="sidebar">{{ $t("orders.orders") }}</span>
           </el-menu-item>
           <el-menu-item index="5" @click="openBills">
             <i class="el-icon-data-line"></i>
-            <span>{{ $t("bill.bills") }}</span>
+            <span class="sidebar">{{ $t("bill.bills") }}</span>
           </el-menu-item>
           <el-menu-item index="6" @click="openProducts">
             <i class="el-icon-box"></i>
-            <span>{{ $t("pricelist.products") }}</span>
+            <span class="sidebar">{{ $t("pricelist.products") }}</span>
           </el-menu-item>
           <el-menu-item index="7" @click="openSettings" :disabled="!admin()">
             <i class="el-icon-setting"></i>
-            <span>{{ $t("config.settings") }}</span>
+            <span class="sidebar">{{ $t("config.settings") }}</span>
           </el-menu-item>
           <el-menu-item index="8" @click="openExtra" :disabled="!admin()">
             <i class="el-icon-magic-stick"></i>
-            <span>{{ $t("config.extra") }}</span>
+            <span class="sidebar">{{ $t("config.extra") }}</span>
           </el-menu-item>
           <el-menu-item index="9" @click="openActions" :disabled="!admin()">
             <i class="el-icon-set-up"></i>
-            <span>{{ $t("config.actions") }}</span>
+            <span class="sidebar">{{ $t("config.actions") }}</span>
           </el-menu-item>
         </el-menu>
       </div>
@@ -402,5 +402,9 @@ export default {
 }
 .indicator-green {
   background-color: #4caf50;
+}
+.sidebar {
+  font-size: 1.4em;
+  font-weight: 500;
 }
 </style>

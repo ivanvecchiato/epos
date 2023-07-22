@@ -352,5 +352,6 @@ export default {
 }
 .dropdown-item {
   font-weight: 500;
+  font-family: Gilroy-Regular;
 }
 </style>

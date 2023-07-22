@@ -285,6 +285,7 @@ export default {
 }
 .dropdown-item {
   font-size: 1.0em;
+  font-family: Gilroy-Regular;
   color: var(--danger-color);
 }
 

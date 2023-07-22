@@ -475,6 +475,7 @@ export default {
 .dropdown-category {
   font-size: 1.2em;
   color: var(--primary-color);
+  font-family: Gilroy-Regular;
 }
 ul {
   list-style-type: none;
