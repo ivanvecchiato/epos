@@ -128,7 +128,7 @@
       v-model="discountVisible"
       :center="false"
       width="40%"
-      destroy-on-closeß>
+      destroy-on-close>
       <discount-widget :amount="conto.totale" @applyDiscount="applyDiscount">
       </discount-widget>
     </el-dialog>
@@ -142,10 +142,10 @@
     </el-dialog>
 
     <el-dialog
-      :title="currentItem.name"
       v-model="showModifications"
+      :show-close="true"
       :center="false"
-      width="40%"
+      width="60%"
       destroy-on-close>
       <cart-item-details
         :data="currentItem"

@@ -87,14 +87,14 @@
     <el-dialog
       :title="$t('product.specify_price')"
       v-model="priceDialogVisibile"
-      show-close="false"
+      :show-close="false"
       destroy-on-close
     >
       <ECRKeypad :extended="true" @cancel="cancelSelection" @selectPrice="selectPrice">
       </ECRKeypad>
     </el-dialog>
 
-    <el-dialog v-model="wizardActivated" show-close="false" destroy-on-close>
+    <el-dialog v-model="wizardActivated" :show-close="false" destroy-on-close>
       <ProductWizard
         :prod="currentHandledProduct"
         @undoWizard="undoWizard"
@@ -140,7 +140,6 @@ export default {
       checkoutDialogVisibile: false,
       priceDialogVisibile: false,
       currentHandledProduct: null,
-      catalog: [],
       searchInput: "",
       wizardActivated: false,
       contoId: "",
@@ -275,14 +274,6 @@ export default {
           this.addItem(p);
         });
     },
-    getAllProducts() {
-      var self = this;
-      this.catalog = [];
-      repo.getAllProducts(
-        function(data) {
-          self.catalog = data;
-        });
-    },
     getProducts: function (cat) {
       var self = this;
       repo.getProducts(
@@ -382,8 +373,6 @@ export default {
     }
     this.loadCategories();
     this.loadPreferiti();
-    this.getAllProducts();
-    //this.testPrintf();
   },
 };
 </script>
