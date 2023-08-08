@@ -127,7 +127,7 @@ export default {
 .item-quantity {
   display: inline-block;
   position: absolute;
-  background: var(--light-secondary-color);
+  background: var(--secondary-light-color);
   border-radius: 6px;
   text-align: center;
   line-height: 24px;

@@ -108,10 +108,6 @@ export default {
   padding: 20px;
   width: 100%;
   height: 100vh;
-  /*
-  background-image: url("../assets/logo.png");
-  background-repeat: no-repeat;
-  */
   --login-color: rgba(187, 149, 80, 0.767)!important;
 }
 .pin {

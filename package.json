@@ -15,7 +15,6 @@
     "axios": "^0.25.0",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.28",
-    "express": "^4.17.1",
     "faker": "^5.5.3",
     "firebase": "^8.10.0",
     "pouchdb": "^7.3.0",

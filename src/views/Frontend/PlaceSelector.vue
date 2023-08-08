@@ -261,7 +261,7 @@ ul li:last-child {
    color: var(--secondary-color);
    font-weight: bold;
    font-size: 1.2em;
-   background: var(--light-secondary-color);
+   background: var(--secondary-light-color);
    padding-left: 10px;
    padding-right: 10px;
 }

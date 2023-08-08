@@ -3,9 +3,6 @@
     <div class="flex-item">
       <div class="toolbar">
         <el-row align="middle" :gutter="20">
-          <el-col :span="3">
-            <img style="height: 60px" src="@/assets/logo.png" />
-          </el-col>
           <el-col :span="6">
             <div class="search">
               <input
@@ -439,7 +436,7 @@ export default {
 }
 .button-idle {
   /*background-color: var(--lightest-main-color);*/
-  background-color: var(--light-main-color);
+  background-color: var(--primary-light-color);
   color: var(--primary-color);
   font-weight: bold;
   font-size: 1.1em;

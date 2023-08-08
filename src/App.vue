@@ -70,20 +70,28 @@ html {
   height: 100vh;
   overflow: hidden;
   color: var(--primary-color);
-  background: #fff5e3;
+  background: #f3f0ef;
+  /*background: #fff5e3;*/
 }
 :root{
-  --primary-color: #2e509e!important;
-  --secondary-color: #FE9D34!important;
-  --light-secondary-color: #ffe2c3!important;
-  --tertiary-color: rgb(201, 219, 251)!important;
-  --light-main-color: rgba(148, 163, 236, 0.2)!important;
-  --success-color: #FF5621!important;
-  --warning-color: #FFC108!important;
-  --error-color: #ef4d4d!important;
-  --danger-color: #ff6b6b!important;
+  --primary-color: #376897!important;
+  --primary-light-color: #37689740!important;
+  --secondary-color: #55bde5!important;
+  --secondary-light-color: #55bde540!important;
+  --tertiary-color: #ff9933!important;
+  --tertiary-light-color: #ff993340;
+  --success-color: #5dcc9d!important;
+  --warning-color: #ffe342!important;
+  --error-color: #b2110f!important;
+  --danger-color: #b2110f!important;
   --info-color: #6f788d!important;
   --info2-color: #f38383!important;
+  --gray1-color: #8e8e93;
+  --gray2-color: #aeaeb2;
+  --gray3-color: #c7c7cc;
+  --gray4-color: #d1d1d6;
+  --gray5-color: #e5e5ea;
+  --gray6-color: #f2f2f7;
   --background-color: rgb(250, 250, 250);
 }
 .title {
@@ -103,7 +111,7 @@ html {
   text-align: left;
  }
 .card {
-  border: 1px solid lightgray;
+  border: 1px solid var(--gray5-color);
   border-radius: 8px;
   box-shadow: 3px 8px 8px -4px rgb(151, 114, 114, 0.4);
   padding: 10px;
@@ -111,7 +119,7 @@ html {
   margin-top: 5px;
 }
 .flat-card {
-  border: 1px solid var(--light-main-color);
+  border: 1px solid var(--gray5-color);
   border-radius: 8px;
   padding: 10px;
   margin: 5px;
