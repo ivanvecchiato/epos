@@ -342,7 +342,6 @@ export default {
 }
 .title {
   font-size: 3.0em;
-  font-family: "Montserrat";
   font-weight: 900;
   color: var(--info-color);
 }
@@ -352,7 +351,7 @@ export default {
   right: 12px;
 }
 .dropdown-item {
-  font-family: "Montserrat";
   font-weight: 500;
+  font-family: Gilroy-Regular;
 }
 </style>

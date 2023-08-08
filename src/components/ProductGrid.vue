@@ -285,7 +285,7 @@ export default {
 }
 .dropdown-item {
   font-size: 1.0em;
-  font-family: "Montserrat", sans-serif;
+  font-family: Gilroy-Regular;
   color: var(--danger-color);
 }
 

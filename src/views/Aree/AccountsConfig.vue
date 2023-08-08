@@ -141,7 +141,6 @@ ul li {
   min-width: 150px;
   background-color: var(--tertiary-color);
   color: var(--primary-color);
-  font-family: "Montserrat";
   font-weight: bold;
   font-size: 1.2em;
   border: 0px solid var(--primary-color);
