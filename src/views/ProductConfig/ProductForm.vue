@@ -248,6 +248,14 @@
             </el-col>
           </el-row>
         </el-tab-pane>
+
+        <el-tab-pane :label="$t('product.variants')">
+          <!--<variants></variants>-->
+        </el-tab-pane>
+
+        <el-tab-pane :label="$t('product.ingredients')">
+          <ingredients></ingredients>
+        </el-tab-pane>
       </el-tabs>
 
       <el-form-item>
@@ -279,6 +287,7 @@ import ColorSelector from '../../components/ColorSelector.vue'
 import ProductComposition from './ProductComposition.vue'
 import { Edit }from '@element-plus/icons-vue'
 import ProductOption from './ProductOption.vue'
+import Ingredients from './Ingredients.vue'
 
 export default {
   name: "ProductForm",
@@ -299,7 +308,7 @@ export default {
       activeTab: 'step1',
     };
   },
-  components: { ColorSelector, ProductComposition, Edit, ProductOption},
+  components: { ColorSelector, ProductComposition, Edit, ProductOption, Ingredients},
   computed: {
   },
   methods: {

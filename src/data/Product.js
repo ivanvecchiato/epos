@@ -27,6 +27,8 @@ export default class Product {
       availability: 0,
       alarm: 0
     },
+    this.ingredients = {};
+    this.variants = {};
     this.components = [];
     this.options = {};
     this.productionAreas = [];
@@ -57,6 +59,8 @@ export default class Product {
     else if (key=="long_description") return undefined;
     else if (key=="short_description") return undefined;
     else if (key=="cost") return undefined;
+    else if (key=="ingredients") return undefined;
+    else if (key=="variants") return undefined;
     else return value;
   }
 }

@@ -8,6 +8,7 @@ import Conto from "@/data/Conto.js";
 var repo = {
    contiAperti: [],
    catalog: [],
+   variants: [],
 
    addDoc(collection, obj, callback) {
       if (dbtype == 'couch') {
@@ -370,6 +371,38 @@ var repo = {
             }
         });
    },
+   getVariants() {
+      var vars = [];
+      Firebase.db.collection('varianti')
+      .where("status", "==", 1)
+      .onSnapshot(querySnapshot => {
+        const documents = querySnapshot.docs;
+        for (const doc of documents) {
+          var item = doc.data();
+          item.id = doc.id;
+          vars.push(item);
+        }
+    
+        this.variants = vars;
+      })
+   },
+   applyVariant(record) {
+      var variantArray = []
+      if(record.variants != undefined) {
+        //console.log('getProductList', products[i].name, products[i].variants);
+        for(var varindex=0; varindex<record.variants.length; varindex++) {
+          var varcode = record.variants[varindex];
+          console.log('varcode', varcode);
+          for(var j=0; j<this.variants.length; j++) {
+            if(this.variants[j].code == varcode) {
+              variantArray.push(this.variants[j]);
+            }
+          }
+        }  
+      }
+      record.variants = variantArray;
+      return record;
+   },
    getProducts(catId, callback) {
       var prodotti = [];
 
@@ -393,6 +426,8 @@ var repo = {
             querySnapshot.forEach((doc) => {
                var record = doc.data();
                record.id = doc.id;
+               //record = this.applyVariant(record);
+
                prodotti.push(record);
                // rimosso in quanto asincrono
                //this.loadImageUrl(this.prodotti[this.prodotti.length - 1]);

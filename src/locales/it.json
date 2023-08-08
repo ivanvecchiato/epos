@@ -67,6 +67,7 @@
     "categories": "Categorie",
     "category": "Categoria",
     "variants":"Varianti",
+    "ingredients":"Ingredienti",
     "products_variants":"Prodotti e Varianti",
     "surcharges": "Maggiorazioni",
     "discounts": "Sconti",
@@ -114,6 +115,8 @@
     "unfavorite": "Rimuovi da preferiti",
     "production": "Reparti di produzione",
     "images": "Immagini",
+    "ingredients":"Ingredienti",
+    "variants":"Varianti",
     "no_product_found": "Nessun prodotto trovato",
     "composition": "Composizione",
     "no_components": "Nessun componente configurato"
@@ -147,6 +150,16 @@
     "values": "Valori",
     "import": "Importa",
     "export": "Esporta"
+  },
+  "ingredient": {
+    "ingredient":"Ingrediente",
+    "ingredients":"Ingredienti",
+    "code": "Codice",
+    "price": "Prezzo",
+    "name": "Nome",
+    "new": "Nuovo ingrediente",
+    "ask_delete_ingredient": "Rimuovere l'ingrediente?",
+    "view": "Mostra"
   },
   "stats": {
     "opened_bills": "Conti aperti",
