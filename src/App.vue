@@ -8,6 +8,7 @@
 <script>
 import Home from './views/Home.vue'
 import SocketioService from './services/socketio.service.js';
+import repo from '@/db/repo.js'
 
 export default {
   name: "App",
@@ -16,6 +17,8 @@ export default {
   },
   mounted() {
     SocketioService.setupSocketConnection();
+    repo.getAllProducts();
+    repo.getVariants();
   },
 };
 </script>
@@ -70,7 +73,7 @@ html {
   background: #fff5e3;
 }
 :root{
-  --primary-color: #102A68!important;
+  --primary-color: #2e509e!important;
   --secondary-color: #FE9D34!important;
   --light-secondary-color: #ffe2c3!important;
   --tertiary-color: rgb(201, 219, 251)!important;
