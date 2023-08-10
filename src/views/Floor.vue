@@ -2,14 +2,6 @@
   <div class="floor">
     <div class="areas-toolbar">
       <div class="area-buttons">
-        <div class="search">
-          <input
-            class="search-input"
-            :placeholder="$t('generic.search')"
-            v-model="searchInput"
-            @input="inputChange()"
-          />
-        </div>
         <el-button
           type="info"
           round
@@ -141,26 +133,6 @@ export default {
       ) {
         return true;
       } else return false;
-    },
-    inputChange: function () {
-      var input = this.searchInput;
-      if (input.length == 0) {
-        this.results = [];
-        return;
-      }
-      this.results = [];
-      this.resultCount = 0;
-      for (var i = 0; i < this.areas.length; i++) {
-        var area = this.areas[i];
-        this.results[i] = [];
-        for (var p in area.places) {
-          var name = "" + area.places[p].name;
-          if (name.toLowerCase().startsWith(input.toLowerCase())) {
-            this.resultCount++;
-            this.results[i].push(area.places[p]);
-          }
-        }
-      }
     },
     getPlaces: function (area) {
       var count = 0;
