@@ -1,70 +1,74 @@
 <template>
-  <div class="frontend">
-    <div class="flex-item">
-      <div class="toolbar">
-        <el-row align="middle" :gutter="20">
-          <el-col :span="6">
+  <div class="">
+    <el-container>
+      <el-container>
+        <el-header>
+          <el-row align="middle" :gutter="20">
+            <el-col :span="6">
+            </el-col>
+            <el-col :span="8" class="text-align: right">
+              <div v-if="currentPlace != null" class="title-2 info-conto">
+                <span>{{ currentPlace.areaName }}</span>
+                -
+                <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
+                &nbsp;
+                <el-icon :size="24" color="#000" @click="reassignPark">
+                  <circle-close />
+                </el-icon>
+              </div>
+            </el-col>
+            <el-col :span="6" class="text-align: right">
+              <!--
+              <div class="customer" @click="selectCustomer">
+                <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
+                <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
+              </div>
+              -->
+            </el-col>
+          </el-row>
+        </el-header>
+        <el-main>
+          <div class="categories">
+            <el-button
+              type="warning"
+              circle
+              plain
+              size="medium"
+              icon="el-icon-star-on"
+              @click="selectFavorites()"
+            >
+            </el-button>
+
+            <el-button
+              type="info"
+              round
+              v-for="cat in categories"
+              :key="cat.id"
+              :class="getButtonClass(cat.id)"
+              @click="selectCategory(cat)"
+            >
+              {{ cat.name }}
+            </el-button>
             <div class="search">
-              <input
-                class="search-input"
-                :placeholder="$t('generic.search')"
-                v-model="searchInput"
-                :oninput="inputChange()"
-              />
-              <i class="el-input__icon el-icon-search" @click="searchItem"></i>
-            </div>
-          </el-col>
-          <el-col :span="8" class="text-align: right">
-            <div v-if="currentPlace != null" class="title-2 info-conto">
-              <span>{{ currentPlace.areaName }}</span>
-              -
-              <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
-              &nbsp;
-              <el-icon :size="24" color="#000" @click="reassignPark">
-                <circle-close />
-              </el-icon>
-            </div>
-          </el-col>
-          <el-col :span="6" class="text-align: right">
-            <div class="customer" @click="selectCustomer">
-              <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-              <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
+                <input
+                  class="search-input"
+                  :placeholder="$t('generic.search')"
+                  v-model="searchInput"
+                  :oninput="inputChange()"/>
+              </div>
 
-      <div class="categories">
-        <el-button
-          type="warning"
-          circle
-          plain
-          size="medium"
-          icon="el-icon-star-on"
-          @click="selectFavorites()"
-        >
-        </el-button>
-
-        <el-button
-          type="info"
-          round
-          v-for="cat in categories"
-          :key="cat.id"
-          :class="getButtonClass(cat.id)"
-          @click="selectCategory(cat)"
-        >
-          {{ cat.name }}
-        </el-button>
-      </div>
-      <div class="center">
-        <span v-if="products.length == 0" class="none-found">{{
-          $t("product.no_product_found")
-        }}</span>
-        <product-grid :data="products" @productSelected="productSelected"> </product-grid>
-      </div>
-    </div>
-    <div class="fixed">
-      <div class="side">
+          </div>
+          <div class="center">
+            <span v-if="products.length == 0" class="none-found">{{
+              $t("product.no_product_found")
+            }}</span>
+            <product-grid :data="products" @productSelected="productSelected"> </product-grid>
+          </div>
+        </el-main>
+      </el-container>
+      <el-aside width="400px">
+        <div style="min-height: 100vh;">
+          <div class="side">
         <conto-management
           ref="contoMgmt"
           :data="currentPlace"
@@ -75,7 +79,8 @@
         >
         </conto-management>
       </div>
-    </div>
+    </div></el-aside>
+    </el-container>
 
     <el-dialog v-model="checkoutDialogVisibile" width="80%" destroy-on-close>
       <checkout-dialog> </checkout-dialog>
@@ -376,8 +381,8 @@ export default {
 
 <style scoped>
 .frontend {
-  text-align: left;
-  display: flex;
+  /*text-align: left;
+  display: flex;*/
   min-height: 100vh;
   max-height: 100vh;
 }
@@ -393,8 +398,8 @@ export default {
   border-radius: 16px;
 }
 .side {
-  height: 100%;
-  margin: 10px 10px 30px 10px;
+  height: 96vh;
+  margin: 20px 10px 30px 10px;
   border: solid 0px rgb(134, 131, 131);
   border-radius: 12px;
   display: flex;
