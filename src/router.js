@@ -7,6 +7,7 @@ import Settings from './views/Settings.vue'
 import Extras from './views/Extras.vue'
 import Floor from './views/Floor.vue'
 import Home from './views/Home.vue'
+import Main from './views/Main.vue'
 import Ordini from './views/Ordini.vue'
 import Dashboard from './views/Dashboard.vue'
 
@@ -14,10 +15,12 @@ const routes = [
   {
     path: '/frontend/',
     name: 'frontend',
-    component: Frontend,
-    props:  (route) => ({
-      ...route.params
-    })
+    component: Frontend
+  },
+  {
+    path: '/main/',
+    name: 'main',
+    component: Main
   },
   {
     path: '/',
@@ -42,10 +45,7 @@ const routes = [
   {
     path: '/floor',
     name: 'floor',
-    component: Floor,
-    props:  (route) => ({
-      ...route.params
-    })
+    component: Floor
   },
   {
     path: '/settings',

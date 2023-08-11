@@ -54,6 +54,7 @@
   },
   "cashier": {
     "cashier": "Cassa",
+    "home": "Home",
     "zreport": "Chiusura fiscale",
     "zreport-done": "Chiusura giornaliera completata",
     "zreport-confirm": "Eseguire la chiusura giornaliera?",

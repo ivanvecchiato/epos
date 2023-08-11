@@ -1,65 +1,80 @@
 <template>
-  <div class="">
-    <div>
-      <el-row align="middle" :gutter="20">
-        <el-col :span="6">
-        </el-col>
-        <el-col :span="8" class="text-align: right">
-          <div v-if="currentPlace != null" class="title-2 info-conto">
-            <span>{{ currentPlace.areaName }}</span>
-            -
-            <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
-            &nbsp;
-            <el-icon :size="24" color="#000" @click="reassignPark">
-              <circle-close />
-            </el-icon>
-          </div>
-        </el-col>
-        <el-col :span="6" class="text-align: right">
-          <!--
-          <div class="customer" @click="selectCustomer">
-            <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-            <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
-          </div>
-          -->
-        </el-col>
-      </el-row>
-    </div>
-    <div class="categories">
-      <el-button
-        type="warning"
-        circle
-        plain
-        size="medium"
-        icon="el-icon-star-on"
-        @click="selectFavorites()"
-      >
-      </el-button>
+  <div class="frontend">
+    <div class="flex-item">
+      <div class="toolbar">
+        <el-row align="middle" :gutter="20">
+          <el-col :span="6">
+            <div class="search">
+              <input
+                class="search-input"
+                :placeholder="$t('generic.search')"
+                v-model="searchInput"
+                :oninput="inputChange()"
+              />
+              <i class="el-input__icon el-icon-search" @click="searchItem"></i>
+            </div>
+          </el-col>
+          <el-col :span="8" class="text-align: right">
+            <div v-if="currentPlace != null" class="title-2 info-conto">
+              <span>{{ currentPlace.areaName }}</span>
+              -
+              <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
+              &nbsp;
+              <el-icon :size="24" color="#000" @click="reassignPark">
+                <circle-close />
+              </el-icon>
+            </div>
+          </el-col>
+          <el-col :span="6" class="text-align: right">
+            <div class="customer" @click="selectCustomer">
+              <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
+              <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
 
-      <el-button
-        type="info"
-        round
-        v-for="cat in categories"
-        :key="cat.id"
-        :class="getButtonClass(cat.id)"
-        @click="selectCategory(cat)"
-      >
-        {{ cat.name }}
-      </el-button>
-      <div class="search">
-          <input
-            class="search-input"
-            :placeholder="$t('generic.search')"
-            v-model="searchInput"
-            :oninput="inputChange()"/>
-        </div>
+      <div class="categories">
+        <el-button
+          type="warning"
+          circle
+          plain
+          size="medium"
+          icon="el-icon-star-on"
+          @click="selectFavorites()"
+        >
+        </el-button>
 
+        <el-button
+          type="info"
+          round
+          v-for="cat in categories"
+          :key="cat.id"
+          :class="getButtonClass(cat.id)"
+          @click="selectCategory(cat)"
+        >
+          {{ cat.name }}
+        </el-button>
+      </div>
+      <div class="center">
+        <span v-if="products.length == 0" class="none-found">{{
+          $t("product.no_product_found")
+        }}</span>
+        <product-grid :data="products" @productSelected="productSelected"> </product-grid>
+      </div>
     </div>
-    <div class="center">
-      <span v-if="products.length == 0" class="none-found">{{
-        $t("product.no_product_found")
-      }}</span>
-      <product-grid :data="products" @productSelected="productSelected"> </product-grid>
+    <div class="fixed">
+      <div class="side">
+        <conto-management
+          ref="contoMgmt"
+          :data="currentPlace"
+          @annullaConto="annullaConto"
+          @reassignedConto="reassignedConto"
+          @contoParked="contoParked"
+          @pagaConto="pagaConto"
+        >
+        </conto-management>
+      </div>
     </div>
 
     <el-dialog v-model="checkoutDialogVisibile" width="80%" destroy-on-close>
@@ -94,6 +109,7 @@ import operator from "../store/user.js";
 import { CircleClose } from "@element-plus/icons";
 import CheckoutDialog from "./Frontend/CheckoutDialog.vue";
 import printf from "../fiscalprinter/printf.js";
+import ContoManagement from "./Frontend/ContoManagement.vue";
 import ECRKeypad from "@/components/ECRKeypad.vue";
 import ProductWizard from "./Frontend/ProductWizard.vue";
 import repo from '@/db/repo.js'
@@ -104,6 +120,7 @@ export default {
     ProductGrid,
     CircleClose,
     CheckoutDialog,
+    ContoManagement,
     ECRKeypad,
     ProductWizard,
   },
@@ -165,6 +182,24 @@ export default {
         if (name.toLowerCase().startsWith(input.toLowerCase())) {
           this.products.push(repo.catalog[p]);
         }
+      }
+    },
+    contoParked: function () {
+      this.currentPlace = null;
+      var msg = "Conto parcheggiato"; //this.$t('bill.parked');
+      this.$message({
+        type: "success",
+        message: msg,
+      });
+    },
+    reassignedConto: function (size) {
+      this.currentPlace = null;
+      if (size > 0) {
+        var msg = this.$t("bill.reassigned");
+        this.$message({
+          type: "success",
+          message: msg,
+        });
       }
     },
     reassignPark: function () {
@@ -253,6 +288,9 @@ export default {
           }
         });
     },
+    annullaConto: function () {
+      //this.conto.clear();
+    },
     addCustomer() {
       this.customer = new Customer();
       this.customer.randomize();
@@ -265,6 +303,9 @@ export default {
       this.$nextTick(() => {
         this.$bus.trigger("setConto", conto);
       });
+    },
+    pagaConto: function (conto) {
+      this.showCheckoutDialog(conto);
     },
     loadCategories: function () {
       var self = this;
@@ -334,6 +375,33 @@ export default {
 </script>
 
 <style scoped>
+.frontend {
+  text-align: left;
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+}
+.fixed {
+  width: 450px;
+}
+.flex-item {
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  max-width: 70%;
+  /*background: #81655427;*/
+  border-radius: 16px;
+}
+.side {
+  height: 100%;
+  margin: 10px 10px 30px 10px;
+  border: solid 0px rgb(134, 131, 131);
+  border-radius: 12px;
+  display: flex;
+  padding: 5px;
+  flex-direction: column;
+  background: #fff;
+}
 .categories {
   display: flex;
   flex: 1;

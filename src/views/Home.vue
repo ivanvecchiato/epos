@@ -61,11 +61,7 @@
           </el-menu-item>
           <el-menu-item index="2" @click="openFrontend">
             <i class="el-icon-shopping-cart-full"></i>
-            <span class="sidebar">{{ $t("cashier.cashier") }}</span>
-          </el-menu-item>
-          <el-menu-item index="3" @click="openFloor">
-            <i class="el-icon-map-location"></i>
-            <span class="sidebar">{{ $t("floor.floor") }}</span>
+            <span class="sidebar">{{ $t("cashier.home") }}</span>
           </el-menu-item>
           <el-menu-item index="4" @click="openOrders">
             <i class="el-icon-document"></i>
@@ -207,14 +203,11 @@ export default {
       operator.logoutUser();
       //this.$emit('logout')
     },
-    openFloor: function () {
-      this.$router.push("/floor");
-    },
     openDashboard: function () {
       this.$router.push("/dashboard");
     },
     openFrontend: function () {
-      this.$router.push("/frontend");
+      this.$router.push("/main");
     },
     openOrders: function () {
       this.$router.push("/ordini");
