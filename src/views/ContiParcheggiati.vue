@@ -376,21 +376,21 @@ export default {
 <style scoped>
 
 .amount {
-  color: var(--secondary-color);
+  color: var(--danger-color);
   font-weight: bold;
   font-size: 1.1em;
 }
 .place1 {
-  color: var(--warning-color);
+  color: var(--tertiary-color);
   font-weight: bold;
   font-size: 1.0em;
   display: inline-block;
   min-width: 70px;
 }
 .place2 {
-  color: var(--success-color);
+  color: var(--tertiary-color);
   font-weight: bold;
-  font-size: 1.0em;  border: solid 1px var(--success-color);
+  font-size: 1.0em;  border: solid 1px var(--tertiary-color);
   border-radius: 4px;
   padding: 0px 8px 0px 8px;
 }

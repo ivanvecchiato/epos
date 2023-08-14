@@ -70,7 +70,7 @@ html {
   height: 100vh;
   overflow: hidden;
   color: var(--primary-color);
-  background: #f3f0ef;
+  background: #f2f2f7;
   /*background: #fff5e3;*/
 }
 :root{
@@ -79,7 +79,7 @@ html {
   --secondary-color: #55bde5!important;
   --secondary-light-color: #55bde540!important;
   --tertiary-color: #ff9933!important;
-  --tertiary-light-color: #ff993340;
+  --tertiary-light-color: #ffe6cf;
   --success-color: #5dcc9d!important;
   --warning-color: #ffe342!important;
   --error-color: #b2110f!important;
@@ -92,7 +92,6 @@ html {
   --gray4-color: #d1d1d6;
   --gray5-color: #e5e5ea;
   --gray6-color: #f2f2f7;
-  --background-color: rgb(250, 250, 250);
 }
 .title {
   font-size: 3.0em;
@@ -208,7 +207,18 @@ button {
   font-weight: bold;
   margin-left: 10px;
   margin-right: 10px;
-  min-height: 40px;
+  padding: 2px 16px;
+  min-height: 30px;
+  color: var(--primary-color);
+}
+
+button.lg {
+  font-size: 1.1em;
+}
+
+button.selected {
+  background-color: var(--tertiary-light-color);
+  border-radius: 20px;
 }
 
 button.action {
@@ -217,6 +227,17 @@ button.action {
 
 button.danger {
   color: var(--danger-color);
+}
+
+button.radio {
+  color: var(--tertiary-color);
+}
+.divider {
+  background-color: var(--gray4-color);
+  height: 1px;
+  width: 95%;
+  margin-top:10px;
+  margin-bottom:10px;
 }
 
 </style>
