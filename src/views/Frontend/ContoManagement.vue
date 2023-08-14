@@ -1,6 +1,16 @@
 <template>
   <div class="conto">
     <header>
+      <div v-if="currentPlace != null" class="title-2 info-conto">
+        <span>{{ currentPlace.areaName }}</span>
+        -
+        <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
+        &nbsp;
+        <el-icon :size="24" color="#000" @click="reassignPark">
+          <circle-close />
+        </el-icon>
+      </div>
+
       <div class="info-conto-2" v-if="billLoaded == true">
         <el-icon
           style="vertical-align: middle"
@@ -259,35 +269,44 @@ export default {
           message: text,
         })
     },
-    stampaScontrino: function() {
-      if(configs.fiscal == true) {
-        this.stampaScontrinoFiscale((r) => {
-          if(r.result == 'ok') {
-            var data = r.data;
-            var progressive = data.Service.Request[0].lastDocF[0];
-            var zNum = data.Service.Request[0].lastZ[0];
-            this.conto.setClosed(1, this.currentPlace, progressive, zNum);
-          } else {
-            this.showError(this.$t('cashier.print-error'));
-          }
-        });
+    stampaScontrino: function(no_print) {
+      if(no_print) {
+        var progressive = counters.getProgressivoScontrino(true);
+        var fiscal_progressive = '';
+        var zNum = counters.getZNum();
+        this.conto.setClosed(1, this.currentPlace, progressive, fiscal_progressive, zNum);
       } else {
-        this.stampaScontrinoNonFiscale((r) => {
-          if(r.result == 'ok') {
-            var progressive = counters.getProgressivoScontrino(true);
-            var zNum = counters.getZNum();
-            this.conto.setClosed(1, this.currentPlace, progressive, zNum);
-          } else {
-            this.showError(this.$t('cashier.print-error'));
-          }
-        });
+        if(configs.fiscal == true) {
+          this.stampaScontrinoFiscale((r) => {
+            if(r.result == 'ok') {
+              var data = r.data;
+              var progressive = counters.getProgressivoScontrino(true);
+              var fiscal_progressive = data.Service.Request[0].lastDocF[0];
+              var zNum = data.Service.Request[0].lastZ[0];
+              this.conto.setClosed(1, this.currentPlace, progressive, fiscal_progressive, zNum);
+            } else {
+              this.showError(this.$t('cashier.print-error'));
+            }
+          });
+        } else {
+          this.stampaScontrinoNonFiscale((r) => {
+            if(r.result == 'ok') {
+              var progressive = counters.getProgressivoScontrino(true);
+              var fiscal_progressive = '';
+              var zNum = counters.getZNum();
+              this.conto.setClosed(1, this.currentPlace, progressive, fiscal_progressive, zNum);
+            } else {
+              this.showError(this.$t('cashier.print-error'));
+            }
+          });
+        }
       }
     },
     checkout: function () {
       if (this.conto.size() == 0) return;
-        this.conto.addPayment(0, "contanti", this.conto.getTotale());
-        console.log(this.conto);
-        this.stampaScontrino();
+      this.conto.addPayment(0, "contanti", this.conto.getTotale());
+      console.log(this.conto);
+      this.stampaScontrino(true);
 /*
       var condition = this.conf.getSettingValue("allowQuickBill");
       if (condition) {
@@ -509,7 +528,7 @@ export default {
     readConfig() {
   
       console.log("configs", configs);
-    }
+    },
   },
   mounted() {
     this.readConfig();

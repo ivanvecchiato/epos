@@ -273,7 +273,7 @@ export default class Conto {
     localStorage.setItem('cart', JSON.stringify(this));
   }
 
-  setClosed(status, place, progressivo, chiusura) {
+  setClosed(status, place, progressivo, progressivo_fiscale, chiusura) {
     this.lastModified = new Date();
     this.status = status;
     this.totale = this.getTotale();
