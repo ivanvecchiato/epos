@@ -1,30 +1,5 @@
 <template>
   <div class="">
-    <div>
-      <el-row align="middle" :gutter="20">
-        <el-col :span="6">
-        </el-col>
-        <el-col :span="8" class="text-align: right">
-          <div v-if="currentPlace != null" class="title-2 info-conto">
-            <span>{{ currentPlace.areaName }}</span>
-            -
-            <span>{{ $t("bill.place", { description: currentPlace.placeName }) }}</span>
-            &nbsp;
-            <el-icon :size="24" color="#000" @click="reassignPark">
-              <circle-close />
-            </el-icon>
-          </div>
-        </el-col>
-        <el-col :span="6" class="text-align: right">
-          <!--
-          <div class="customer" @click="selectCustomer">
-            <el-avatar class="avatar" size="small" :src="userIconUrl"></el-avatar>
-            <span class="customer-name" @click="addCustomer">{{ customerName }}</span>
-          </div>
-          -->
-        </el-col>
-      </el-row>
-    </div>
     <div class="categories">
       <el-button
         type="warning"
@@ -89,9 +64,6 @@
 
 <script>
 import ProductGrid from "../components/ProductGrid.vue";
-import Customer from "../data/Customer.js";
-import operator from "../store/user.js";
-import { CircleClose } from "@element-plus/icons";
 import CheckoutDialog from "./Frontend/CheckoutDialog.vue";
 import printf from "../fiscalprinter/printf.js";
 import ECRKeypad from "@/components/ECRKeypad.vue";
@@ -102,7 +74,6 @@ export default {
   name: "Frontend",
   components: {
     ProductGrid,
-    CircleClose,
     CheckoutDialog,
     ECRKeypad,
     ProductWizard,
@@ -113,11 +84,6 @@ export default {
       categories: [],
       products: [],
       currentCategory: null,
-      //conto: new Conto,
-      customer: null,
-      currentPlace: null,
-      search_pattern: "",
-      checkoutDialogVisibile: false,
       priceDialogVisibile: false,
       currentHandledProduct: null,
       searchInput: "",
@@ -126,13 +92,6 @@ export default {
     };
   },
   computed: {
-    customerName: function () {
-      if (this.customer != null) {
-        return this.customer.firstName + " " + this.customer.lastName;
-      } else {
-        return this.$t("customer.add_new");
-      }
-    },
     userIconUrl: function () {
       return require("@/assets/user.png");
     },
@@ -171,7 +130,6 @@ export default {
       this.$bus.trigger("reassignPark");
     },
     searchItem: function () {},
-    selectCustomer: function () {},
     getButtonClass: function (catId) {
       if (this.currentCategory == null || catId != this.currentCategory.id) {
         return "button-idle";
@@ -253,13 +211,6 @@ export default {
           }
         });
     },
-    addCustomer() {
-      this.customer = new Customer();
-      this.customer.randomize();
-      this.$bus.trigger("addCustomer", this.customer);
-      //this.conto.addCustomer(c);
-      //console.log('addCustomer', c);
-    },
     showCheckoutDialog: function (conto) {
       this.checkoutDialogVisibile = true;
       this.$nextTick(() => {
@@ -310,23 +261,7 @@ export default {
       });
     },
   },
-  beforeCreate() {
-    this.$bus.reset();
-  },
   mounted() {
-    if (this.place != undefined) {
-      this.currentPlace = JSON.parse(this.place);
-      this.contoId = this.currentPlace.contoId;
-      delete this.currentPlace.contoId;
-
-      console.log("Frontend", this.currentPlace);
-      this.$bus.trigger("loadConto", {
-        place: this.currentPlace,
-        billId: this.contoId,
-      });
-    } else {
-      this.$bus.trigger("checkPending", operator);
-    }
     this.loadCategories();
     this.loadPreferiti();
   },
@@ -373,13 +308,6 @@ export default {
   font-weight: bold;
   font-size: 1.1em;
   border: 0px solid var(--primary-color);
-}
-.customer {
-  text-align: right;
-  color: var(--success-color);
-}
-.customer-name {
-  margin: auto;
 }
 .search {
   text-align: left;
