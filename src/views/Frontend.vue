@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <div class="categories">
       <el-button
         type="warning"
