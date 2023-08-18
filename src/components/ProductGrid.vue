@@ -32,7 +32,7 @@
         </el-dropdown>
       </div>
       <div class="card-body">
-        <el-image v-if="item.properties.imgUrl.length>0" :src="item.properties.imgUrl" class="thumbnail"/>
+        <img v-if="item.properties.imgUrl.length>0" :src="item.properties.imgUrl" class="thumbnail" @error="imageUrlAlt"/>
         <p v-if="item.properties.imgUrl.length>0" class="product-img-name">{{ item.name }}</p>
         <p v-else class="product-name">{{ item.name }}</p>
       </div>
@@ -86,6 +86,9 @@ export default {
     };
   },
   methods: {
+    imageUrlAlt(event) {
+      event.target.src = require("@/assets/icons/logo.png");
+    },
     getBgc: function(item) {
       if(item.properties.color != '') {
         return "background: " + item.properties.color;
