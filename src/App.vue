@@ -212,6 +212,11 @@ button {
   color: var(--primary-color);
 }
 
+button:active {
+  background-color: var(--primary-light-color);
+  border-radius: 8px;
+}
+
 button.lg {
   font-size: 1.1em;
 }
