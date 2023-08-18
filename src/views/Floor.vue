@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import Status from "../data/Status.js";
 import Conto from "../data/Conto.js";
 import Firebase from "../firebase.js";
 import { ShoppingCartFull, Clock, Coin, MoreFilled, Right } from "@element-plus/icons";
@@ -121,8 +122,19 @@ export default {
       this.showContoDetail = false;
       this.deleteTab(this.currentConto);
     },
-    getBgc: function () {
-      return "background: rgb(232, 232, 232)";
+    getBgc: function (t) {
+      var style = "background-color: ";
+      if(t.status != undefined) {
+        if(t.status == Status.locked) {
+          style += " var(--danger-color);";
+        } else {
+          style += "rgb(232, 232, 232)";
+        }
+      } else {
+        style += "rgb(232, 232, 232)";
+      }
+
+      return style;
     },
     isMoving: function (t) {
       if (this.movingTab == null) return false;
@@ -204,6 +216,9 @@ export default {
         place: destination,
       });
     },
+    setTableSelected: function(table) {
+      table.status = Status.locked;
+    },
     selectTable: function (table) {
       var destination = {
         areaId: this.currentArea.docId,
@@ -214,19 +229,17 @@ export default {
       if (this.movingTab != null) {
         this.moveTab(this.movingTab, destination);
       } else {
-        this.$router.push({
-          name: "frontend",
-          params: {
-            place: JSON.stringify({
-              placeId: table.key,
-              placeName: table.name,
-              areaDocId: this.currentArea.docId,
-              areaName: this.currentArea.name,
-              contoId: table.contoId
-            }),
-          },
+        this.$bus.trigger("loadConto", {
+          place: {
+                placeId: table.key,
+                placeName: table.name,
+                areaDocId: this.currentArea.docId,
+                areaName: this.currentArea.name,
+              },
+          billId: table.contoId,
         });
       }
+      this.setTableSelected(table);
     },
     setColor: function (color) {
       return "background-color: " + color;
