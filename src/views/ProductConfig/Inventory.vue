@@ -9,11 +9,18 @@
           </el-button>
         </el-col>
         <el-col :span="4">
-          <el-button
+          <button
             type="success"
             size="small"
             plain
-            @click="exportCSV">{{ $t("inventory.export") }}</el-button>
+            @click="exportJSON">{{ $t("inventory.export") }}
+          </button>
+          <input ref="fileInput" type="file" style="display:none;" @change="readFile" />
+          <button
+            size="small"
+            plain
+            v-on:click="this.$refs.fileInput.click();">{{ $t("inventory.import") }}
+          </button>
         </el-col>
         <el-col :span="6">
           <input :label="$t('inventory.import')" type="file" @change="loadTextFromFile"/>
@@ -139,10 +146,47 @@ export default {
       currentProduct: new Product(),
       documentId: "",
       categories: [],
-      products: [],
+      products: []
     };
   },
   methods: {
+    importProducts: function(data) {
+      var categories = data.categories;
+      var products = data.products;
+      Firebase.db.collection('categories').get()
+        .then(querySnapshot => {
+          querySnapshot.docs.forEach(snapshot => {
+            snapshot.ref.delete();
+          })
+
+          for(var i=0; i<categories.length; i++) {
+            Firebase.db.collection('categories').doc(categories[i].id).set(categories[i]);
+          }
+        })
+
+      Firebase.db.collection('products').get()
+        .then(querySnapshot => {
+          querySnapshot.docs.forEach(snapshot => {
+            snapshot.ref.delete();
+          })
+
+          for(var i=0; i<products.length; i++) {
+            Firebase.db.collection('products').doc(products[i].id).set(products[i]);
+          }
+        })
+    },
+    readFile: function(event) {
+      var file = event.target.files[0];
+      const reader = new FileReader();
+      if (file.name.includes(".json")) {
+        reader.onload = (res) => {
+          var data = JSON.parse(res.target.result)
+          this.importProducts(data);
+        };
+        reader.onerror = (err) => console.log(err);
+        reader.readAsText(file);
+      }
+    },
     getIndicator(type) {
       if(type == -2) {
         return require('@/assets/icons/ingredient.png');
@@ -293,6 +337,28 @@ export default {
     },
     randKey: function () {
       return Math.random();
+    },
+    exportJSON: function() {
+      var arrData = {
+        categories: this.categories,
+        products: this.products
+      }
+      var fileName = "export";
+      var json = JSON.stringify(arrData);
+
+      var uri = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
+      // generate a temp <a /> tag
+      var link = document.createElement('a');
+      link.href = uri;
+
+      //set the visibility hidden so it will not effect on your web-layout
+      link.style = 'visibility:hidden';
+      link.download = fileName + '.json';
+
+      //this part will append the anchor tag and remove it after automatic click
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
     exportCSV: function () {
       var arrData = this.products;
