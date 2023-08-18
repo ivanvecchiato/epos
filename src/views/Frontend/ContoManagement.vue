@@ -506,7 +506,10 @@ export default {
       }
     },
     loadConto: function (eventData) {
-      if(eventData.billId == '') return;
+      if(eventData.billId == '') {
+        this.conto.clear();
+        return;
+      }
       
       var docRef = Firebase.db.collection("conti").doc(eventData.billId);
       docRef
@@ -515,6 +518,7 @@ export default {
           if (doc.exists) {
               if (doc.data().orderList.length > 0) {
                 this.conto.fillData(doc.data());
+                console.log('loadConto', this.conto);
                 this.billLoaded = true;
             }
           } else {
