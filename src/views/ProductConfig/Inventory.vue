@@ -39,6 +39,15 @@
             width="100">
           </el-table-column>
           <el-table-column
+            :label="$t('product.img')"
+            width="100">
+            <template #default="scope">
+              <div class="thumbnail-bgnd">
+                <img :src="scope.row.imgUrl" class="thumbnail"/>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="name"
             sortable
             :label="$t('product.name')"
@@ -51,7 +60,6 @@
               <img
                 class="indicator" :class="getTypeIndicator(scope.row.type)"
                 :src="getIndicator(scope.row.type)"/>
-
             </template>
           </el-table-column>
           <el-table-column
@@ -135,6 +143,7 @@ import Firebase from "../../firebase.js";
 import ProductForm from "./ProductForm.vue";
 import Product from "../../data/Product.js";
 //import Category from "../data/Category.js";
+import repo from '@/db/repo.js'
 
 export default {
   name: "Inventory",
@@ -323,16 +332,25 @@ export default {
     },
     handleProductTable: function () {
       this.tableData = [];
+      var self = this;
       for (var i = 0; i < this.products.length; i++) {
-        this.tableData.push({
-          id: this.products[i].id,
-          code: this.products[i].code,
-          name: this.products[i].name,
-          type: this.products[i].type,
-          category: this.products[i].category.name,
-          price: Number(this.products[i].price).toFixed(2),
-          inventory: Number(this.products[i].inventory.availability)
-        });
+        repo.loadImageUrl(
+          i,
+          self.products[i].properties.imgUrl,
+          function(url, index) {
+            self.products[index].properties.imgUrl = url;                
+            self.tableData.push({
+              id: self.products[index].id,
+              code: self.products[index].code,
+              name: self.products[index].name,
+              type: self.products[index].type,
+              imgUrl: self.products[index].properties.imgUrl,
+              category: self.products[index].category.name,
+              price: Number(self.products[index].price).toFixed(2),
+              inventory: Number(self.products[index].inventory.availability)
+            });
+          }
+        )
       }
     },
     randKey: function () {
@@ -478,5 +496,16 @@ export default {
 .list {
   padding: 10px;
   height: 100vh;
+}
+.thumbnail-bgnd {
+  background: var(--gray6-color); /* rgb(248, 239, 227);*/
+  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+.thumbnail {
+  margin-top: 5px;
+  height: 50px;
 }
 </style>
