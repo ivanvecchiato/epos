@@ -17,8 +17,8 @@ export default {
   },
   mounted() {
     SocketioService.setupSocketConnection();
-    repo.getAllProducts();
-    repo.getVariants();
+    repo.loadAllProducts();
+    repo.loadVariants();
   },
 };
 </script>

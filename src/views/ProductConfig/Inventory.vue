@@ -3,12 +3,12 @@
     <div class="title-2">{{$t('pricelist.products')}}</div>
     <div class="inventory-body">
       <el-row>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-button size="small" plain type="primary" @click="dialogVisible = true">
             {{$t("product.new")}}
           </el-button>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="6">
           <button
             type="success"
             size="small"
@@ -21,9 +21,11 @@
             plain
             v-on:click="this.$refs.fileInput.click();">{{ $t("inventory.import") }}
           </button>
-        </el-col>
-        <el-col :span="6">
-          <input :label="$t('inventory.import')" type="file" @change="loadTextFromFile"/>
+          <button
+              size="small"
+              plain
+              @click="deleteAllProducts()">{{ $t("inventory.delete") }}
+          </button>
         </el-col>
       </el-row>
 
@@ -48,10 +50,12 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="name"
             sortable
             :label="$t('product.name')"
             width="280">
+              <template #default="scope">
+                <span class="prod-name">{{ scope.row.name }}</span>
+              </template>
           </el-table-column>
           <el-table-column
             :label="$t('product.type')"
@@ -69,9 +73,11 @@
             width="200">
           </el-table-column>
           <el-table-column
-            prop="price"
             :label="$t('product.price')"
             width="100">
+            <template #default="scope">
+                <span class="prod-price">{{ scope.row.price }}</span>
+              </template>
           </el-table-column>
           <el-table-column
             prop="inventory"
@@ -159,9 +165,18 @@ export default {
     };
   },
   methods: {
+    deleteAllProducts: function() {
+      Firebase.db.collection('products').get()
+        .then(querySnapshot => {
+          querySnapshot.docs.forEach(snapshot => {
+            snapshot.ref.delete();
+          })
+        })
+    },
     importProducts: function(data) {
-      var categories = data.categories;
+      //var categories = data.categories;
       var products = data.products;
+      /*
       Firebase.db.collection('categories').get()
         .then(querySnapshot => {
           querySnapshot.docs.forEach(snapshot => {
@@ -172,15 +187,29 @@ export default {
             Firebase.db.collection('categories').doc(categories[i].id).set(categories[i]);
           }
         })
+        */
 
       Firebase.db.collection('products').get()
         .then(querySnapshot => {
-          querySnapshot.docs.forEach(snapshot => {
-            snapshot.ref.delete();
-          })
-
-          for(var i=0; i<products.length; i++) {
-            Firebase.db.collection('products').doc(products[i].id).set(products[i]);
+          var size = querySnapshot.size;
+          if(size == 0) {
+            for(var i=0; i<products.length; i++) {
+              Firebase.db.collection('products').doc(products[i].id).set(products[i]);
+            }            
+          } else {
+            var count = 0;
+            querySnapshot.docs.forEach(snapshot => {
+              snapshot.ref.delete();
+              count++;
+              if(count == size) {
+                for(var i=0; i<products.length; i++) {
+                  if(products[i].type == undefined || products[i].type == '') {
+                    products[i].type = 0;
+                  }
+                  Firebase.db.collection('products').doc(products[i].id).set(products[i]);
+                }
+              }
+            })
           }
         })
     },
@@ -303,19 +332,29 @@ export default {
       });
     },
     loadProducts: function () {
+      this.products = repo.getAllProducts();
+      this.handleProductTable();
+      /*
       Firebase.db
         .collection("products")
         .where("status", "==", 1)
         .orderBy("name")
         .onSnapshot((snapshotChange) => {
           this.products = [];
+          var size = snapshotChange.size;
+          var count = 0;
           snapshotChange.forEach((doc) => {
             var record = doc.data();
             record.id = doc.id;
             this.products.push(record);
+            count++;
+
+            if(count == size){
+              this.handleProductTable();
+            }
           });
-          this.handleProductTable();
         });
+        */
     },
     loadCategories: function () {
       Firebase.db
@@ -332,25 +371,17 @@ export default {
     },
     handleProductTable: function () {
       this.tableData = [];
-      var self = this;
       for (var i = 0; i < this.products.length; i++) {
-        repo.loadImageUrl(
-          i,
-          self.products[i].properties.imgUrl,
-          function(url, index) {
-            self.products[index].properties.imgUrl = url;                
-            self.tableData.push({
-              id: self.products[index].id,
-              code: self.products[index].code,
-              name: self.products[index].name,
-              type: self.products[index].type,
-              imgUrl: self.products[index].properties.imgUrl,
-              category: self.products[index].category.name,
-              price: Number(self.products[index].price).toFixed(2),
-              inventory: Number(self.products[index].inventory.availability)
-            });
-          }
-        )
+        this.tableData.push({
+          id: this.products[i].id,
+          code: this.products[i].code,
+          name: this.products[i].name,
+          type: this.products[i].type,
+          imgUrl: this.products[i].properties.imgUrl,
+          category: this.products[i].category.name,
+          price: Number(this.products[i].price).toFixed(2),
+          inventory: Number(this.products[i].inventory.availability)
+        });
       }
     },
     randKey: function () {
@@ -377,77 +408,6 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    },
-    exportCSV: function () {
-      var arrData = this.products;
-      var CSV = '';
-
-      //This condition will generate the Label/Header
-      {
-        var row = '';
-
-        //This loop will extract the label from 1st index of on array
-        for (var index in arrData[0]) {
-            //Now convert each value to string and comma-seprated
-            row += index + ';';
-        }
-
-        row = row.slice(0, -1);
-
-        //append Label row with line break
-        CSV += row + '\r\n';
-      }
-
-      //1st loop is to extract each row
-      for (var i = 0; i < arrData.length; i++) {
-          row = '';
-
-          //2nd loop will extract each column and convert it in string comma-seprated
-          for (index in arrData[i]) {
-              row += '"' + arrData[i][index] + '";';
-          }
-
-          row.slice(0, row.length - 1);
-
-          //add a line break after each row
-          CSV += row + '\r\n';
-      }
-
-      if (CSV === '') {
-          alert('Invalid data');
-          return;
-      }
-
-      var ReportTitle = "export";
-
-      //Generate a file name
-      var fileName = '';
-      //this will remove the blank-spaces from the title and replace it with an underscore
-      fileName += ReportTitle.replace(/ /g, '_');
-
-      //Initialize file format you want csv or xls
-      var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-      // generate a temp <a /> tag
-      var link = document.createElement('a');
-      link.href = uri;
-
-      //set the visibility hidden so it will not effect on your web-layout
-      link.style = 'visibility:hidden';
-      link.download = fileName + '.csv';
-
-      //this part will append the anchor tag and remove it after automatic click
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      // console.log('finish download one file');
-    },
-    loadTextFromFile(ev) {
-      const file = ev.target.files[0];
-//      console.log("loadTextFromFile", file);
-      const reader = new FileReader();
-
-      reader.onload = (e) => this.parseProducts(e.target.result);
-      reader.readAsText(file);
     },
     parseProducts: function(json) {
       var objs = JSON.parse(json);
@@ -507,5 +467,13 @@ export default {
 .thumbnail {
   margin-top: 5px;
   height: 50px;
+}
+.prod-name {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.prod-price {
+  font-weight: bold;
+  color: var(--danger-color);
 }
 </style>

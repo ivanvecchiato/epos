@@ -84,6 +84,7 @@
     "product":"Prodotto",
     "products":"Prodotti",
     "code": "Codice",
+    "img": "Immagine",
     "category": "Categoria",
     "color": "Colore",
     "name": "Nome",
@@ -296,6 +297,7 @@
   "inventory": {
     "inventory": "Scorte",
     "enabled": "Abilitato",
+    "delete": "Cancella prodotti",
     "availability": "Disponibilità",
     "alarm": "Soglia di allarme",
     "import": "Importa",

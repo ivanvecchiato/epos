@@ -371,7 +371,7 @@ var repo = {
             }
         });
    },
-   getVariants() {
+   loadVariants() {
       var vars = [];
       Firebase.db.collection('varianti')
       .where("status", "==", 1)
@@ -413,7 +413,7 @@ var repo = {
          query = query.where("category.id", "==", catId);
       }
       query = query.where("status", "==", 1)
-      .where("type", "in", [0, 1, 2, 3]);
+      .where("type", "in", ['', 0, 1, 2, 3]);
 
       query.onSnapshot((querySnapshot) => {
          var size = querySnapshot.size;
@@ -462,14 +462,18 @@ var repo = {
          }
         });
     },
-    getAllProducts(callback) {
+    getAllProducts() {
+      return this.catalog;
+    },
+    loadAllProducts(callback) {
       var self = this;
       this.catalog = [];
 
       Firebase.db.collection("products")
       .where("status", "==", 1)
-      .where("type", "in", [0, 1, 2, 3])
-      .onSnapshot((querySnapshot) => {
+      .where("type", "in", ['', 0, 1, 2, 3])
+      .get()
+      .then((querySnapshot) => {
          var size = querySnapshot.size;
          if (size == 0) {
             if (callback != undefined) {
