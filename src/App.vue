@@ -84,6 +84,7 @@ html {
   --warning-color: #ffe342!important;
   --error-color: #b2110f!important;
   --danger-color: #b2110f!important;
+  --danger-light-color: #b2110f40!important;
   --info-color: #6f788d!important;
   --info2-color: #f38383!important;
   --gray1-color: #8e8e93;
