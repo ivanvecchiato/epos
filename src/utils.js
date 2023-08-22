@@ -27,6 +27,10 @@ export default {
     datetime += hours + ":" + mins;
     return datetime;
   },
+  toLocaleDateString: function(t) {
+    var d = new Date(t*1000);
+    return d.toLocaleDateString();
+  },
   localeDateTimeString: function () {
     var d = new Date();
     var hours = d.getHours();
@@ -38,6 +42,16 @@ export default {
     var datetime = d.toLocaleDateString() + " ";
     datetime += hours + ":" + mins;
     return datetime;
+  },
+  isToday: function(ts) {
+    var today = new Date().setHours(0, 0, 0, 0);
+    var thatDay = new Date(ts*1000).setHours(0, 0, 0, 0);
+    
+    if(today === thatDay){
+      return true;
+    } else {
+      return false;
+    }
   },
   toDateTime: function (timestamp) {
     var ts = timestamp.toDate();
