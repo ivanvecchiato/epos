@@ -97,6 +97,32 @@ var repo = {
       return conto;
    },
 
+   getRooms(callback) {
+      Firebase.db
+         .collection("rooms")
+         .orderBy("order")
+         .onSnapshot((snapshotChange) => {
+            var floors = [];
+            snapshotChange.forEach((doc) => {
+               var floor = doc.data();
+               floor.docId = doc.id;
+               var places = floor.places;
+               for (var n in places) {
+                  if (places[n].contoId != '') {
+                     places[n].conto = this.getConto(places[n].contoId);
+                     places[n].showMenu = false;
+                  }
+                  places[n].key = n;
+               }
+               floors.push(floor);
+            });
+
+            if (callback != undefined) {
+               callback(floors);
+            }
+         });
+   },
+
    getParks(callback) {
       Firebase.db
          .collection("park")
@@ -505,6 +531,39 @@ var repo = {
             });
          }
       });
+   },
+   getBookings(params, callback) {
+      var bookings = [];
+      var par = 0;
+      if(params.checkin == true) {
+         par = 1;
+      }
+
+      Firebase.db.collection("reservations")
+      .where("status", "==", par)
+      .get()
+      .then((querySnapshot) => {
+         var size = querySnapshot.size;
+         if (size == 0) {
+            if (callback != undefined) {
+               callback(this.catalog)
+            }
+         } else {
+            var count = 0;
+            querySnapshot.forEach((doc) => {
+               var record = doc.data();
+               record.id = doc.id;
+               bookings.push(record);
+
+               if (count == size - 1) {
+                  if (callback != undefined) {
+                     callback(bookings);
+                  }
+               }
+               count++;
+            })
+         }
+      })
    }
 
 }

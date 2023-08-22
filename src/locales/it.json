@@ -304,6 +304,11 @@
     "export": "Esporta",
     "ask_delete_product": "Rimuovere il prodotto?"
   },
+  "rooms": {
+    "import": "Importa piano camere",
+    "new_floor": "Nuovo piano",
+    "update_tableau": "Aggiorna tableau"
+  },
   "permission": {
     "issue-bill": "Può emettere documenti",
     "access-pricelist": "Ha accesso al listino",

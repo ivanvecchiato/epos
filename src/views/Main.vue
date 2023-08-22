@@ -5,7 +5,7 @@
         <div class="header">
           <button class="radio lg" :class="{'selected': currentComponent == 'Frontend'}" @click="setCurrentComponent('Frontend')">prodotti</button>
           <button class="radio lg" :class="{'selected': currentComponent == 'Floor'}" @click="setCurrentComponent('Floor')">tavoli</button>
-          <button class="radio lg">camere</button>
+          <button class="radio lg" :class="{'selected': currentComponent == 'Rooms'}" @click="setCurrentComponent('Rooms')">camere</button>
           <button class="radio lg">asporto</button>
         </div>
         <div class="divider"></div>
@@ -34,6 +34,7 @@
 <script>
 import Frontend from "./Frontend.vue";
 import Floor from "./Floor.vue";
+import Rooms from "./Rooms.vue";
 import ContoManagement from "./Frontend/ContoManagement.vue";
 import operator from "../store/user.js";
 import { CircleClose } from "@element-plus/icons";
@@ -44,6 +45,7 @@ export default {
   components: {
     Frontend,
     Floor,
+    Rooms,
     CircleClose,
     ContoManagement
   },
