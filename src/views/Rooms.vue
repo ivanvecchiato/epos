@@ -111,6 +111,7 @@ import utils from "../utils.js";
 import repo from "@/db/repo.js";
 import Reservation from "@/data/Reservation.js";
 import Guest from "@/data/Guest.js";
+import axios from 'axios'
 
 export default {
   name: "Rooms",
@@ -296,15 +297,15 @@ export default {
       if (file.name.includes(".json")) {
         reader.onload = (res) => {
           var data = JSON.parse(res.target.result)
-          this.handleBookings(data);
+          this.handleBookings(data.movements, true);
         };
         reader.onerror = (err) => console.log(err);
         reader.readAsText(file);
       }
     },
-    handleBookings: function(data) {
-      for(var i=0; i<data.movements.length; i++) {
-        var obj = data.movements[i];
+    handleBookings: function(movements, saveRemote) {
+      for(var i=0; i<movements.length; i++) {
+        var obj = movements[i];
         var booking = new Reservation;
         booking.room = {
           id: this.convertRoom(obj.room_id),
@@ -319,13 +320,13 @@ export default {
           booking.status = 2;
         }
         //board
-        if(booking.breakfast == true) {
+        if(obj.breakfast == true) {
           booking.board = 'BB'
         }
-        if(booking.dinner == true) {
+        if(obj.dinner == true) {
           booking.board = 'HB'
         }
-        if(booking.lunch == true) {
+        if(obj.lunch == true) {
           booking.board = 'FB'
         }
         booking.checkout = obj.checkout_date;
@@ -412,18 +413,22 @@ export default {
         booking.accountholder.birth_place = obj.reservation_holders[0].birth_place;
         booking.accountholder.birth_prov = obj.reservation_holders[0].birth_district;
 
+        booking.checkin_timestamp = (new Date(booking.checkin)).getTime()/1000;
+        booking.checkout_timestamp = (new Date(booking.checkout)).getTime()/1000;
+        booking.datetime_timestamp = (new Date(booking.datetime)).getTime()/1000;
+
         this.reservations.push(booking);
         var reservation = Object.assign({}, (booking));
         reservation = this.removeEmpty(reservation);
-        reservation.checkin_timestamp = (new Date(reservation.checkin)).getTime()/1000;
-        reservation.checkout_timestamp = (new Date(reservation.checkout)).getTime()/1000;
-        reservation.datetime_timestamp = (new Date(reservation.datetime)).getTime()/1000;
-        repo.addDoc('reservations', reservation)
+
+        if(saveRemote) {
+          repo.addDoc('reservations', reservation)
+        }
         // local pouch
         //data.movements[i]['_id'] = uuid.v1();
         //this.localDB.put(data.movements[i])
       }
-      console.log(this.reservations);
+      //console.log(this.reservations);
     },
     removeEmpty: function(obj) {
       let newObj = {};
@@ -667,14 +672,53 @@ export default {
         }
       } 
       return style;
+    },
+    getDefaultTableau: function() {
+      var now = new Date();
+      var day = now.getDate();
+      var month = now.getMonth()+1;
+      if(day<10) {
+        day = '0'+day;
+      }
+      if(month<10) {
+        month = '0'+month;
+      }
+      var year = now.getFullYear();
+
+      var from = year + '-' + month + '-' + (day-1);
+      var to = year + '-' + month + '-' + day;
+      var url = 'http://localhost:1800/api/reservations?';
+      url += 'from=' + from;
+      url += '&';
+      url += 'to=' + to;
+      url += '&';
+      url += 'checkin=false';
+
+      var self = this;
+      axios.get(url)
+        .then(function (response) {
+          // handle success
+          self.handleBookings(response.data, false);
+          self.bookings = self.reservations;
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
     }
   },
   mounted() {
     var self = this;
+    this.getDefaultTableau();
+    /*
     repo.getBookings({checkin: true}, function(data){
       console.log('getBookings', data);
       self.bookings = data;
     })
+    */
     repo.getOpenTabs(function (docs) {
       self.contiAperti = docs;
       //self.getParks();

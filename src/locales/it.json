@@ -306,7 +306,7 @@
   },
   "rooms": {
     "import": "Importa piano camere",
-    "new_floor": "Nuovo piano",
+    "new_floor": "Aggiungi piano",
     "update_tableau": "Aggiorna tableau"
   },
   "permission": {
