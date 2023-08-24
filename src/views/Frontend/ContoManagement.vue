@@ -506,7 +506,7 @@ export default {
       }
     },
     loadConto: function (eventData) {
-      if(eventData.billId == '') {
+      if(eventData.billId == undefined || eventData.billId == '') {
         this.conto.clear();
         return;
       }

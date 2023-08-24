@@ -40,7 +40,7 @@
         v-else
         v-for="r in currentFloor.rooms"
         :key="r.id"
-        class="room"
+        :class="isSelected(r) ? 'room-selected' : 'room'"
         @click="selectRoom(r)">
 
         <div class="room-name">{{ r.name }}</div>
@@ -121,6 +121,7 @@ export default {
     return {
       floors: [],
       currentFloor: {},
+      currentSelectedRoom: {},
       showContoDetail: false,
       currentConto: {},
       searchInput: "",
@@ -131,6 +132,9 @@ export default {
     };
   },
   methods: {
+    isSelected: function(room) {
+      return this.currentSelectedRoom == room;
+    },
     convertRoom(h5s_id) {
       const idmap = {
         '63': '1',
@@ -498,11 +502,11 @@ export default {
       });
     },
     setRoomSelected: function(room) {
-      room.status = Status.locked;
+      this.currentSelectedRoom = room;
     },
     selectRoom: function (room) {
       var destination = {
-        floorId: this.currentFloor.docId,
+        floorDocId: this.currentFloor.docId,
         floorName: this.currentFloor.name,
         placeId: room.key,
         placeName: room.name,
@@ -511,12 +515,7 @@ export default {
         this.moveTab(this.movingTab, destination);
       } else {
         this.$bus.trigger("loadConto", {
-          place: {
-                placeId: room.key,
-                placeName: room.name,
-                floorDocId: this.currentFloor.docId,
-                floorName: this.currentFloor.name,
-              },
+          place: destination,
           billId: room.contoId,
         });
       }
@@ -754,6 +753,15 @@ export default {
   border-radius: 8px;
   padding: 0px;
 }
+.room-selected {
+  min-height: 120px;
+  position: relative;
+  top: 1px;
+  left: 1px;
+  background: var(--tertiary-color);
+  border-radius: 8px;
+  padding: 0px;
+}
 .inner-room {
   margin-left: 12px;
   padding: 10px;
@@ -794,7 +802,7 @@ export default {
   margin-left:2px;
   border-radius: 8px;
   padding: 2px;
-  color: var(--secondary-color);
+  color: var(--gray1-color);
 }
 .room-checkout-warning {
   font-weight: 500;
