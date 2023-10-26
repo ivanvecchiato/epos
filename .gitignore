@@ -6,3 +6,4 @@ pouch__all_dbs__/*
 tables/*
 _replicator/*
 .DS_Store
+output.json
