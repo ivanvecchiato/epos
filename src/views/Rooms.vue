@@ -676,16 +676,22 @@ export default {
       var now = new Date();
       var day = now.getDate();
       var month = now.getMonth()+1;
-      if(day<10) {
-        day = '0'+day;
-      }
       if(month<10) {
         month = '0'+month;
       }
       var year = now.getFullYear();
 
-      var from = year + '-' + month + '-' + (day-1);
-      var to = year + '-' + month + '-' + day;
+      var startDay = day-1;
+      if(startDay<10) {
+        startDay = '0'+startDay;
+      }
+      var endDay = day;
+      if(endDay<10) {
+        endDay = '0'+endDay;
+      }
+
+      var from = year + '-' + month + '-' + startDay;
+      var to = year + '-' + month + '-' + endDay;
       var url = 'http://localhost:1800/api/reservations?';
       url += 'from=' + from;
       url += '&';
