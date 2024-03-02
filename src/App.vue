@@ -7,7 +7,7 @@
 
 <script>
 import Home from './views/Home.vue'
-import SocketioService from './services/socketio.service.js';
+//import SocketioService from './services/socketio.service.js';
 import repo from '@/db/repo.js'
 
 export default {
@@ -16,7 +16,7 @@ export default {
     Home
   },
   mounted() {
-    SocketioService.setupSocketConnection();
+    //SocketioService.setupSocketConnection();
     repo.loadAllProducts();
     repo.loadVariants();
   },
