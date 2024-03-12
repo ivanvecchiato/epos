@@ -1,5 +1,6 @@
 <template>
   <div class="floor">
+      <!--
     <div class="areas-toolbar">
       <div class="area-buttons">
         <el-button
@@ -19,6 +20,7 @@
       </div>
       <div class="area-indicator" :style="setColor(currentArea.color)"></div>
     </div>
+  -->
     <div class="grid">
       <div v-if="getPlaces(currentArea) == 0">
         <img src="@/assets/icons/not_found.png" />
@@ -362,7 +364,8 @@ export default {
       self.contiAperti = docs;
       //self.getParks();
       repo.getParks(function (data) {
-        self.areas = data;
+        self.areas = [];
+        self.areas.push({places: data});
         self.currentArea = self.areas[0];
       });
     });
